@@ -14,17 +14,12 @@ mongoose.connect('mongodb+srv://neelbavarva:Neel%409427@cluster0.uesqkef.mongodb
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to database'))
-
 app.use(express.json())
 
-app.get('/getAllPasswords', async(req, res)=> {
-    try{
-        const passowrds = await Password.find()
-        res.json(passowrds)
-    } catch(err){
-        res.status(500).json({message: err.message})
-    }
-})
+const passwordRoute = require('./passwordRoute')
+const cardRoute = require('./cardRoute')
+app.use('/passwords', passwordRoute)
+app.use('/cards', cardRoute)
 
 const PORT = process.env.PORT || 3001;
 
