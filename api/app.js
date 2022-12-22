@@ -5,6 +5,7 @@ const router = express.Router()
 const Password = require('./password')
 const Card = require('./card')
 var cors = require('cors')
+const address = require('address');
 
 app.use(cors())
 
@@ -20,6 +21,12 @@ const passwordRoute = require('./passwordRoute')
 const cardRoute = require('./cardRoute')
 app.use('/passwords', passwordRoute)
 app.use('/cards', cardRoute)
+
+app.get('/getMacAddress', async(req, res)=> {
+    address.mac(function (err, addr) {
+        res.json(addr)
+    });
+})
 
 const PORT = process.env.PORT || 3001;
 
