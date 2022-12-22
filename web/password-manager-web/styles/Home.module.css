@@ -1,0 +1,169 @@
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+@media (max-width: 1000px) {
+    .container {
+      width: 90%;
+    }
+    .img {
+      width: 90%;
+    }
+}
+@media (min-width: 1000px) {
+    .container {
+      width: 90%;
+    }
+    .img {
+      width: 90%;
+    }
+}
+@media (min-width: 1000px) {
+    .container {
+      width: 850px;
+    }
+    .img {
+      width: 850;
+    }
+}
+@media (min-width: 1200px) {
+    .container {
+      width: 850px;
+    }
+    .img {
+      width: 850px;
+    }
+}
+
+.loader{
+    color: #8A8A8A;
+    font-family: 'GilroyBold';
+    font-size: 20px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20vh;
+}
+
+.password_container{
+    display: flex;
+}
+
+.password_container >div:last-child{
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.password_name{
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.password_name >div:first-child{
+    font-family: 'GilroyBold';
+    color: #FFFFFF;
+    font-size: 14px;
+    margin-top: 0.5rem;
+}
+
+.password_name >div:last-child{
+    font-family: 'GilroyMedium';
+    color: #8A8A8A;
+    font-size: 14px;
+    margin-top: 0.5rem;
+}
+
+.category_container{
+    display: flex;
+    margin-top: 5vh;
+    /* margin-left: -1rem;
+    margin-right: -1rem; */
+}
+
+.category{
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding-right: 1rem;
+    transform: 0.35s;
+    cursor: pointer;
+}
+
+.category:hover{
+    background-color: rgba(255, 255, 255, 0.075);
+    transition: 0.35s;
+}
+
+.category >div:first-child{
+    margin-top: 2.5px;
+    margin-left: -0.5rem;
+}
+
+.category >div:last-child{
+    display: flex;
+    flex: 1;
+    font-family: 'GilroyMedium';
+    font-size: 14px;
+    color: #D2D2D2;
+    margin-left: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* masonry css */
+  
+.masonry {
+    column-count: 3;
+    column-gap: 16px;
+    margin-top: 5vh;
+}
+
+.masonry .mItem {
+    display: inline-block;
+    margin-bottom: 16px;
+    width: 100%;
+    border: 1px solid #3D3D3D;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    cursor: pointer;
+    transition: 0.35s;
+}
+
+.masonry .mItem:hover{
+    border: 1px solid #8A8A8A;
+    transform: 0.35s;
+}
+
+@media (max-width: 1199px) {
+    .masonry {
+        column-count: 4;
+    }
+}
+
+@media (max-width: 991px) {
+    .masonry {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .masonry {
+        column-count: 1;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+

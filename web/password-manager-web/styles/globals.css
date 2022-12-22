@@ -1,0 +1,46 @@
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background-color: black;
+}
+
+::-moz-selection {
+    background: rgba(0, 50, 228, 0.3);
+}
+::selection {
+    background: rgba(0, 50, 228, 0.3);
+}
+
+*{
+    -webkit-tap-highlight-color: transparent;
+}
+
+@font-face {
+    font-family: "GilroyBlack";
+    src: local("GilroyBlack"),
+        url(../public/fonts/Gilroy/Gilroy-Black.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "GilroyBold";
+    src: local("GilroyBold"),
+        url(../public/fonts/Gilroy/Gilroy-Bold.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "GilroyMedium";
+    src: local("GilroyMedium"),
+        url(../public/fonts/Gilroy/Gilroy-Medium.ttf) format("truetype");
+}
+  
+@font-face {
+    font-family: "GilroyRegular";
+    src: local("GilroyRegular"),
+        url(../public/fonts/Gilroy/Gilroy-Regular.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "GilroyLight";
+    src: local("GilroyLight"),
+        url(../public/fonts/Gilroy/Gilroy-Light.ttf) format("truetype");
+}
