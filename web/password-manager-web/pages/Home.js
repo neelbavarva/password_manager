@@ -59,6 +59,10 @@ export default function Home() {
         )
     }
 
+    function setModalInfo(e){
+
+    }
+
     function renderAllPasswords(){
         return(
             <div className={styles.masonry}>
@@ -66,13 +70,20 @@ export default function Home() {
                     {passwords.map(item=>{
                         return(
                             <div key={item._id} className={styles.mItem}>
-                                <div className={styles.password_container}>
+                                <a onClick={setModalInfo(item._id)} href="#open-modal" className={styles.password_container}>
                                     <div className={styles.password_name}>
                                         <div>{item.name}</div>
                                         <div>{item.email}</div>
                                     </div>
                                     <div>
                                         <Image width={25} src={require('../public/icons/right_arrow.png')} />
+                                    </div>
+                                </a>
+                                <div id="open-modal" className={styles.modal_window}>
+                                    <div>
+                                        <a href="#">Close</a>
+                                        <h1>{item.name}</h1>
+                                        <div>A CSS-only modal based on the :target pseudo-class. Hope you find it helpful.</div>
                                     </div>
                                 </div>
                             </div>

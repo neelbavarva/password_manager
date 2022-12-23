@@ -8,7 +8,26 @@ export default function Index() {
     
     const password = "1435274849";
     const[auth, setAuth] = useState(null)
-    const[verified, setVerified] = useState(false)
+    const[verified, setVerified] = useState(null)
+    const validMacAddresses = ["2e:83:c3:ca:dd:0b", "fc:e2:6c:05:cd:ad"]
+    const[macAddress, setMacAddress] = useState(null)
+
+    const fetchAuth = () => {
+        fetch(`https://password-manager-xpkf.onrender.com/getMacAddress`)
+        .then(res=>res.json())
+        .then(result=>{
+            setMacAddress(result)
+            console.log(result)
+            validMacAddresses.includes(result) ? setVerified(true) : setVerified(false)
+        })
+        .catch((e) => {
+            console.log("Error in fetching getMacAddress "+e);
+        })
+    }
+
+    useEffect(()=>{
+        fetchAuth()
+    },[])
 
     function verifyAuth(){
         auth==password ? setVerified(true) : null
@@ -18,9 +37,24 @@ export default function Index() {
         return(
             <div className={styles.auth_container}>
                 <Image width={100} height={100} src={require('../public/icons/logo_large.png')} />
-                <input value={auth} onChange={e => setAuth(e.target.value)} />
-                <button onClick={() => verifyAuth()}>enter</button>
+                {macAddress==null ? loading() : !verified 
+                ?<div>
+                    <div className={styles.warning}>
+                        Your mac address <span>{macAddress}</span> does not match to owner&apos;s mac adddress.
+                    </div>
+                    <div className={styles.input_container}>
+                        <input type="password" placeholder='password' value={auth} onChange={e => setAuth(e.target.value)} />
+                        <button onClick={() => verifyAuth()}><Image width={30} src={require('../public/icons/right_arrow.png')} /></button>
+                    </div>
+                </div>
+                :null}
             </div>
+        )
+    }
+
+    function loading(){
+        return(
+            <div className={styles.loader}></div>
         )
     }
 

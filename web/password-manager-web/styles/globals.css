@@ -44,3 +44,9 @@ body {
     src: local("GilroyLight"),
         url(../public/fonts/Gilroy/Gilroy-Light.ttf) format("truetype");
 }
+
+@font-face {
+    font-family: "GilroyBoldItalic";
+    src: local("GilroyBoldItalic"),
+        url(../public/fonts/Gilroy/Gilroy-BoldItalic.ttf) format("truetype");
+}
