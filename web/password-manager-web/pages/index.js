@@ -68,7 +68,7 @@ export default function Index() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             
-            {true ? <Home /> : renderAuth()}
+            {verified ? <Home /> : renderAuth()}
         </>
     )
 }
