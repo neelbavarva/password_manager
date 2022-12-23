@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import Header from '../components/Header'
-var CryptoJS = require("crypto-js");
+import { API } from '../API'
 
 export default function Home() {
 
@@ -12,10 +12,10 @@ export default function Home() {
     const[modalPassword, setModalPassword] = useState(null)
     const[eKey, setEKey] = useState(null)
     const[ePassword, setEPassword] = useState(null)
-    const[sample, setSample] = useState(null)
+    const[decryptRender, setDecryptRender] = useState(false)
 
     const fetchAllPasswords = () => {
-        fetch(`https://password-manager-xpkf.onrender.com/passwords/getAllPasswords`)
+        fetch(`${API}/passwords/getAllPasswords`)
         .then(res=>res.json())
         .then(result=>{
             setPasswords(result)
@@ -26,7 +26,7 @@ export default function Home() {
     }
 
     const fetchPasswordById = (e) => {
-        fetch(`https://password-manager-xpkf.onrender.com/passwords/${e}`)
+        fetch(`${API}/passwords/${e}`)
         .then(res=>res.json())
         .then(result=>{
             setModalInfo(result)
@@ -37,20 +37,30 @@ export default function Home() {
         })
     }
 
-    function decryptPassword(){
-        const bytes = CryptoJS.AES.decrypt(modalInfo.password.toString(), eKey.toString());
-        console.log(bytes)
-        
-        // if(bytes.sigBytes >= 0){
-            const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
-            setEPassword(decryptedData)
-        // }
+    const fetchDecryptPassword = () => {
+        setDecryptRender(true)
+        fetch(`${API}/passwords/decryptPassword`,{
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                "password": modalInfo.password,
+                "key": eKey
+            })
+
+        })
+        .then(res=>res.json())
+        .then(result=>{
+            result.message==null ? setEPassword(result) : setEPassword("wrong_key")
+            setDecryptRender(false)
+            setEKey(null)
+        })
+        .catch((e) => {
+            console.log("Error in fetching decryptPassword "+e);
+        })
     }
 
     useEffect(()=>{
         fetchAllPasswords()
-        // setSample(CryptoJS.AES.encrypt(JSON.stringify("op"), "9427").toString())
-        // console.log(JSON.parse(CryptoJS.AES.decrypt(sample.toString(), "9427").toString(CryptoJS.enc.Utf8)))
     },[])
 
     function renderCategories(){
@@ -84,8 +94,10 @@ export default function Home() {
         fetchPasswordById(e)
     }
     function closeModal(){
-        setModalInfo(null)
+        setEKey(null)
+        setEPassword(null)
         setModalPassword(null)
+        setModalInfo(null)
     }
 
     function loading(){
@@ -121,19 +133,22 @@ export default function Home() {
                                                 <div>{modalInfo.name}</div>
                                                 <div>{modalInfo.email}</div>
                                             </div>
-                                            <div className={styles.modal_password}>
-                                                <div>
-                                                    {ePassword==null ? null : ePassword}
-                                                </div>
-                                                <div>
-                                                    {modalInfo.password}
-                                                </div>
-                                            </div>
-
+                                            {decryptRender ? loading() : 
                                             <div>
-                                                <input value={eKey} onChange={e => setEKey(e.target.value)} />
-                                                <button onClick={() => decryptPassword()}>decrypt</button>
-                                            </div>
+                                                <div className={styles.modal_password}>
+                                                    <div>
+                                                        {ePassword==null ? null : ePassword=="wrong_key" ? "wrong key entered" : ePassword}
+                                                    </div>
+                                                    <div>
+                                                        {ePassword==null ? modalInfo.password.substring(0,25) : ePassword=="wrong_key" ? modalInfo.password.substring(0,25) : null}
+                                                    </div>
+                                                </div>
+
+                                                <div className={styles.input_container}>
+                                                    <input type="password" placeholder='key' value={eKey} onChange={e => setEKey(e.target.value)} />
+                                                    <button onClick={() => fetchDecryptPassword()}><Image width={20} src={require('../public/icons/right_arrow.png')} /></button>
+                                                </div>
+                                            </div>}
                                         </div>
                                         }      
                                     </div>

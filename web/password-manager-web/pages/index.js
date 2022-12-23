@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Home from './Home'
 import { useEffect, useState } from 'react'
 import styles from '../styles/Index.module.css'
+import { API } from '../API'
 
 export default function Index() {
     
@@ -13,7 +14,7 @@ export default function Index() {
     const[macAddress, setMacAddress] = useState(null)
 
     const fetchAuth = () => {
-        fetch(`https://password-manager-xpkf.onrender.com/getMacAddress`)
+        fetch(`${API}/getMacAddress`)
         .then(res=>res.json())
         .then(result=>{
             setMacAddress(result)
