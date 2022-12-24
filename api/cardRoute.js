@@ -4,7 +4,7 @@ const app = express()
 const router = express.Router()
 const Card = require('./card')
 
-router.get('/getAllCards', async(req, res)=> {
+router.get('/getCards', async(req, res)=> {
     try{
         const cards = await Card.find()
         res.json(cards)
