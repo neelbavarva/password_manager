@@ -1,0 +1,347 @@
+import React, { useState, useEffect } from 'react'
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, AsyncStorage, ActivityIndicator, ToastAndroid} from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
+const { width, height } = Dimensions.get("window");
+import {API} from '../API'
+
+export default function Home({navigation}){
+
+    const[passwords, setPasswords] = useState(null)
+
+    const fetchPasswords = () => {
+        fetch(`${API}/passwords/getAllPasswords`)
+        .then(res=>res.json())
+        .then(result=>{
+            setPasswords(result)
+            console.log("results " + result)
+        })
+        .catch((e) => {
+            setPasswords("network_error");
+        })
+    }
+
+    useEffect(()=>{
+        fetchPasswords()
+    },[])
+
+    function renderHeader(){
+        return(
+            <View>
+                <View style={{display: 'flex', flexDirection: 'row', margin: 25, height: 60}}>
+                    <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-start'}}>
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                            style={{marginTop: 15, marginLeft: -5}}
+                        >
+                            <Image 
+                                source={require('../assets/icons/logo.png')}
+                                style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderWidth: 1,
+                                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                                    borderRadius: 100
+                                }}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{display: 'flex', flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', flexDirection: 'row'}}>
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                        >
+                            <Image 
+                                source={require('../assets/icons/card.png')}
+                                style={{
+                                    width: 45,
+                                    height: 45,
+                                    borderRadius: 100,
+                                    marginRight: 5
+                                }}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <View style={{padding: 25}}>
+                        <Text style={{color: 'white', fontFamily: 'SwearDisplay-BoldItalic', fontSize: 28}}>Password Manager</Text>
+                        <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 12, marginTop: 7.5}}>enter your key to decrypt your passwords</Text>
+                    </View>
+                    <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 5, marginRight: 10}}>
+                        <TouchableOpacity activeOpacity={0.75}
+                        style={{
+                            padding: 7.5,
+                            paddingHorizontal: 8.5,
+                            marginRight: 7.5,
+                            borderRadius: 100,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderWidth: 1,
+                            borderColor: 'rgba(255, 255, 255, 0.1)'
+                        }}>
+                            <Image 
+                                source={require('../assets/icons/search-small.png')}
+                                style={{
+                                    width: 30,
+                                    height: 30,
+                                    borderRadius: 100
+                                }}
+                            />
+                            <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Bold', fontSize: 12, marginLeft: 12.5, marginRight: 7.5}}>Search</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    function renderCategory(){
+        return(
+            <ScrollView horizontal showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{display: 'flex', flexDirection: 'row', marginHorizontal: 25, marginTop: 10, opacity: passwords==null ? 0.5 : 1}}>
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    style={{
+                        display: 'flex',
+                        flex: 1,
+                        flexDirection: 'row',
+                        borderRadius: 100,
+                        height: 35,
+                        alignItems: 'center',
+                        paddingRight: 20,
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        marginHorizontal: 5,
+                    }}
+                    
+                >
+                    <Image 
+                        source={require('../assets/icons/all.png')}
+                        style={{
+                            width: 32.5,
+                            height: 32.5,
+                            marginLeft: -5
+                        }}
+                    />
+                    <Text 
+                        style={{
+                            display: 'flex', 
+                            marginLeft: 10, 
+                            fontFamily: 'Gilroy-Medium',
+                            fontSize: 12,
+                            marginBottom: 1,
+                            color: '#D2D2D2'
+                        }}
+                    >
+                        all
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    style={{
+                        display: 'flex',
+                        flex: 1,
+                        flexDirection: 'row',
+                        borderRadius: 100,
+                        height: 35,
+                        alignItems: 'center',
+                        paddingRight: 20,
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        marginHorizontal: 5,
+                    }}
+                >
+                    <Image 
+                        source={require('../assets/icons/web_app.png')}
+                        style={{
+                            width: 32.5,
+                            height: 32.5,
+                            marginLeft: -5
+                        }}
+                    />
+                    <Text 
+                        style={{
+                            display: 'flex', 
+                            marginLeft: 10, 
+                            fontFamily: 'Gilroy-Medium',
+                            fontSize: 12,
+                            marginBottom: 1,
+                            color: '#D2D2D2'
+                        }}
+                    >
+                        web - app
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    style={{
+                        display: 'flex',
+                        flex: 1,
+                        flexDirection: 'row',
+                        borderRadius: 100,
+                        height: 35,
+                        alignItems: 'center',
+                        paddingRight: 20,
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        marginHorizontal: 5,
+                    }}
+                >
+                    <Image 
+                        source={require('../assets/icons/email.png')}
+                        style={{
+                            width: 32.5,
+                            height: 32.5,
+                            marginLeft: -5
+                        }}
+                    />
+                    <Text 
+                        style={{
+                            display: 'flex', 
+                            marginLeft: 10, 
+                            fontFamily: 'Gilroy-Medium',
+                            fontSize: 12,
+                            marginBottom: 1,
+                            color: '#D2D2D2'
+                        }}
+                    >
+                        email
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    style={{
+                        display: 'flex',
+                        flex: 1,
+                        flexDirection: 'row',
+                        borderRadius: 100,
+                        height: 35,
+                        alignItems: 'center',
+                        paddingRight: 20,
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        marginHorizontal: 5
+                    }}
+                >
+                    <Image 
+                        source={require('../assets/icons/other.png')}
+                        style={{
+                            width: 32.5,
+                            height: 32.5,
+                            marginLeft: -5
+                        }}
+                    />
+                    <Text 
+                        style={{
+                            display: 'flex', 
+                            marginLeft: 10, 
+                            fontFamily: 'Gilroy-Medium',
+                            fontSize: 12,
+                            marginBottom: 1,
+                            color: '#D2D2D2'
+                        }}
+                    >
+                        other
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    style={{
+                        display: 'flex',
+                        flex: 1,
+                        flexDirection: 'row',
+                        borderRadius: 100,
+                        height: 35,
+                        alignItems: 'center',
+                        paddingRight: 20,
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        marginHorizontal: 5
+                    }}
+                >
+                    <Image 
+                        source={require('../assets/icons/archive.png')}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            marginLeft: -2
+                        }}
+                    />
+                    <Text 
+                        style={{
+                            display: 'flex', 
+                            marginLeft: 10, 
+                            fontFamily: 'Gilroy-Medium',
+                            fontSize: 12,
+                            marginBottom: 1,
+                            color: '#D2D2D2'
+                        }}
+                    >
+                        archive
+                    </Text>
+                </TouchableOpacity>
+            </ScrollView>
+        )
+    }
+
+    function renderNoData(){
+        return(
+            <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: '#444444'}}>no added passwords !</Text>
+            </View>
+        )
+    }
+
+
+    function renderLoading(){
+        return(
+            <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <ActivityIndicator color="white" size="large" />
+            </View>
+        )
+    }
+
+    function renderPasswords(){
+        return(
+            <View>
+                {passwords.length==0 ? renderNoData() : 
+                <View style={{margin: 25}}>
+                    {passwords.map(item => {
+                        return(
+                            <TouchableOpacity activeOpacity={0.75} key={item._id} style={{padding: 20, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.1)', display: 'flex', flexDirection: 'row', marginTop: 10, borderRadius: 1}}>
+                                <View>
+                                    <Image 
+                                        source={item.category=="banking" ? require(`../assets/icons/banking_main.png`) : item.category=="web-app" ? require(`../assets/icons/web_app_main.png`) : item.category=="email" ? require(`../assets/icons/email_main.png`) : require(`../assets/icons/other_main.png`)}
+                                        style={{
+                                            width: 40,
+                                            height: 40
+                                        }}
+                                    />
+                                </View>
+                                <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 20}}>
+                                    <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'white'}}>{item.name}</Text>
+                                    <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12}}>{item.email}</Text>
+                                </View>
+                                <View style={{display: 'flex', flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
+                                    <Image 
+                                        source={require('../assets/icons/left_arrow.png')}
+                                        style={{
+                                            width: 20,
+                                            height: 7,
+                                            marginRight: 10,
+                                            tintColor: 'grey'
+                                        }}
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                        )
+                    })}
+                </View>}
+            </View>
+        )
+    }
+
+    return (
+        <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{backgroundColor: 'black', height: height}}>
+            {renderHeader()}
+            {renderCategory()}
+            {passwords==null?renderLoading():renderPasswords()}
+        </ScrollView>
+    );
+}
