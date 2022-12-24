@@ -10,7 +10,8 @@ export default function Header() {
             <div>
                 <div className={styles.logo_container}>
                     <div>
-                        <Image width={65} height={65} src={require('../public/icons/logo_large.png')} />
+                        <Image className={styles.large_icon} width={65} height={65} src={require('../public/icons/logo_large.png')} />
+                        <Image className={styles.small_icon} width={50} height={50} src={require('../public/icons/logo_large.png')} />
                     </div>
                     <div>
                         Password Manager

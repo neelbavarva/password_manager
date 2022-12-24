@@ -2,17 +2,37 @@
     color: white;
     display: flex;
     margin-top: 10vh;
+    display: flex;
 }
 
 .logo_container >div:first-child{
+    display: flex;
+    justify-content: flex-start;
     border-radius: 100px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    margin-left: -0.5rem;
 }
 
 .logo_container >div:last-child{
-    font-family: 'GilroyBold';
-    font-size: 24px;
+    font-family: 'SwearDisplay';
+    font-size: 32px;
     display: flex;
     flex: 1;
     justify-content: flex-end;
     align-items: center;
+}
+
+@media (min-width: 600px) {
+    .small_icon{
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .logo_container >div:last-child{
+        font-size: 24px;
+    }
+    .large_icon{
+        display: none;
+    }
 }

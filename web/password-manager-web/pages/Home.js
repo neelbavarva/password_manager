@@ -38,25 +38,27 @@ export default function Home() {
     }
 
     const fetchDecryptPassword = () => {
-        setDecryptRender(true)
-        fetch(`${API}/passwords/decryptPassword`,{
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                "password": modalInfo.password,
-                "key": eKey
-            })
+        if(eKey!=null && eKey!=""){
+            setDecryptRender(true)
+            fetch(`${API}/passwords/decryptPassword`,{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    "password": modalInfo.password,
+                    "key": eKey
+                })
 
-        })
-        .then(res=>res.json())
-        .then(result=>{
-            result.message==null ? setEPassword(result) : setEPassword("wrong_key")
-            setDecryptRender(false)
-            setEKey(null)
-        })
-        .catch((e) => {
-            console.log("Error in fetching decryptPassword "+e);
-        })
+            })
+            .then(res=>res.json())
+            .then(result=>{
+                result.message==null ? setEPassword(result) : setEPassword("wrong_key")
+                setDecryptRender(false)
+                setEKey(null)
+            })
+            .catch((e) => {
+                console.log("Error in fetching decryptPassword "+e);
+            })
+        }
     }
 
     useEffect(()=>{
@@ -72,7 +74,7 @@ export default function Home() {
                 </div>
                 <div className={styles.category}>
                     <div><Image width={35} src={require('../public/icons/web_app.png')} /></div>
-                    <div>web-app</div>
+                    <div>web_app</div>
                 </div>
                 <div className={styles.category}>
                     <div><Image width={35} src={require('../public/icons/email.png')} /></div>
@@ -86,6 +88,10 @@ export default function Home() {
                     <div><Image width={35} src={require('../public/icons/other.png')} /></div>
                     <div>other</div>
                 </div>
+                <div className={styles.category}>
+                    <div><Image width={35} src={require('../public/icons/archive.png')} /></div>
+                    <div>archive</div>
+                </div>
             </div>
         )
     }
@@ -98,11 +104,12 @@ export default function Home() {
         setEPassword(null)
         setModalPassword(null)
         setModalInfo(null)
+        setDecryptRender(false)
     }
 
     function loading(){
         return(
-            <div className={styles.loader}></div>
+            <div className={`${styles.loader} ${styles.modal_loader}`}></div>
         )
     }
 
@@ -130,17 +137,28 @@ export default function Home() {
                                         {modalInfo==null?loading():
                                         <div className={styles.modal_info}>
                                             <div className={styles.modal_name}>
-                                                <div>{modalInfo.name}</div>
-                                                <div>{modalInfo.email}</div>
+                                                <Image height={100} src={require('../public/icons/user_frame.png')} />
+                                                <div>
+                                                    <div>{modalInfo.name}</div>
+                                                    <div>{modalInfo.email}</div>
+                                                </div>
                                             </div>
                                             {decryptRender ? loading() : 
                                             <div>
                                                 <div className={styles.modal_password}>
-                                                    <div>
-                                                        {ePassword==null ? null : ePassword=="wrong_key" ? "wrong key entered" : ePassword}
-                                                    </div>
-                                                    <div>
-                                                        {ePassword==null ? modalInfo.password.substring(0,25) : ePassword=="wrong_key" ? modalInfo.password.substring(0,25) : null}
+                                                    {ePassword==null ? null : ePassword=="wrong_key" ? 
+                                                    <div className={styles.wrong_key}>
+                                                        <Image width={20} src={require('../public/icons/cross.png')} />
+                                                        <div>Wrong Key Entered</div>
+                                                    </div> : null}
+                                                    {ePassword!=null && ePassword!="wrong_key" ? 
+                                                    <div className={styles.decrypted_password}>
+                                                        <Image width={30} src={require('../public/icons/done_green.png')} />
+                                                        <div>{ePassword}</div>
+                                                    </div> : null}
+                                                    <div className={styles.encrypted_password}>
+                                                        {ePassword==null ? <Image width={30} src={require('../public/icons/info.png')} /> : null}
+                                                        <div>{ePassword==null ? modalInfo.password.substring(0,25) : null}</div>
                                                     </div>
                                                 </div>
 

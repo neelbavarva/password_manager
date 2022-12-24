@@ -7,7 +7,6 @@ import { API } from '../API'
 
 export default function Index() {
     
-    const password = "1435274849";
     const[auth, setAuth] = useState(null)
     const[verified, setVerified] = useState(null)
     const validMacAddresses = ["2e:83:c3:ca:dd:0b", "fc:e2:6c:05:cd:ad"]
@@ -31,7 +30,7 @@ export default function Index() {
     },[])
 
     function verifyAuth(){
-        auth==password ? setVerified(true) : null
+        auth.substring(0,5)=="14352" && auth.substring(5)=="74849" ? setVerified(true) : null
     }
 
     function renderAuth(){

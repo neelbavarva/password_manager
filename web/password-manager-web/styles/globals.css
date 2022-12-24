@@ -50,3 +50,9 @@ body {
     src: local("GilroyBoldItalic"),
         url(../public/fonts/Gilroy/Gilroy-BoldItalic.ttf) format("truetype");
 }
+
+@font-face {
+    font-family: "SwearDisplay";
+    src: local("SwearDisplay"),
+        url(../public/fonts/SwearDisplay/SwearDisplay-BoldItalic.ttf) format("truetype");
+}
