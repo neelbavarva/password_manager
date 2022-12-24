@@ -5,7 +5,7 @@
     display: flex;
 }
 
-.logo_container >div:first-child{
+.logo_container > div:first-child{
     display: flex;
     justify-content: flex-start;
     border-radius: 100px;
@@ -13,7 +13,7 @@
     margin-left: -0.5rem;
 }
 
-.logo_container >div:last-child{
+.logo_container > div:last-child{
     font-family: 'SwearDisplay';
     font-size: 32px;
     display: flex;
@@ -29,7 +29,7 @@
 }
 
 @media (max-width: 600px) {
-    .logo_container >div:last-child{
+    .logo_container > div:last-child{
         font-size: 24px;
     }
     .large_icon{

@@ -3,7 +3,8 @@
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
-  }
+    margin-bottom: 5rem;
+}
 
 @media (max-width: 1000px) {
     .container {
@@ -143,13 +144,13 @@
     display: inline-block;
     margin-bottom: 16px;
     width: 100%;
-    border: 1px solid #3D3D3D;
+    border: 1px solid #ffffff15;
     cursor: pointer;
     transition: 0.35s;
 }
 
 .masonry .mItem:hover{
-    border: 1px solid #8A8A8A;
+    border: 1px solid #ffffff35;
     transform: 0.35s;
 }
 
@@ -248,18 +249,20 @@
 .wrong_key{
     display: flex;
     align-items: center;
-    margin-top: 0.75rem;
+    border: 1px solid rgba(255, 66, 111, 0.25);
+    padding: 1rem;
+    padding-left: 0.85rem;
 }
 
 .wrong_key>div{
     color: #8A8A8A;
-    margin-left: 1rem;
+    margin-left: 1.85rem;
     font-size: 14px;
 }
 
 .decrypted_password{
     display: flex;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(6, 194, 112, 0.25);
     padding: 0.75rem;
     padding-left: 0.6rem;
 }
@@ -269,18 +272,20 @@
     font-size: 14px;
     font-family: 'GilroyBold';
     align-items: center;
-    margin-left: 1rem;
+    margin-left: 1.5rem;
 }
 
 .encrypted_password{
     display: flex;
     align-items: center;
-    margin-top: 0.75rem;
+    border: 1px solid #ffffff15;
+    padding: 1rem;
+    padding-left: 0.75rem;
 }
 
 .encrypted_password>div{
     color: #8A8A8A;
-    margin-left: 1rem;
+    margin-left: 1.45rem;
     font-size: 14px;
 }
 
@@ -329,15 +334,17 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-top: 1rem;
+    margin-top: 2rem;
 }
 
 .input_container input{
+    display: flex;
+    flex: 1;
     background-color: black;
     border: 1px solid #121212;
     font-family: 'GilroyMedium';
     font-size: 14px;
-    padding: 0.75rem;
+    padding: 1rem;
     outline: none;
     color: #D2D2D2;
 }
@@ -353,8 +360,8 @@
     align-items: center;
     font-family: 'GilroyMedium';
     font-size: 16px;
-    height: calc(2.6rem + 2px);
-    width: 3.5rem;
+    padding: 1.3rem;
+    width: 5rem;
     border-radius: 0px;
     border: none;
     background-color: black;
@@ -369,4 +376,21 @@
     .modal_window > div {
         width: 75%;
     }
+}
+
+.copyright{
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+    color: #8A8A8A;
+    font-family: 'GilroyMedium';
+    font-size: 12px;
+}
+
+.copyright > a{
+    text-decoration: none;
+    color: #8A8A8A;
+    font-family: 'GilroyBold';
+    margin-left: 2.5px;
+    margin-right: 2.5px;
 }

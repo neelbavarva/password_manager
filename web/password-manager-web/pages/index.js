@@ -9,19 +9,18 @@ export default function Index() {
     
     const[auth, setAuth] = useState(null)
     const[verified, setVerified] = useState(null)
-    const validMacAddresses = ["2e:83:c3:ca:dd:0b", "fc:e2:6c:05:cd:ad"]
     const[macAddress, setMacAddress] = useState(null)
+    const validMacAddresses = []
 
     const fetchAuth = () => {
         fetch(`${API}/getMacAddress`)
         .then(res=>res.json())
         .then(result=>{
             setMacAddress(result)
-            console.log(result)
             validMacAddresses.includes(result) ? setVerified(true) : setVerified(false)
         })
         .catch((e) => {
-            console.log("Error in fetching getMacAddress "+e);
+            console.log("Error in Fetching /getMacAddress "+e);
         })
     }
 
@@ -43,7 +42,7 @@ export default function Index() {
                         Your mac address <span>{macAddress}</span> does not match to owner&apos;s mac adddress.
                     </div>
                     <div className={styles.input_container}>
-                        <input type="password" placeholder='password' value={auth} onChange={e => setAuth(e.target.value)} />
+                        <input type="password" placeholder="password" value={auth} onChange={e => setAuth(e.target.value)} />
                         <button onClick={() => verifyAuth()}><Image width={30} src={require('../public/icons/right_arrow.png')} /></button>
                     </div>
                 </div>

@@ -24,12 +24,13 @@
 
 .input_container input{
     background-color: #121212;
-    border: 1px solid #ffffff30;
+    border: 1px solid #ffffff10;
     font-family: 'GilroyMedium';
     font-size: 16px;
     padding: 1rem;
     outline: none;
     color: white;
+    width: 11rem;
 }
 
 .input_container input ::placeholder{
@@ -44,8 +45,8 @@
     font-family: 'GilroyMedium';
     font-size: 16px;
     color: black;
-    height: 3.4rem;
-    width: 5rem;
+    padding: 1.275rem;
+    width: 4.75rem;
     border-radius: 0px;
     border: none;
     background-color: #121212;

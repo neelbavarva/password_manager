@@ -9,7 +9,6 @@ export default function Home() {
 
     const[passwords, setPasswords] = useState(null)
     const[modalInfo, setModalInfo] = useState(null)
-    const[modalPassword, setModalPassword] = useState(null)
     const[eKey, setEKey] = useState(null)
     const[ePassword, setEPassword] = useState(null)
     const[decryptRender, setDecryptRender] = useState(false)
@@ -21,7 +20,7 @@ export default function Home() {
             setPasswords(result)
         })
         .catch((e) => {
-            console.log("Error in fetching getAllPasswords "+e);
+            console.log("Error in Fetching /getAllPasswords "+e);
         })
     }
 
@@ -30,10 +29,9 @@ export default function Home() {
         .then(res=>res.json())
         .then(result=>{
             setModalInfo(result)
-            setModalPassword(modalInfo.password)
         })
         .catch((e) => {
-            console.log("Error in fetching getPasswordById "+e);
+            console.log("Error in Fetching /getPasswordById "+e);
         })
     }
 
@@ -56,7 +54,7 @@ export default function Home() {
                 setEKey(null)
             })
             .catch((e) => {
-                console.log("Error in fetching decryptPassword "+e);
+                console.log("Error in Fetching /decryptPassword "+e);
             })
         }
     }
@@ -102,7 +100,6 @@ export default function Home() {
     function closeModal(){
         setEKey(null)
         setEPassword(null)
-        setModalPassword(null)
         setModalInfo(null)
         setDecryptRender(false)
     }
@@ -156,10 +153,11 @@ export default function Home() {
                                                         <Image width={30} src={require('../public/icons/done_green.png')} />
                                                         <div>{ePassword}</div>
                                                     </div> : null}
+                                                    {ePassword==null ? 
                                                     <div className={styles.encrypted_password}>
-                                                        {ePassword==null ? <Image width={30} src={require('../public/icons/info.png')} /> : null}
-                                                        <div>{ePassword==null ? modalInfo.password.substring(0,25) : null}</div>
-                                                    </div>
+                                                        <Image width={30} src={require('../public/icons/box.png')} />
+                                                        <div>{modalInfo.password.substring(0,25)}</div>
+                                                    </div> : null}
                                                 </div>
 
                                                 <div className={styles.input_container}>
@@ -193,6 +191,10 @@ export default function Home() {
                 <Header />
                 {renderCategories()}
                 {passwords==null?loading():renderAllPasswords()}
+
+                <div className={styles.copyright}>
+                    {(new Date().getFullYear())} © <a target="_blank" rel="noreferrer"  href="https://neelbavarva.tech/">Neel Bavarva</a> — Be kind to each other.
+                </div>
             </div>
         </>
     )
