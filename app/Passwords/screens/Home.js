@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, AsyncStorage, ActivityIndicator, ToastAndroid} from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, ActivityIndicator} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 import {API} from '../API'
@@ -13,7 +13,6 @@ export default function Home({navigation}){
         .then(res=>res.json())
         .then(result=>{
             setPasswords(result)
-            console.log("results " + result)
         })
         .catch((e) => {
             setPasswords("network_error");
@@ -27,11 +26,11 @@ export default function Home({navigation}){
     function renderHeader(){
         return(
             <View>
-                <View style={{display: 'flex', flexDirection: 'row', margin: 25, height: 60}}>
+                <View style={{display: 'flex', flexDirection: 'row', margin: 20, height: 60}}>
                     <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-start'}}>
-                        <TouchableOpacity
+                        <View
                             activeOpacity={0.5}
-                            style={{marginTop: 15, marginLeft: -5}}
+                            style={{marginLeft: 0}}
                         >
                             <Image 
                                 source={require('../assets/icons/logo.png')}
@@ -43,36 +42,13 @@ export default function Home({navigation}){
                                     borderRadius: 100
                                 }}
                             />
-                        </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={{display: 'flex', flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', flexDirection: 'row'}}>
-                        <TouchableOpacity
-                            activeOpacity={0.5}
-                        >
-                            <Image 
-                                source={require('../assets/icons/card.png')}
-                                style={{
-                                    width: 45,
-                                    height: 45,
-                                    borderRadius: 100,
-                                    marginRight: 5
-                                }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                <View style={{display: 'flex', flexDirection: 'row'}}>
-                    <View style={{padding: 25}}>
-                        <Text style={{color: 'white', fontFamily: 'SwearDisplay-BoldItalic', fontSize: 28}}>Password Manager</Text>
-                        <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 12, marginTop: 7.5}}>enter your key to decrypt your passwords</Text>
-                    </View>
-                    <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 5, marginRight: 10}}>
+                    <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end', marginRight: 0}}>
                         <TouchableOpacity activeOpacity={0.75}
                         style={{
                             padding: 7.5,
                             paddingHorizontal: 8.5,
-                            marginRight: 7.5,
                             borderRadius: 100,
                             display: 'flex',
                             flexDirection: 'row',
@@ -89,9 +65,17 @@ export default function Home({navigation}){
                                     borderRadius: 100
                                 }}
                             />
-                            <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Bold', fontSize: 12, marginLeft: 12.5, marginRight: 7.5}}>Search</Text>
+                            <Text style={{color: '#8A8A8A', fontFamily: 'Gilroy-Bold', fontSize: 12, marginLeft: 12.5, marginRight: 7.5}}>Search</Text>
                         </TouchableOpacity>
                     </View>
+                </View>
+
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <View style={{paddingHorizontal: 25, paddingBottom: 25}}>
+                        <Text style={{color: 'white', fontFamily: 'SwearDisplay-BoldItalic', fontSize: 24}}>Password Manager</Text>
+                        <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 10}}>enter your key to decrypt your passwords</Text>
+                    </View>
+                    
                 </View>
             </View>
         )
@@ -288,7 +272,6 @@ export default function Home({navigation}){
         )
     }
 
-
     function renderLoading(){
         return(
             <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -297,14 +280,29 @@ export default function Home({navigation}){
         )
     }
 
+    function renderError(){
+        return(
+            <View style={{height: height/1.75, width: width, justifyContent: 'center', alignItems: 'center'}}>
+                <Image 
+                    source={require(`../assets/icons/network_error.png`)}
+                    style={{
+                        width: 100,
+                        height: 100
+                    }}
+                />
+                <Text style={{fontFamily: 'Gilroy-Bold', marginTop: 25}}>Network Error</Text>
+            </View>
+        )
+    }
+
     function renderPasswords(){
         return(
             <View>
-                {passwords.length==0 ? renderNoData() : 
-                <View style={{margin: 25}}>
+                {passwords.length==0 || passwords=="network_error" ? renderNoData() : 
+                <View style={{margin: 25, paddingBottom: 100}}>
                     {passwords.map(item => {
                         return(
-                            <TouchableOpacity activeOpacity={0.75} key={item._id} style={{padding: 20, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.1)', display: 'flex', flexDirection: 'row', marginTop: 10, borderRadius: 1}}>
+                            <TouchableOpacity onPress={() => navigation.navigate("Password")} activeOpacity={0.75} key={item._id} style={{padding: 20, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.1)', display: 'flex', flexDirection: 'row', marginTop: 10, borderRadius: 1}}>
                                 <View>
                                     <Image 
                                         source={item.category=="banking" ? require(`../assets/icons/banking_main.png`) : item.category=="web-app" ? require(`../assets/icons/web_app_main.png`) : item.category=="email" ? require(`../assets/icons/email_main.png`) : require(`../assets/icons/other_main.png`)}
@@ -341,7 +339,7 @@ export default function Home({navigation}){
         <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{backgroundColor: 'black', height: height}}>
             {renderHeader()}
             {renderCategory()}
-            {passwords==null?renderLoading():renderPasswords()}
+            {passwords==null?renderLoading():passwords=="network_error"?renderError():renderPasswords()}
         </ScrollView>
     );
 }
