@@ -73,7 +73,9 @@
 		<string>Gilroy-ThinItalic.ttf</string>
 		<string>Gilroy-UltraLight.ttf</string>
 		<string>Gilroy-UltraLightItalic.ttf</string>
-		<string>SwearDisplay-BoldItalic.ttf</string>
+		<string>Cirka-Bold.ttf</string>
+		<string>Cirka-Light.ttf</string>
+		<string>Cirka-Variable.ttf</string>
 	</array>
 </dict>
 </plist>

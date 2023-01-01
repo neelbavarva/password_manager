@@ -34,7 +34,9 @@
 		B75E876A95AC44F0AEB7A90F /* Gilroy-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEAA9BFC6C6D4D5A90E8B671 /* Gilroy-ThinItalic.ttf */; };
 		B7C62B4A4A4A4182A8EA1E91 /* Gilroy-UltraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23A7F427C5B4498A87CA9AA0 /* Gilroy-UltraLight.ttf */; };
 		CFE73874E6D74C43BA9A615E /* Gilroy-UltraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B3F9053A671437987419899 /* Gilroy-UltraLightItalic.ttf */; };
-		B75F651E0B5C4EE3B22B4869 /* SwearDisplay-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1255B24E2364BBBB50A7E9A /* SwearDisplay-BoldItalic.ttf */; };
+		D0BE972C44064E94AD72F942 /* Cirka-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7E00521FD8E42AFB4DA07B7 /* Cirka-Bold.ttf */; };
+		AF3AD730818C4B72ACFA2290 /* Cirka-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A0C404C3775477EBD03B9A7 /* Cirka-Light.ttf */; };
+		705F7B1E073640FFBFAE4C82 /* Cirka-Variable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E67A9AC0016446938164B3CF /* Cirka-Variable.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,7 +87,9 @@
 		DEAA9BFC6C6D4D5A90E8B671 /* Gilroy-ThinItalic.ttf */ = {isa = PBXFileReference; name = "Gilroy-ThinItalic.ttf"; path = "../assets/fonts/Gilroy-ThinItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		23A7F427C5B4498A87CA9AA0 /* Gilroy-UltraLight.ttf */ = {isa = PBXFileReference; name = "Gilroy-UltraLight.ttf"; path = "../assets/fonts/Gilroy-UltraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		8B3F9053A671437987419899 /* Gilroy-UltraLightItalic.ttf */ = {isa = PBXFileReference; name = "Gilroy-UltraLightItalic.ttf"; path = "../assets/fonts/Gilroy-UltraLightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F1255B24E2364BBBB50A7E9A /* SwearDisplay-BoldItalic.ttf */ = {isa = PBXFileReference; name = "SwearDisplay-BoldItalic.ttf"; path = "../assets/fonts/SwearDisplay-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D7E00521FD8E42AFB4DA07B7 /* Cirka-Bold.ttf */ = {isa = PBXFileReference; name = "Cirka-Bold.ttf"; path = "../assets/fonts/Cirka-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1A0C404C3775477EBD03B9A7 /* Cirka-Light.ttf */ = {isa = PBXFileReference; name = "Cirka-Light.ttf"; path = "../assets/fonts/Cirka-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E67A9AC0016446938164B3CF /* Cirka-Variable.ttf */ = {isa = PBXFileReference; name = "Cirka-Variable.ttf"; path = "../assets/fonts/Cirka-Variable.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,7 +218,9 @@
 				DEAA9BFC6C6D4D5A90E8B671 /* Gilroy-ThinItalic.ttf */,
 				23A7F427C5B4498A87CA9AA0 /* Gilroy-UltraLight.ttf */,
 				8B3F9053A671437987419899 /* Gilroy-UltraLightItalic.ttf */,
-				F1255B24E2364BBBB50A7E9A /* SwearDisplay-BoldItalic.ttf */,
+				D7E00521FD8E42AFB4DA07B7 /* Cirka-Bold.ttf */,
+				1A0C404C3775477EBD03B9A7 /* Cirka-Light.ttf */,
+				E67A9AC0016446938164B3CF /* Cirka-Variable.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -336,7 +342,9 @@
 				B75E876A95AC44F0AEB7A90F /* Gilroy-ThinItalic.ttf in Resources */,
 				B7C62B4A4A4A4182A8EA1E91 /* Gilroy-UltraLight.ttf in Resources */,
 				CFE73874E6D74C43BA9A615E /* Gilroy-UltraLightItalic.ttf in Resources */,
-				B75F651E0B5C4EE3B22B4869 /* SwearDisplay-BoldItalic.ttf in Resources */,
+				D0BE972C44064E94AD72F942 /* Cirka-Bold.ttf in Resources */,
+				AF3AD730818C4B72ACFA2290 /* Cirka-Light.ttf in Resources */,
+				705F7B1E073640FFBFAE4C82 /* Cirka-Variable.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

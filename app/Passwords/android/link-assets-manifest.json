@@ -2,6 +2,18 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/Cirka-Bold.ttf",
+      "sha1": "0be0e85c23a48e5fd46e27b1d34762d1f52ecf75"
+    },
+    {
+      "path": "assets/fonts/Cirka-Light.ttf",
+      "sha1": "c83e3e0bbd767d4f044a4283be7bb6f28ef214ba"
+    },
+    {
+      "path": "assets/fonts/Cirka-Variable.ttf",
+      "sha1": "84c46dbb96ba068f03be10dac63cc2d82b856977"
+    },
+    {
       "path": "assets/fonts/Gilroy-Black.ttf",
       "sha1": "41d7d53d34ae67d9dc54979abee04f3514163740"
     },
@@ -80,10 +92,6 @@
     {
       "path": "assets/fonts/Gilroy-UltraLightItalic.ttf",
       "sha1": "594654ca331a2b85349e9fe36b87fdf9b86ff4c8"
-    },
-    {
-      "path": "assets/fonts/SwearDisplay-BoldItalic.ttf",
-      "sha1": "345941342f24aef72514cfdd4008c7ba7845233f"
     }
   ]
 }

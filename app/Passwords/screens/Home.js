@@ -9,7 +9,7 @@ export default function Home({navigation}){
     const[passwords, setPasswords] = useState(null)
 
     const fetchPasswords = () => {
-        fetch(`${API}/passwords/getAllPasswords`)
+        fetch(`${API}/passwords/getNonBankingPasswords`)
         .then(res=>res.json())
         .then(result=>{
             setPasswords(result)
@@ -26,7 +26,7 @@ export default function Home({navigation}){
     function renderHeader(){
         return(
             <View>
-                <View style={{display: 'flex', flexDirection: 'row', margin: 20, height: 60}}>
+                <View style={{display: 'flex', flexDirection: 'row', margin: 20, marginBottom: 40, height: 60}}>
                     <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-start'}}>
                         <View
                             activeOpacity={0.5}
@@ -70,12 +70,9 @@ export default function Home({navigation}){
                     </View>
                 </View>
 
-                <View style={{display: 'flex', flexDirection: 'row'}}>
-                    <View style={{paddingHorizontal: 25, paddingBottom: 25}}>
-                        <Text style={{color: 'white', fontFamily: 'SwearDisplay-BoldItalic', fontSize: 24}}>Password Manager</Text>
-                        <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 10}}>enter your key to decrypt your passwords</Text>
-                    </View>
-                    
+                <View style={{paddingHorizontal: 25, paddingBottom: 25}}>
+                    <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>your all passwords</Text>
+                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>enter your key to decrypt your passwords</Text>
                 </View>
             </View>
         )
@@ -302,7 +299,7 @@ export default function Home({navigation}){
                 <View style={{margin: 25, paddingBottom: 100}}>
                     {passwords.map(item => {
                         return(
-                            <TouchableOpacity onPress={() => navigation.navigate("Password")} activeOpacity={0.75} key={item._id} style={{padding: 20, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.1)', display: 'flex', flexDirection: 'row', marginTop: 10, borderRadius: 1}}>
+                            <TouchableOpacity onPress={() => navigation.navigate("Password", {_id: item._id, _name: item.name, _email: item.email, _password: item.password, _category: item.category})} activeOpacity={0.75} key={item._id} style={{padding: 20, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.1)', display: 'flex', flexDirection: 'row', marginTop: 10, borderRadius: 1}}>
                                 <View>
                                     <Image 
                                         source={item.category=="banking" ? require(`../assets/icons/banking_main.png`) : item.category=="web-app" ? require(`../assets/icons/web_app_main.png`) : item.category=="email" ? require(`../assets/icons/email_main.png`) : require(`../assets/icons/other_main.png`)}

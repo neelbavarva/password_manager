@@ -1,12 +1,13 @@
 import React from "react";
 import { View, Image, Text} from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { createBottomTabNavigator, BottomTabBar } from "@react-navigation/bottom-tabs"
 
 import Home from "../screens/Home";
 import Card from "../screens/Card";
 import Banking from "../screens/Banking";
 import Manage from "../screens/Manage";
 import More from "../screens/More";
+import Password from "../screens/Password";
 
 const Tab = createBottomTabNavigator()
 
@@ -173,6 +174,12 @@ export default function Tabs() {
                         </View>
                     )
                 }}
+            />
+
+            <Tab.Screen
+                name="Password"
+                component={Password}
+                options={{headerShown: false, tabBarItemStyle: { display: 'none'}}}
             />
             
         </Tab.Navigator>
