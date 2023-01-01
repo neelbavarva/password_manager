@@ -190,11 +190,13 @@ export default function Home() {
                 
                 <Header />
                 {renderCategories()}
-                {passwords==null?loading():renderAllPasswords()}
+                {passwords==null?
+                <div className={styles.home_loading}>{loading()}</div>:renderAllPasswords()}
 
+                {passwords==null?null:
                 <div className={styles.copyright}>
                     {(new Date().getFullYear())} © <a target="_blank" rel="noreferrer"  href="https://neelbavarva.tech/">Neel Bavarva</a> — Be kind to each other.
-                </div>
+                </div>}
             </div>
         </>
     )

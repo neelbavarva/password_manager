@@ -7,7 +7,17 @@
     color: aliceblue;
 }
 
-.auth_container > img {
+
+.auth_container > div{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    color: aliceblue;
+}
+
+.auth_container > div > img {
     border: 2px solid #3d3d3d75;
     border-radius: 100px;
 }
@@ -67,10 +77,18 @@
     font-family: 'GilroyBoldItalic';
 }
 
+.loading_container{
+    position: relative;
+}
+
+.loading_container > img {
+    position: absolute;
+}
+
 .loader {
-    margin-top: 3.4rem;
-    width: 30px;
-    height: 30px;
+    position: absolute;
+    width: 105px;
+    height: 105px;
     border: 2.5px solid #FFF;
     border-bottom-color: transparent;
     border-radius: 50%;

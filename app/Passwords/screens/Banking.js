@@ -122,6 +122,43 @@ export default function Banking({navigation}){
         )
     }
 
+    function renderCategory(){
+        return(
+            <View style={{display: 'flex', flexDirection: 'row', backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: 100, marginHorizontal: 25, marginTop: 10}}>
+                <TouchableOpacity
+                    style={{
+                        flex: 1,
+                        padding: 10,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 100,
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    }}
+                >
+                    <View style={{width: 7.5, height: 7.5, borderRadius: 100, backgroundColor: '#3F6FD9', marginTop: 1.75}} />
+                    <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 12, marginLeft: 7.5, color: '#D2D2D2'}}>all</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{
+                        flex: 1,
+                        padding: 10,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 100,
+                        // backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    }}
+                >
+                    <View style={{width: 7.5, height: 7.5, borderRadius: 100, backgroundColor: '#FFCB45', marginTop: 1.75}} />
+                    <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, marginLeft: 7.5, color: '#D2D2D2'}}>archived</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     function renderPasswords(){
         return(
             <View>
@@ -165,6 +202,7 @@ export default function Banking({navigation}){
     return (
         <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{backgroundColor: 'black', height: height}}>
             {renderHeader()}
+            {renderCategory()}
             {passwords==null?renderLoading():passwords=="network_error"?renderError():renderPasswords()}
         </ScrollView>
     );

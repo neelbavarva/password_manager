@@ -54,7 +54,7 @@ body {
 }
 
 @font-face {
-    font-family: "SwearDisplay";
-    src: local("SwearDisplay"),
-        url(../public/fonts/SwearDisplay/SwearDisplay-BoldItalic.ttf) format("truetype");
+    font-family: "CirkaBold";
+    src: local("CirkaBold"),
+        url(../public/fonts/Cirka/Cirka-Bold.ttf) format("truetype");
 }

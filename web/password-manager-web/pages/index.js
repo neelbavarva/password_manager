@@ -35,9 +35,9 @@ export default function Index() {
     function renderAuth(){
         return(
             <div className={styles.auth_container}>
-                <Image width={100} height={100} src={require('../public/icons/logo_large.png')} />
-                {macAddress==null ? loading() : !verified 
-                ?<div>
+                {macAddress==null ? loading() : !verified ?
+                <div>
+                    <Image width={100} height={100} src={require('../public/icons/logo_large.png')} />
                     <div className={styles.warning}>
                         Your mac address <span>{macAddress}</span> does not match to owner&apos;s mac adddress.
                     </div>
@@ -53,7 +53,10 @@ export default function Index() {
 
     function loading(){
         return(
-            <div className={styles.loader}></div>
+            <div className={styles.loading_container}>
+                <div className={styles.loader} />
+                <Image width={100} height={100} src={require('../public/icons/logo_large.png')} />
+            </div>
         )
     }
 

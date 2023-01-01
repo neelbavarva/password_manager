@@ -12,7 +12,7 @@ export default function Password({route, navigation}){
             <View>
                 <Image 
                     style={{marginTop: - 150, width: width, height: height/2.5}}
-                    source={require('../assets/images/background.png')}
+                    source={require('../assets/images/layers_background.png')}
                 />
 
                 {_category=="web-app" && 

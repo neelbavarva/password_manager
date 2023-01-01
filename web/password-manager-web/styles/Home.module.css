@@ -304,6 +304,11 @@
     margin-left: -0.25rem;
 }
 
+.home_loading{
+    text-align: center;
+    margin-top: 10vh;
+}
+
 .modal_loader{
     margin-left: 0.5rem;
 }

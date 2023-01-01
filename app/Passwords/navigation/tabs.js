@@ -3,11 +3,13 @@ import { View, Image, Text} from "react-native";
 import { createBottomTabNavigator, BottomTabBar } from "@react-navigation/bottom-tabs"
 
 import Home from "../screens/Home";
-import Card from "../screens/Card";
+import Pawned from "../screens/Pawned";
 import Banking from "../screens/Banking";
 import Manage from "../screens/Manage";
 import More from "../screens/More";
 import Password from "../screens/Password";
+import AddPassword from "../screens/AddPassword";
+import AddCard from "../screens/AddCard";
 
 const Tab = createBottomTabNavigator()
 
@@ -76,11 +78,11 @@ export default function Tabs() {
                             }}
                         >
                             <Image
-                                source={focused ? require('../assets/icons/banking_selected.png') : require('../assets/icons/banking_unselected.png')}
+                                source={focused ? require('../assets/icons/card_selected.png') : require('../assets/icons/card_unselected.png')}
                                 resizeMode="contain"
                                 style={{
-                                    width: focused ? 25 : 25,
-                                    height: focused ? 25 : 25
+                                    width: focused ? 25 : 27.5,
+                                    height: focused ? 25 : 27.5
                                 }}
                             />
                             <Text style={{color: focused ? 'white' : '#8A8A8A', fontFamily: 'Gilroy-Medium', fontSize: 10, marginTop: 7.5}}>bank</Text>
@@ -90,8 +92,8 @@ export default function Tabs() {
             />
 
             <Tab.Screen
-                name="Card"
-                component={Card}
+                name="Pawned"
+                component={Pawned}
                 options={{
                     headerShown: false,
                     tabBarIcon:({focused}) => ( 
@@ -105,14 +107,14 @@ export default function Tabs() {
                             }}
                         >
                             <Image
-                                source={focused ? require('../assets/icons/card_selected.png') : require('../assets/icons/card_unselected.png')}
+                                source={focused ? require('../assets/icons/pawned_selected.png') : require('../assets/icons/pawned_unselected.png')}
                                 resizeMode="contain"
                                 style={{
-                                    width: focused ? 25 : 27.5,
-                                    height: focused ? 25 : 27.5
+                                    width: focused ? 25 : 25,
+                                    height: focused ? 25 : 25
                                 }}
                             />
-                            <Text style={{color: focused ? 'white' : '#8A8A8A', fontFamily: 'Gilroy-Medium', fontSize: 10, marginTop: 7.5}}>cards</Text>
+                            <Text style={{color: focused ? 'white' : '#8A8A8A', fontFamily: 'Gilroy-Medium', fontSize: 10, marginTop: 7.5}}>pawned</Text>
                         </View>
                     )
                 }}
@@ -179,6 +181,18 @@ export default function Tabs() {
             <Tab.Screen
                 name="Password"
                 component={Password}
+                options={{headerShown: false, tabBarItemStyle: { display: 'none'}}}
+            />
+
+            <Tab.Screen
+                name="AddPassword"
+                component={AddPassword}
+                options={{headerShown: false, tabBarItemStyle: { display: 'none'}}}
+            />
+
+            <Tab.Screen
+                name="AddCard"
+                component={AddCard}
                 options={{headerShown: false, tabBarItemStyle: { display: 'none'}}}
             />
             
