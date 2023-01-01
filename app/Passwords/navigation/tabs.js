@@ -10,6 +10,7 @@ import More from "../screens/More";
 import Password from "../screens/Password";
 import AddPassword from "../screens/AddPassword";
 import AddCard from "../screens/AddCard";
+import DeletePassword from "../screens/DeletePassword";
 
 const Tab = createBottomTabNavigator()
 
@@ -193,6 +194,12 @@ export default function Tabs() {
             <Tab.Screen
                 name="AddCard"
                 component={AddCard}
+                options={{headerShown: false, tabBarItemStyle: { display: 'none'}}}
+            />
+
+            <Tab.Screen
+                name="DeletePassword"
+                component={DeletePassword}
                 options={{headerShown: false, tabBarItemStyle: { display: 'none'}}}
             />
             

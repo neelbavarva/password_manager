@@ -64,7 +64,7 @@ export default function Manage({navigation}){
             <ScrollView horizontal showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{display: 'flex', flexDirection: 'row', marginTop: 10, marginHorizontal: 20, marginRight: 25}}>
                 <View style={{backgroundColor: '#4623B0', width: 250, marginRight: 7.5}}>
                     <Image style={{width: 250, height: 250, marginTop: -150}} source={require('../assets/images/layers_light.png')} />
-                    <View style={{padding: 20, }}>
+                    <View style={{padding: 20, marginTop: 10}}>
                         <Text style={{fontFamily: 'Cirka-Bold', fontSize: 18, color: '#E5FE40'}}>add new password</Text>
                         <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 10}}>check you passwords </Text>
                         <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 2.5}}>lets see what </Text>
@@ -83,7 +83,8 @@ export default function Manage({navigation}){
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            borderRadius: 1
+                            borderRadius: 1,
+                            marginTop: 25
                         }}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'black'}}>add new</Text>
                             <Image style={{tintColor: 'black', width: 20, height: 7.5, marginLeft: 15}} source={require('../assets/icons/left_arrow.png')} />
@@ -92,9 +93,9 @@ export default function Manage({navigation}){
                 </View>
                 <View style={{backgroundColor: '#A80A4C', width: 250, marginHorizontal: 7.5}}>
                     <Image style={{width: 250, height: 250, marginTop: -150}} source={require('../assets/images/layers_light.png')} />
-                    <View style={{padding: 20, }}>
+                    <View style={{padding: 20, marginTop: 10}}>
                         <Text style={{fontFamily: 'Cirka-Bold', fontSize: 18, color: '#E5FE40'}}>add new card</Text>
-                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 10}}>check you passwords </Text>
+                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 10}}>check you passwords</Text>
                         <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 2.5}}>lets see what </Text>
                         <Image />
                     </View>
@@ -111,21 +112,26 @@ export default function Manage({navigation}){
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            borderRadius: 1
+                            borderRadius: 1,
+                            marginTop: 25
                         }}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'black'}}>add new</Text>
                             <Image style={{tintColor: 'black', width: 20, height: 7.5, marginLeft: 15}} source={require('../assets/icons/left_arrow.png')} />
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{backgroundColor: '#32B797', width: 250, marginHorizontal: 7.5}}>
+                <View style={{backgroundColor: '#1FC87F', width: 250, marginHorizontal: 7.5}}>
                     <Image style={{width: 250, height: 250, marginTop: -150}} source={require('../assets/images/layers_light.png')} />
-                    <View style={{padding: 20, }}>
-                        <Text style={{fontFamily: 'Cirka-Bold', fontSize: 18}}>delete password</Text>
+                    <View style={{padding: 20, marginTop: 10}}>
+                        <Text style={{fontFamily: 'Cirka-Bold', fontSize: 18, color: '#E5FE40'}}>delete passwords</Text>
+                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 10}}>check you passwords</Text>
+                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 2.5}}>lets see what </Text>
                         <Image />
                     </View>
                     <View>
-                        <TouchableOpacity style={{
+                        <TouchableOpacity 
+                        onPress={() => navigation.navigate("DeletePassword")}
+                        style={{
                             backgroundColor: 'white',
                             width: 150,
                             height: 50,
@@ -135,17 +141,20 @@ export default function Manage({navigation}){
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            borderRadius: 1
+                            borderRadius: 1,
+                            marginTop: 25
                         }}>
-                            <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'black'}}>add new</Text>
+                            <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'black'}}>delete</Text>
                             <Image style={{tintColor: 'black', width: 20, height: 7.5, marginLeft: 15}} source={require('../assets/icons/left_arrow.png')} />
                         </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{backgroundColor: 'rgba(255, 255, 255, 0.1)', width: 250, marginLeft: 7.5}}>
                     <Image style={{width: 250, height: 250, marginTop: -150}} source={require('../assets/images/layers_light.png')} />
-                    <View style={{padding: 20, }}>
-                        <Text style={{fontFamily: 'Cirka-Bold', fontSize: 18}}>delete card</Text>
+                    <View style={{padding: 20, marginTop: 10}}>
+                        <Text style={{fontFamily: 'Cirka-Bold', fontSize: 18, color: '#E5FE40'}}>delete cards</Text>
+                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 10}}>check you passwords</Text>
+                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 2.5}}>lets see what </Text>
                         <Image />
                     </View>
                     <View>
@@ -159,9 +168,10 @@ export default function Manage({navigation}){
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            borderRadius: 1
+                            borderRadius: 1,
+                            marginTop: 25
                         }}>
-                            <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'black'}}>add new</Text>
+                            <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'black'}}>delete</Text>
                             <Image style={{tintColor: 'black', width: 20, height: 7.5, marginLeft: 15}} source={require('../assets/icons/left_arrow.png')} />
                         </TouchableOpacity>
                     </View>
