@@ -26,10 +26,10 @@ export default function Manage({navigation}){
                         </View>
                     </View>
                     <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end', marginRight: 0}}>
-                        <TouchableOpacity activeOpacity={0.75}
+                        <TouchableOpacity 
+                        activeOpacity={0.75}
                         style={{
                             padding: 7.5,
-                            paddingHorizontal: 8.5,
                             borderRadius: 100,
                             display: 'flex',
                             flexDirection: 'row',
@@ -39,14 +39,14 @@ export default function Manage({navigation}){
                             borderColor: 'rgba(255, 255, 255, 0.1)'
                         }}>
                             <Image 
-                                source={require('../assets/icons/search-small.png')}
+                                source={require('../assets/icons/refresh.png')}
                                 style={{
-                                    width: 30,
-                                    height: 30,
+                                    width: 20,
+                                    height: 20,
                                     borderRadius: 100
                                 }}
                             />
-                            <Text style={{color: '#8A8A8A', fontFamily: 'Gilroy-Bold', fontSize: 12, marginLeft: 12.5, marginRight: 7.5}}>Search</Text>
+                            <Text style={{color: '#8A8A8A', fontFamily: 'Gilroy-Bold', fontSize: 12, marginLeft: 12.5, marginRight: 7.5}}>Refresh</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

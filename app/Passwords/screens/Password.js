@@ -1,11 +1,46 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, ActivityIndicator} from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, Clipboard, ToastAndroid, ActivityIndicator} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 import {API} from '../API'
 
 export default function Password({route, navigation}){
     const { _id, _name, _email, _password, _category} = route.params;
+
+    const[password, setPassword] = useState(null);
+    const[mainPassword, setMainPassword] = useState(null)
+    const[key, setKey] = useState(null)
+
+
+    const copyToClipboard = () => {
+        Clipboard.setString(mainPassword)
+        ToastAndroid.show("Copied to Clipboard", ToastAndroid.SHORT)
+    }
+
+
+    function decryptPassword(){
+        console.log(key)
+        if(key!=null){
+            let decrypted_string = "";
+            let decrypted_key = "";
+            let key_length = (key.length-1)*3 + 1;
+        
+            for(let i=0;i<_password.length-key_length;i++){
+                if((i+1)%3==0){
+                    decrypted_string += String.fromCharCode(_password.charAt(i).charCodeAt(0) - 4);
+                }
+            }
+        
+            for(let i=_password.length-key_length;i<_password.length;i++){
+                if((i+1)%3==0){
+                    decrypted_key += String.fromCharCode(_password.charAt(i).charCodeAt(0) - 4);
+                }
+            }
+        
+            return decrypted_key==key ? setMainPassword(decrypted_string) : setMainPassword("wrong_key");
+        }
+    }
+
 
     function renderPassword(){
         return(
@@ -57,7 +92,7 @@ export default function Password({route, navigation}){
                             style={{width: 50, height: 50, marginLeft: -10}}
                             source={require('../assets/icons/done_green.png')}
                         />
-                        <Text style={{fontFamily:'Gilroy-Bold', fontSize: 14, marginLeft: 20, lineHeight: 16, color: 'grey', marginTop: 7}}>{_password.substring(1, _password.length-1)}</Text>
+                        <Text style={{fontFamily:'Gilroy-Bold', fontSize: 14, marginLeft: 20, lineHeight: 16, color: 'grey', marginTop: 7}}>{mainPassword==null?_password.substring(0, 26):mainPassword}</Text>
                     </TouchableOpacity>
                     <TextInput 
                         style={{
@@ -71,8 +106,8 @@ export default function Password({route, navigation}){
                             color: 'white',
                             borderRadius: 1
                         }}
-                        // value={_id}
-                        // onChangeText={e => setKey(e)}
+                        value={key}
+                        onChangeText={e => setKey(e)}
                         placeholder="key"
                         placeholderTextColor='rgba(255, 255, 255, 0.3)'
                         secureTextEntry={true}
@@ -89,7 +124,7 @@ export default function Password({route, navigation}){
                             alignItems: 'center',
                             borderRadius: 1
                         }}
-                        // onPress={() => decryptPassword()}
+                        onPress={() => decryptPassword()}
                     >
                         <Text style={{fontFamily: 'Gilroy-Bold', color: 'black'}}>decrypt</Text>
                     </TouchableOpacity>

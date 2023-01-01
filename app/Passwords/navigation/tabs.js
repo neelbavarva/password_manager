@@ -182,25 +182,49 @@ export default function Tabs() {
             <Tab.Screen
                 name="Password"
                 component={Password}
-                options={{headerShown: false, tabBarItemStyle: { display: 'none'}}}
+                options={() => ({
+                    headerShown: false, tabBarItemStyle: { display: 'none'},
+                    tabBarStyle: {
+                      display: "none",
+                    },
+                    tabBarButton: () => null,
+                })}
             />
 
             <Tab.Screen
                 name="AddPassword"
                 component={AddPassword}
-                options={{headerShown: false, tabBarItemStyle: { display: 'none'}}}
+                options={() => ({
+                    headerShown: false, tabBarItemStyle: { display: 'none'},
+                    tabBarStyle: {
+                      display: "none",
+                    },
+                    tabBarButton: () => null,
+                })}
             />
 
             <Tab.Screen
                 name="AddCard"
                 component={AddCard}
-                options={{headerShown: false, tabBarItemStyle: { display: 'none'}}}
+                options={() => ({
+                    headerShown: false, tabBarItemStyle: { display: 'none'},
+                    tabBarStyle: {
+                      display: "none",
+                    },
+                    tabBarButton: () => null,
+                })}
             />
 
             <Tab.Screen
                 name="DeletePassword"
                 component={DeletePassword}
-                options={{headerShown: false, tabBarItemStyle: { display: 'none'}}}
+                options={() => ({
+                    headerShown: false, tabBarItemStyle: { display: 'none'},
+                    tabBarStyle: {
+                      display: "none",
+                    },
+                    tabBarButton: () => null,
+                })}
             />
             
         </Tab.Navigator>
