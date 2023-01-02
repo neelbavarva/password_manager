@@ -8,6 +8,7 @@ import Banking from "../screens/Banking";
 import Manage from "../screens/Manage";
 import More from "../screens/More";
 import Password from "../screens/Password";
+import Card from '../screens/Card'
 import AddPassword from "../screens/AddPassword";
 import AddCard from "../screens/AddCard";
 import DeletePassword from "../screens/DeletePassword";
@@ -182,6 +183,18 @@ export default function Tabs() {
             <Tab.Screen
                 name="Password"
                 component={Password}
+                options={() => ({
+                    headerShown: false, tabBarItemStyle: { display: 'none'},
+                    tabBarStyle: {
+                      display: "none",
+                    },
+                    tabBarButton: () => null,
+                })}
+            />
+
+            <Tab.Screen
+                name="Card"
+                component={Card}
                 options={() => ({
                     headerShown: false, tabBarItemStyle: { display: 'none'},
                     tabBarStyle: {

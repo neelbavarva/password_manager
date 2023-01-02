@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, ActivityIndicator, ToastAndroid} from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 import {API} from '../API'
 
@@ -68,6 +67,40 @@ export default function Home({navigation}){
         fetchArchivePasswords()
     },[])
 
+    // Small Components
+
+    function renderNoData(){
+        return(
+            <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: '#444444'}}>no added passwords</Text>
+            </View>
+        )
+    }
+
+    function renderLoading(){
+        return(
+            <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <ActivityIndicator color="white" size="large" />
+            </View>
+        )
+    }
+
+    function renderError(){
+        return(
+            <View style={{height: height/1.75, width: width, justifyContent: 'center', alignItems: 'center'}}>
+                <Image 
+                    source={require(`../assets/icons/network_error.png`)}
+                    style={{
+                        width: 100,
+                        height: 100
+                    }}
+                />
+                <Text style={{fontFamily: 'Gilroy-Bold', marginTop: 25, fontSize: 14}}>Network Error</Text>
+            </View>
+        )
+    }
+
+    // Main Components
 
     function renderHeader(){
         return(
@@ -314,37 +347,6 @@ export default function Home({navigation}){
                     </Text>
                 </TouchableOpacity>
             </ScrollView>
-        )
-    }
-
-    function renderNoData(){
-        return(
-            <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: '#444444'}}>no added passwords</Text>
-            </View>
-        )
-    }
-
-    function renderLoading(){
-        return(
-            <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <ActivityIndicator color="white" size="large" />
-            </View>
-        )
-    }
-
-    function renderError(){
-        return(
-            <View style={{height: height/1.75, width: width, justifyContent: 'center', alignItems: 'center'}}>
-                <Image 
-                    source={require(`../assets/icons/network_error.png`)}
-                    style={{
-                        width: 100,
-                        height: 100
-                    }}
-                />
-                <Text style={{fontFamily: 'Gilroy-Bold', marginTop: 25, fontSize: 14}}>Network Error</Text>
-            </View>
         )
     }
 

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, ActivityIndicator, ToastAndroid} from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, ImageBackground, ActivityIndicator, ToastAndroid} from 'react-native';
 const { width, height } = Dimensions.get("window");
 import {API} from '../API'
 
 export default function Banking({navigation}){
 
-    const[passwords, setPasswords] = useState(null)
-    const[allPasswords, setAllPasswords] = useState(null);
-    const[archivePasswords, setArchivePasswords] = useState(null)
-    const[category, setCategory] = useState("all")
+    const[allPasswords, setAllPasswords] = useState(null) //fetched unarchived Passwords
+    const[archivePasswords, setArchivePasswords] = useState(null) //fetched archived Passwords
+    const[cards, setCards] = useState(null) // fetched Cards
+    const[passwords, setPasswords] = useState(null) // rendering passwords
+    const[category, setCategory] = useState("all") // current category
 
     const fetchPasswords = () => {
         fetch(`${API}/passwords/getBankingPasswords`)
@@ -35,47 +35,93 @@ export default function Banking({navigation}){
         })
     }
 
+    const fetchCards = () => {
+        fetch(`${API}/cards/getCards`)
+        .then(res=>res.json())
+        .then(result=>{
+            setCards(result)
+        })
+        .catch((e) => {
+            setCards("network_error")
+        })
+    }
+
     const filterPassword = (e) => {
         setCategory(e)
         e == "all" ? setPasswords(allPasswords) : setPasswords(archivePasswords)
     } 
 
-    const renderRefresh = () => {
+    const refreshPasswords = () => {
+        setPasswords(null)
+        setCards(null)
         setCategory("all")
+        fetchCards()
         fetchPasswords()
         fetchArchivePasswords()
-        ToastAndroid.show("Refreshing Passwords", ToastAndroid.SHORT)
+        ToastAndroid.show("Refreshing Cards & Passwords", ToastAndroid.SHORT)
     }
 
     useEffect(()=>{
+        fetchCards()
         fetchPasswords()
         fetchArchivePasswords()
     },[])
+
+
+    // Small Components
+
+    function renderNoData(){
+        return(
+            <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: '#444444'}}>no added passwords</Text>
+            </View>
+        )
+    }
+
+    function renderLoading(){
+        return(
+            <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <ActivityIndicator color="white" size="large" />
+            </View>
+        )
+    }
+
+    function renderError(){
+        return(
+            <View style={{height: height/1.75, width: width, justifyContent: 'center', alignItems: 'center'}}>
+                <Image 
+                    source={require(`../assets/icons/network_error.png`)}
+                    style={{
+                        width: 100,
+                        height: 100
+                    }}
+                />
+                <Text style={{fontFamily: 'Gilroy-Bold', marginTop: 25, fontSize: 14}}>Network Error</Text>
+            </View>
+        )
+    }
+
+    // Main Components
 
     function renderHeader(){
         return(
             <View>
                 <View style={{display: 'flex', flexDirection: 'row', margin: 20, marginBottom: 40, height: 60}}>
                     <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-start'}}>
-                        <View
-                            activeOpacity={0.5}
-                            style={{marginLeft: 0}}
-                        >
-                            <Image 
-                                source={require('../assets/icons/logo.png')}
-                                style={{
-                                    width: 50,
-                                    height: 50,
-                                    borderWidth: 1,
-                                    borderColor: 'rgba(255, 255, 255, 0.1)',
-                                    borderRadius: 100
-                                }}
-                            />
-                        </View>
+                        <Image 
+                            source={require('../assets/icons/logo.png')}
+                            style={{
+                                width: 50,
+                                height: 50,
+                                borderWidth: 1,
+                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                borderRadius: 100
+                            }}
+                        />
                     </View>
-                    <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end', marginRight: 0}}>
+                    <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
                         <TouchableOpacity 
-                        onPress={() => renderRefresh()}
+                        onPress={() => refreshPasswords()}
                         activeOpacity={0.75}
                         style={{
                             padding: 7.5,
@@ -101,40 +147,50 @@ export default function Banking({navigation}){
                 </View>
 
                 <View style={{paddingHorizontal: 25, paddingBottom: 25}}>
-                    <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>your banking passwords</Text>
-                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>be careful while using banking passwords</Text>
+                    <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>your banking data</Text>
+                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>be careful while using your banking data</Text>
                 </View>
             </View>
         )
     }
 
-    function renderNoData(){
+    function renderCards(){
         return(
-            <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: '#444444'}}>no added passwords !</Text>
-            </View>
-        )
-    }
-
-    function renderLoading(){
-        return(
-            <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <ActivityIndicator color="white" size="large" />
-            </View>
-        )
-    }
-
-    function renderError(){
-        return(
-            <View style={{height: height/1.75, width: width, justifyContent: 'center', alignItems: 'center'}}>
-                <Image 
-                    source={require(`../assets/icons/network_error.png`)}
-                    style={{
-                        width: 100,
-                        height: 100
-                    }}
-                />
-                <Text style={{fontFamily: 'Gilroy-Bold', marginTop: 25}}>Network Error</Text>
+            <View style={{marginTop: -10, marginBottom: 20}}>
+                <ScrollView horizontal showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{display: 'flex', flexDirection: 'row', marginTop: 10, marginHorizontal: 20, marginRight: 25}}>
+                    {cards.map(item => {
+                        return(
+                            <ImageBackground
+                                key = {item._id}
+                                source={item.bankName.toLowerCase().includes("sbi") ? require('../assets/images/sbi_card.png') 
+                                : item.bankName.toLowerCase().includes("axis") ? require('../assets/images/axis_card.png')
+                                : item.bankName.toLowerCase().includes("hdfc") ? require('../assets/images/hdfc_card.png')
+                                : item.bankName.toLowerCase().includes("icici") ? require('../assets/images/icici_card.png')
+                                : item.bankName.toLowerCase().includes("iob") ? require('../assets/images/iob_card.png')
+                                : item.bankName.toLowerCase().includes("slice") ? require('../assets/images/slice_card.png')
+                                : require('../assets/images/other_card.png')}
+                                style={{
+                                    width: 300,
+                                    height: 171,
+                                    marginHorizontal: 5
+                                }}
+                                imageStyle={{ borderRadius: 8}}
+                            >
+                                <Text style={{marginTop: 25, fontFamily: 'Gilroy-Bold', marginLeft: 20, fontSize: 12, color: 'white'}}>{("XXXX XXXX XXXX " + item.number.substring(12))}</Text>
+                                <View style={{display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'flex-end', marginBottom: 20, marginLeft: 17.5}}>
+                                    <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 10, color: 'white'}}>
+                                        {item.cardName}
+                                    </Text>
+                                    <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end', marginRight: 20}}>
+                                        <TouchableOpacity onPress={() => navigation.navigate("Card", {_id: item._id, _bankName: item.bankName, _cardName: item.cardName, _number: item.number, _validTill: item.validTill, _cvv: item.cvv, _visa: item.visa})}>
+                                            <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 10, color: 'white', backgroundColor: 'rgba(255, 255, 255, 0.1)', padding: 5, paddingHorizontal: 10, borderRadius: 5}}>View</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </ImageBackground>
+                        )
+                    })}
+                </ScrollView>
             </View>
         )
     }
@@ -181,23 +237,26 @@ export default function Banking({navigation}){
     function renderPasswords(){
         return(
             <View>
-                {passwords.length==0 || passwords=="network_error" ? renderNoData() : 
-                <View style={{margin: 25, paddingBottom: 100}}>
+                {passwords==null?renderLoading():passwords=="network_error"?renderError():passwords.length==0?renderNoData(): 
+                <View style={{margin: 25, marginTop: 20, paddingBottom: 100}}>
                     {passwords.map(item => {
                         return(
-                            <TouchableOpacity onPress={() => navigation.navigate("Password", {_id: item._id, _name: item.name, _email: item.email, _password: item.password, _category: item.category})} activeOpacity={0.75} key={item._id} style={{padding: 20, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.1)', display: 'flex', flexDirection: 'row', marginTop: 10, borderRadius: 1}}>
-                                <View>
-                                    <Image 
-                                        source={item.category=="banking" ? require(`../assets/icons/banking_main.png`) : item.category=="web-app" ? require(`../assets/icons/web_app_main.png`) : item.category=="email" ? require(`../assets/icons/email_main.png`) : require(`../assets/icons/other_main.png`)}
-                                        style={{
-                                            width: 40,
-                                            height: 40
-                                        }}
-                                    />
-                                </View>
+                            <TouchableOpacity 
+                                key={item._id}
+                                onPress={() => navigation.navigate("Password", {_id: item._id, _name: item.name, _email: item.email, _password: item.password, _category: item.category})} 
+                                activeOpacity={0.75} 
+                                style={{display: 'flex', flexDirection: 'row', padding: 20, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.1)', marginTop: 10, borderRadius: 1}}
+                            >
+                                <Image 
+                                    source={item.category=="web-app" ? require(`../assets/icons/web_app_main.png`) : item.category=="email" ? require(`../assets/icons/email_main.png`) : item.category=="banking" ? require(`../assets/icons/banking_main.png`) : require(`../assets/icons/other_main.png`)}
+                                    style={{
+                                        width: 35,
+                                        height: 35
+                                    }}
+                                />
                                 <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 20}}>
                                     <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'white'}}>{item.name}</Text>
-                                    <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12}}>{item.email}</Text>
+                                    <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: 'rgba(255, 255, 255, 0.5)'}}>{item.email}</Text>
                                 </View>
                                 <View style={{display: 'flex', flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
                                     <Image 
@@ -206,7 +265,7 @@ export default function Banking({navigation}){
                                             width: 20,
                                             height: 7,
                                             marginRight: 10,
-                                            tintColor: 'grey'
+                                            tintColor: 'rgba(255, 255, 255, 0.5)'
                                         }}
                                     />
                                 </View>
@@ -221,8 +280,12 @@ export default function Banking({navigation}){
     return (
         <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{backgroundColor: 'black', height: height}}>
             {renderHeader()}
-            {renderCategory()}
-            {passwords==null?renderLoading():passwords=="network_error"?renderError():renderPasswords()}
+            {cards==null||passwords==null ? renderLoading() : 
+            <View>
+                {renderCards()}
+                {renderCategory()}
+                {renderPasswords()}
+            </View>}
         </ScrollView>
     );
 }
