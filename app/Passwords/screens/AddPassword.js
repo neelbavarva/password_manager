@@ -54,6 +54,11 @@ export default function AddPassword({navigation}){
         }
     }
 
+    function renderBack(){
+        navigation.navigate("Manage")
+        clearData()
+    }
+
     function clearData(){
         setName(null)
         setEmail(null)
@@ -70,27 +75,23 @@ export default function AddPassword({navigation}){
             <View>
                 <View style={{display: 'flex', flexDirection: 'row', margin: 20, marginBottom: 40, height: 60}}>
                     <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-start'}}>
-                        <View
-                            activeOpacity={0.5}
-                            style={{marginLeft: 0}}
-                        >
-                            <Image 
-                                source={require('../assets/icons/logo.png')}
-                                style={{
-                                    width: 50,
-                                    height: 50,
-                                    borderWidth: 1,
-                                    borderColor: 'rgba(255, 255, 255, 0.1)',
-                                    borderRadius: 100
-                                }}
-                            />
-                        </View>
+                        <Image 
+                            source={require('../assets/icons/logo.png')}
+                            style={{
+                                width: 50,
+                                height: 50,
+                                borderWidth: 1,
+                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                borderRadius: 100
+                            }}
+                        />
                     </View>
-                    <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end', marginRight: 0}}>
-                        <TouchableOpacity activeOpacity={0.75}
+                    <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                        <TouchableOpacity 
+                        onPress={() => renderBack()}
+                        activeOpacity={0.75}
                         style={{
-                            padding: 7.5,
-                            paddingHorizontal: 8.5,
+                            padding: 12.5,
                             borderRadius: 100,
                             display: 'flex',
                             flexDirection: 'row',
@@ -100,21 +101,21 @@ export default function AddPassword({navigation}){
                             borderColor: 'rgba(255, 255, 255, 0.1)'
                         }}>
                             <Image 
-                                source={require('../assets/icons/search-small.png')}
+                                source={require('../assets/icons/left_arrow_small.png')}
                                 style={{
-                                    width: 30,
-                                    height: 30,
-                                    borderRadius: 100
+                                    width: 15,
+                                    height: 10,
+                                    marginLeft: 5
                                 }}
                             />
-                            <Text style={{color: '#8A8A8A', fontFamily: 'Gilroy-Bold', fontSize: 12, marginLeft: 12.5, marginRight: 7.5}}>Search</Text>
+                            <Text style={{color: '#8A8A8A', fontFamily: 'Gilroy-Bold', fontSize: 12, marginLeft: 12.5, marginRight: 7.5}}>Go Back</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
 
                 <View style={{paddingHorizontal: 25, paddingBottom: 25}}>
                     <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>add password</Text>
-                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>check your all pawned emails and passwords</Text>
+                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>check fields carefully before submitting</Text>
                 </View>
             </View>
         )
@@ -124,11 +125,7 @@ export default function AddPassword({navigation}){
         <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{backgroundColor: 'black', height: height}}>
             
             {renderHeader()}
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={modalVisible}
-            >
+            <Modal animationType="fade" transparent={true} visible={modalVisible}>
                 <View style={{display: 'flex', height: height/1.9, width: width-40, marginLeft: 20, backgroundColor: '#111111', marginTop: 140, padding: 40}}>
                     <Text style={{display: 'flex', flex: 1, fontFamily: 'Gilroy-Bold', color: '#444444'}}>Select Category</Text>
 
