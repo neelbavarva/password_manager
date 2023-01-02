@@ -69,7 +69,6 @@ export default function More(){
                 margin: 25,
                 paddingHorizontal: 20
             }}>
-                <Text>gg</Text>
             </View>
         )
     }

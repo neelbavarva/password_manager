@@ -1,51 +1,93 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, ActivityIndicator} from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, ActivityIndicator, ToastAndroid} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 import {API} from '../API'
 
 export default function Home({navigation}){
 
-    const[passwords, setPasswords] = useState(null)
+    const[allPasswords, setAllPasswords] = useState(null) //fetched unarchived Passwords
+    const[archivePasswords, setArchivePasswords] = useState(null) //fetched archived Passwords
+    const[passwords, setPasswords] = useState(null) // rendering passwords
+    const[category, setCategory] = useState("all") // current category
 
     const fetchPasswords = () => {
         fetch(`${API}/passwords/getNonBankingPasswords`)
         .then(res=>res.json())
         .then(result=>{
             setPasswords(result)
+            setAllPasswords(result)
         })
         .catch((e) => {
             setPasswords("network_error");
+            setAllPasswords("network_error")
         })
+    }
+
+    const fetchArchivePasswords = () => {
+        fetch(`${API}/passwords/getNonBankingArchivePasswords`)
+        .then(res=>res.json())
+        .then(result=>{
+            setArchivePasswords(result)
+        })
+        .catch((e) => {
+            setArchivePasswords("network_error")
+        })
+    }
+    
+    const refreshPasswords = () => {
+        setPasswords(null)
+        setCategory("all")
+        fetchPasswords()
+        fetchArchivePasswords()
+        ToastAndroid.show("Refreshing Passwords", ToastAndroid.SHORT)
+    }
+
+    const filterPassword = (e) => {
+        if(passwords!=null&&passwords!="network_error"){
+            setCategory(e)
+            setPasswords(null)
+            if(e=="all"){
+                setPasswords(allPasswords)
+            } else if(e=="archive"){
+                setPasswords(archivePasswords)
+            } else {
+                let tempPasswords = [];
+                allPasswords.map(item => {
+                    if(item.category == e){
+                        tempPasswords.push(item);
+                    }
+                })
+                setPasswords(tempPasswords)
+            }
+        }
     }
 
     useEffect(()=>{
         fetchPasswords()
+        fetchArchivePasswords()
     },[])
+
 
     function renderHeader(){
         return(
             <View>
                 <View style={{display: 'flex', flexDirection: 'row', margin: 20, marginBottom: 40, height: 60}}>
                     <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-start'}}>
-                        <View
-                            activeOpacity={0.5}
-                            style={{marginLeft: 0}}
-                        >
-                            <Image 
-                                source={require('../assets/icons/logo.png')}
-                                style={{
-                                    width: 50,
-                                    height: 50,
-                                    borderWidth: 1,
-                                    borderColor: 'rgba(255, 255, 255, 0.1)',
-                                    borderRadius: 100
-                                }}
-                            />
-                        </View>
+                        <Image 
+                            source={require('../assets/icons/logo.png')}
+                            style={{
+                                width: 50,
+                                height: 50,
+                                borderWidth: 1,
+                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                borderRadius: 100
+                            }}
+                        />
                     </View>
-                    <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end', marginRight: 0}}>
+                    <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
                         <TouchableOpacity 
+                        onPress={() => refreshPasswords()}
                         activeOpacity={0.75}
                         style={{
                             padding: 7.5,
@@ -92,9 +134,11 @@ export default function Home({navigation}){
                         alignItems: 'center',
                         paddingRight: 20,
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderColor: category=="all" ? 'rgba(255, 255, 255, 0.15)' : null,
+                        borderWidth: 1,
                         marginHorizontal: 5,
                     }}
-                    
+                    onPress={() => filterPassword("all")}
                 >
                     <Image 
                         source={require('../assets/icons/all.png')}
@@ -128,8 +172,11 @@ export default function Home({navigation}){
                         alignItems: 'center',
                         paddingRight: 20,
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderColor: category=="web-app" ? 'rgba(255, 255, 255, 0.15)' : null,
+                        borderWidth: 1,
                         marginHorizontal: 5,
                     }}
+                    onPress={() => filterPassword("web-app")}
                 >
                     <Image 
                         source={require('../assets/icons/web_app.png')}
@@ -163,8 +210,11 @@ export default function Home({navigation}){
                         alignItems: 'center',
                         paddingRight: 20,
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderColor: category=="email" ? 'rgba(255, 255, 255, 0.15)' : null,
+                        borderWidth: 1,
                         marginHorizontal: 5,
                     }}
+                    onPress={() => filterPassword("email")}
                 >
                     <Image 
                         source={require('../assets/icons/email.png')}
@@ -198,8 +248,11 @@ export default function Home({navigation}){
                         alignItems: 'center',
                         paddingRight: 20,
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderColor: category=="other" ? 'rgba(255, 255, 255, 0.15)' : null,
+                        borderWidth: 1,
                         marginHorizontal: 5
                     }}
+                    onPress={() => filterPassword("other")}
                 >
                     <Image 
                         source={require('../assets/icons/other.png')}
@@ -233,8 +286,11 @@ export default function Home({navigation}){
                         alignItems: 'center',
                         paddingRight: 20,
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderColor: category=="archive" ? 'rgba(255, 255, 255, 0.15)' : null,
+                        borderWidth: 1,
                         marginHorizontal: 5
                     }}
+                    onPress={() => filterPassword("archive")}
                 >
                     <Image 
                         source={require('../assets/icons/archive.png')}
@@ -264,7 +320,7 @@ export default function Home({navigation}){
     function renderNoData(){
         return(
             <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: '#444444'}}>no added passwords !</Text>
+                <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: '#444444'}}>no added passwords</Text>
             </View>
         )
     }
@@ -287,7 +343,7 @@ export default function Home({navigation}){
                         height: 100
                     }}
                 />
-                <Text style={{fontFamily: 'Gilroy-Bold', marginTop: 25}}>Network Error</Text>
+                <Text style={{fontFamily: 'Gilroy-Bold', marginTop: 25, fontSize: 14}}>Network Error</Text>
             </View>
         )
     }
@@ -295,23 +351,26 @@ export default function Home({navigation}){
     function renderPasswords(){
         return(
             <View>
-                {passwords.length==0 || passwords=="network_error" ? renderNoData() : 
+                {passwords==null?renderLoading():passwords=="network_error"?renderError():passwords.length==0?renderNoData(): 
                 <View style={{margin: 25, paddingBottom: 100}}>
                     {passwords.map(item => {
                         return(
-                            <TouchableOpacity onPress={() => navigation.navigate("Password", {_id: item._id, _name: item.name, _email: item.email, _password: item.password, _category: item.category})} activeOpacity={0.75} key={item._id} style={{padding: 20, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.1)', display: 'flex', flexDirection: 'row', marginTop: 10, borderRadius: 1}}>
-                                <View>
-                                    <Image 
-                                        source={item.category=="banking" ? require(`../assets/icons/banking_main.png`) : item.category=="web-app" ? require(`../assets/icons/web_app_main.png`) : item.category=="email" ? require(`../assets/icons/email_main.png`) : require(`../assets/icons/other_main.png`)}
-                                        style={{
-                                            width: 40,
-                                            height: 40
-                                        }}
-                                    />
-                                </View>
+                            <TouchableOpacity 
+                                key={item._id}
+                                onPress={() => navigation.navigate("Password", {_id: item._id, _name: item.name, _email: item.email, _password: item.password, _category: item.category})} 
+                                activeOpacity={0.75} 
+                                style={{display: 'flex', flexDirection: 'row', padding: 20, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.1)', marginTop: 10, borderRadius: 1}}
+                            >
+                                <Image 
+                                    source={item.category=="web-app" ? require(`../assets/icons/web_app_main.png`) : item.category=="email" ? require(`../assets/icons/email_main.png`) : item.category=="banking" ? require(`../assets/icons/banking_main.png`) : require(`../assets/icons/other_main.png`)}
+                                    style={{
+                                        width: 35,
+                                        height: 35
+                                    }}
+                                />
                                 <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 20}}>
                                     <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'white'}}>{item.name}</Text>
-                                    <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12}}>{item.email}</Text>
+                                    <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: 'rgba(255, 255, 255, 0.5)'}}>{item.email}</Text>
                                 </View>
                                 <View style={{display: 'flex', flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
                                     <Image 
@@ -320,7 +379,7 @@ export default function Home({navigation}){
                                             width: 20,
                                             height: 7,
                                             marginRight: 10,
-                                            tintColor: 'grey'
+                                            tintColor: 'rgba(255, 255, 255, 0.5)'
                                         }}
                                     />
                                 </View>
@@ -336,7 +395,7 @@ export default function Home({navigation}){
         <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{backgroundColor: 'black', height: height}}>
             {renderHeader()}
             {renderCategory()}
-            {passwords==null?renderLoading():passwords=="network_error"?renderError():renderPasswords()}
+            {renderPasswords()}
         </ScrollView>
     );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, ActivityIndicator} from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, ActivityIndicator, ToastAndroid} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 import {API} from '../API'
@@ -7,16 +7,20 @@ import {API} from '../API'
 export default function Banking({navigation}){
 
     const[passwords, setPasswords] = useState(null)
+    const[allPasswords, setAllPasswords] = useState(null);
     const[archivePasswords, setArchivePasswords] = useState(null)
+    const[category, setCategory] = useState("all")
 
     const fetchPasswords = () => {
         fetch(`${API}/passwords/getBankingPasswords`)
         .then(res=>res.json())
         .then(result=>{
             setPasswords(result)
+            setAllPasswords(result)
         })
         .catch((e) => {
-            setPasswords("network_error");
+            setPasswords("network_error")
+            setAllPasswords("network_error")
         })
     }
 
@@ -27,8 +31,20 @@ export default function Banking({navigation}){
             setArchivePasswords(result)
         })
         .catch((e) => {
-            setArchivePasswords("network_error");
+            setArchivePasswords("network_error")
         })
+    }
+
+    const filterPassword = (e) => {
+        setCategory(e)
+        e == "all" ? setPasswords(allPasswords) : setPasswords(archivePasswords)
+    } 
+
+    const renderRefresh = () => {
+        setCategory("all")
+        fetchPasswords()
+        fetchArchivePasswords()
+        ToastAndroid.show("Refreshing Passwords", ToastAndroid.SHORT)
     }
 
     useEffect(()=>{
@@ -59,6 +75,7 @@ export default function Banking({navigation}){
                     </View>
                     <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end', marginRight: 0}}>
                         <TouchableOpacity 
+                        onPress={() => renderRefresh()}
                         activeOpacity={0.75}
                         style={{
                             padding: 7.5,
@@ -126,6 +143,7 @@ export default function Banking({navigation}){
         return(
             <View style={{display: 'flex', flexDirection: 'row', backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: 100, marginHorizontal: 25, marginTop: 10}}>
                 <TouchableOpacity
+                    onPress={() => filterPassword("all")}
                     style={{
                         flex: 1,
                         padding: 10,
@@ -134,13 +152,14 @@ export default function Banking({navigation}){
                         justifyContent: 'center',
                         alignItems: 'center',
                         borderRadius: 100,
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        backgroundColor: category=="all" ? 'rgba(255, 255, 255, 0.1)' : null,
                     }}
                 >
                     <View style={{width: 7.5, height: 7.5, borderRadius: 100, backgroundColor: '#3F6FD9', marginTop: 1.75}} />
                     <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 12, marginLeft: 7.5, color: '#D2D2D2'}}>all</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                    onPress={() => filterPassword("archive")}
                     style={{
                         flex: 1,
                         padding: 10,
@@ -149,7 +168,7 @@ export default function Banking({navigation}){
                         justifyContent: 'center',
                         alignItems: 'center',
                         borderRadius: 100,
-                        // backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        backgroundColor: category=="archive" ? 'rgba(255, 255, 255, 0.1)' : null,
                     }}
                 >
                     <View style={{width: 7.5, height: 7.5, borderRadius: 100, backgroundColor: '#FFCB45', marginTop: 1.75}} />
