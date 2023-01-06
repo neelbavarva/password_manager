@@ -72,7 +72,7 @@ export default function Banking({navigation}){
 
     function renderNoData(){
         return(
-            <View style={{height: height/2, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{height: height/2.5, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: '#444444'}}>no added passwords</Text>
             </View>
         )
@@ -260,7 +260,7 @@ export default function Banking({navigation}){
                                 </View>
                                 <View style={{display: 'flex', flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
                                     <Image 
-                                        source={require('../assets/icons/left_arrow.png')}
+                                        source={require('../assets/icons/right_arrow.png')}
                                         style={{
                                             width: 20,
                                             height: 7,

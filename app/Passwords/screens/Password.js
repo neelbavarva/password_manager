@@ -94,7 +94,7 @@ export default function Password({route, navigation}){
                         />
                         <Text style={{fontFamily:'Gilroy-Bold', fontSize: 14, marginLeft: 30, lineHeight: 16, color: 'rgba(255, 255, 255, 0.5)', marginTop: 0}}>{password==null?_password.substring(0, 26):password=="wrong_key"?"Wrong Key":password}</Text>
                     </TouchableOpacity>
-                    <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <View style={{display: 'flex', flexDirection: 'row', marginTop: 15}}>
                         <TextInput 
                             style={{
                                 display: 'flex',
@@ -129,7 +129,7 @@ export default function Password({route, navigation}){
                             alignItems: 'center',
                             backgroundColor: 'white',
                             padding: 15,
-                            marginTop: 15,
+                            marginTop: 20,
                             width: width - 80,
                             borderRadius: 1,
                         }}

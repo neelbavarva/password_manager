@@ -376,7 +376,7 @@ export default function Home({navigation}){
                                 </View>
                                 <View style={{display: 'flex', flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
                                     <Image 
-                                        source={require('../assets/icons/left_arrow.png')}
+                                        source={require('../assets/icons/right_arrow.png')}
                                         style={{
                                             width: 20,
                                             height: 7,

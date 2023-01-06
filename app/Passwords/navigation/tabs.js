@@ -167,7 +167,7 @@ export default function Tabs() {
                             }}
                         >
                             <Image
-                                source={require('../assets/icons/more.png')}
+                                source={focused ? require('../assets/icons/more_selected.png') : require('../assets/icons/more_unselected.png')}
                                 resizeMode="contain"
                                 style={{
                                     width: focused ? 25 : 25,
