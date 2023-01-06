@@ -13,6 +13,7 @@ const Stack = createStackNavigator();
 export default function App(){
 
     const[passwords, setPasswords] = useState(null)
+    const[auth, setAuth] = useState(null)
     const[pin, setPin] = useState(null)
 
     const fetchPasswords = () => {
@@ -36,16 +37,18 @@ export default function App(){
             currPin = currPin.substring(0,currPin.length-1);
             setPin(currPin)
         } else {
-            if(pin.length<4){
-                if(pin!=null){
-                    let currPin = pin;
-                    currPin = currPin.toString() + e.toString();
-                    setPin(currPin)
-                } else {
-                    setPin(e.toString())
-                }
+            if(pin==null){
+                setPin(e.toString())
+            } else if(pin.length<4){
+                let currPin = pin;
+                currPin = currPin.toString() + e.toString();
+                setPin(currPin)
             }
         }
+    }
+
+    const checkAuth = () => {
+        pin=="9427"?setAuth(true):setPin(null)
     }
 
     const FadeInView = (props) => {
@@ -100,46 +103,46 @@ export default function App(){
                 </View>
                 <View style={{display: 'flex', flex: 1, justifyContent: 'flex-end'}}>
                     <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={() => changePin("1")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => changePin("1")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>1</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => changePin("2")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => changePin("2")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>2</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => changePin("3")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center',  borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => changePin("3")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center',  borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>3</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={() => changePin("4")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => changePin("4")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>4</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => changePin("5")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => changePin("5")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>5</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => changePin("6")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => changePin("6")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>6</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={() => changePin("7")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => changePin("7")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>7</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => changePin("8")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => changePin("8")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>8</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => changePin("9")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => changePin("9")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1, borderRadius: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>9</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={() => changePin("back")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center',  borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => changePin("back")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center',  borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>Back</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => changePin("0")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => changePin("0")} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>0</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => console.log(pin)} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1}}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => checkAuth()} style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 1}}>
                             <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 16, padding: 20, color: 'grey'}}>Go</Text>
                         </TouchableOpacity>
                     </View>
@@ -161,7 +164,7 @@ export default function App(){
                         borderRadius: 100
                     }} source={require('./assets/icons/logo.png')} />
                 </FadeInView>
-            </View>:
+            </View>: auth ?
             <Stack.Navigator
                 screenOptions={{
                 headerShown: false
@@ -180,8 +183,7 @@ export default function App(){
                     name="Password"
                     component={Password}
                 />
-            </Stack.Navigator>}
-            {/* {renderPasswordScreen()} */}
+            </Stack.Navigator> : renderPasswordScreen()}
         </NavigationContainer>
     );
 }
