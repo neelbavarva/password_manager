@@ -18,7 +18,7 @@ export default function Home({navigation}){
             setAllPasswords(result)
         })
         .catch((e) => {
-            setPasswords("network_error");
+            setPasswords("network_error")
             setAllPasswords("network_error")
         })
     }

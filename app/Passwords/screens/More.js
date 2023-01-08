@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Dimensions, Image, TextInput, TouchableOpacity, ScrollView, ImageBackground} from 'react-native';
+import { View, Text, Dimensions, Image, TouchableOpacity, ScrollView, Linking} from 'react-native';
 const { width, height } = Dimensions.get("window");
 
 export default function More(){

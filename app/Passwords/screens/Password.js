@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, Clipboard, ToastAndroid, ActivityIndicator} from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, Clipboard, ToastAndroid, BackHandler} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 
@@ -9,6 +9,19 @@ export default function Password({route, navigation}){
     const[password, setPassword] = useState(null)
     const[key, setKey] = useState(null)
 
+    useEffect(() => {
+        const backAction = () => {
+            setKey(null)
+            setPassword(null)
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+    
+        return () => backHandler.remove();
+    }, []);
 
     const copyToClipboard = () => {
         Clipboard.setString(password)
@@ -83,7 +96,7 @@ export default function Password({route, navigation}){
                         </View>
                     </View>
 
-                    <TouchableOpacity activeOpacity={0.75} onLongPress={() => copyToClipboard()} style={{paddingHorizontal: 10, marginTop: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', borderWidth: 1, paddingVertical: 20, paddingHorizontal: 10, paddingRight: 50}}>
+                    <TouchableOpacity activeOpacity={0.75} onLongPress={() => copyToClipboard()} style={{paddingHorizontal: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', borderWidth: 1, paddingVertical: 20, paddingHorizontal: 10, paddingRight: 50, marginTop: password!=null && password!="wrong_key" ? 0 : 10}}>
                         <Image
                             style={{
                                 width: password!=null && password!="wrong_key" ? 40 : 30, 

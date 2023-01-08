@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, Animated, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Animated, Image, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from '@react-navigation/native';
 const { width, height } = Dimensions.get("window");
@@ -29,6 +29,9 @@ export default function App(){
 
     useEffect(()=>{
         fetchPasswords()
+        setTimeout(() => {
+            setPasswords("timeOut")
+        }, 1000);
     },[])
 
     const changePin = (e) => {
@@ -151,20 +154,44 @@ export default function App(){
         )
     }
 
+    function renderInitialScreen(){
+        return(
+            <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'}}>
+                <ImageBackground 
+                style={{
+                        width: width, 
+                        height: height, 
+                        borderWidth: 1,
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        opacity: 1,
+                        borderRadius: 100
+                }} 
+                imageStyle= {{opacity: 0.5}} 
+                source={require('./assets/images/initial_background.png')}>
+                <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <FadeInView>
+                        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                            <Image style={{
+                                width: 50, 
+                                height: 50, 
+                                borderRadius: 100
+                            }} source={require('./assets/icons/logo.png')} />
+                            <Text style={{fontFamily: 'Gilroy-Bold', color: '#E5FE40', fontSize: 32, marginLeft: -7.5}}>assword Manager</Text>
+                        </View>
+                        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
+                            <Text style={{fontFamily: 'Gilroy-Bold', color: '#E5FE40', fontSize: 16}}>secure your Passwords.</Text>
+                        </View>
+                    </FadeInView>
+                </View>
+                </ImageBackground>
+            </View>
+        )
+    }
+
     return (
         <NavigationContainer>
             {passwords==null?
-            <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'}}>
-                <FadeInView>
-                    <Image style={{
-                        width: 125, 
-                        height: 125, 
-                        borderWidth: 1,
-                        borderColor: 'rgba(255, 255, 255, 0.1)',
-                        borderRadius: 100
-                    }} source={require('./assets/icons/logo.png')} />
-                </FadeInView>
-            </View>: auth ?
+            renderInitialScreen() : auth ?
             <Stack.Navigator
                 screenOptions={{
                 headerShown: false

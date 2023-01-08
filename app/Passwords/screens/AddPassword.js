@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, Modal, ActivityIndicator} from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, Modal, ActivityIndicator, BackHandler} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 import {API} from '../API'
@@ -33,11 +33,11 @@ export default function AddPassword({navigation}){
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
-                    "name": name,
-                    "email": email,
-                    "password": password,
-                    "key": key,
-                    "category": category,
+                    "name": name.trim(),
+                    "email": email.trim(),
+                    "password": password.trim(),
+                    "key": key.trim(),
+                    "category": category.trim(),
                     "archive": archive
                 })
 
@@ -53,6 +53,19 @@ export default function AddPassword({navigation}){
             })
         }
     }
+
+    useEffect(() => {
+        const backAction = () => {
+            clearData()
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+    
+        return () => backHandler.remove();
+    }, []);
 
     function renderBack(){
         navigation.navigate("Manage")
