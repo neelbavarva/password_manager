@@ -7,7 +7,11 @@ import { API } from '../API'
 
 export default function Home() {
 
-    const[passwords, setPasswords] = useState(null)
+    const[allPasswords, setAllPasswords] = useState(null) //fetched unarchived Passwords
+    const[archivePasswords, setArchivePasswords] = useState(null) //fetched archived Passwords
+    const[passwords, setPasswords] = useState(null) // rendering passwords
+    const[category, setCategory] = useState("all") // current category
+
     const[modalInfo, setModalInfo] = useState(null)
     const[eKey, setEKey] = useState(null)
     const[ePassword, setEPassword] = useState(null)
@@ -18,9 +22,22 @@ export default function Home() {
         .then(res=>res.json())
         .then(result=>{
             setPasswords(result)
+            setAllPasswords(result)
         })
         .catch((e) => {
-            console.log("Error in Fetching /getAllPasswords "+e);
+            setPasswords("network_error");
+            setAllPasswords("network_error")
+        })
+    }
+
+    const fetchArchivePasswords = () => {
+        fetch(`${API}/passwords/getArchivePasswords`)
+        .then(res=>res.json())
+        .then(result=>{
+            setArchivePasswords(result)
+        })
+        .catch((e) => {
+            setArchivePasswords("network_error");
         })
     }
 
@@ -59,34 +76,55 @@ export default function Home() {
         }
     }
 
+    const filterPassword = (e) => {
+        if(passwords!=null&&passwords!="network_error"){
+            setCategory(e)
+            setPasswords(null)
+            if(e=="all"){
+                setPasswords(allPasswords)
+            } else if(e=="archive"){
+                setPasswords(archivePasswords)
+            } else {
+                let tempPasswords = [];
+                allPasswords.map(item => {
+                    if(item.category == e){
+                        tempPasswords.push(item);
+                    }
+                })
+                setPasswords(tempPasswords)
+            }
+        }
+    }
+
     useEffect(()=>{
         fetchAllPasswords()
+        fetchArchivePasswords()
     },[])
 
     function renderCategories(){
         return(
             <div className={styles.category_container}>
-                <div className={styles.category}>
+                <div className={`${styles.category} ${category=="all" ? styles.selected_category : null}`} onClick={() => filterPassword("all")}>
                     <div><Image width={35} src={require('../public/icons/all.png')} /></div>
                     <div>all</div>
                 </div>
-                <div className={styles.category}>
+                <div className={`${styles.category} ${category=="web-app" ? styles.selected_category : null}`} onClick={() => filterPassword("web-app")}>
                     <div><Image width={35} src={require('../public/icons/web_app.png')} /></div>
                     <div>web_app</div>
                 </div>
-                <div className={styles.category}>
+                <div className={`${styles.category} ${category=="email" ? styles.selected_category : null}`} onClick={() => filterPassword("email")}>
                     <div><Image width={35} src={require('../public/icons/email.png')} /></div>
                     <div>email</div>
                 </div>
-                <div className={styles.category}>
+                <div className={`${styles.category} ${category=="banking" ? styles.selected_category : null}`} onClick={() => filterPassword("banking")}>
                     <div><Image width={35} src={require('../public/icons/banking.png')} /></div>
                     <div>banking</div>
                 </div>
-                <div className={styles.category}>
+                <div className={`${styles.category} ${category=="other" ? styles.selected_category : null}`} onClick={() => filterPassword("other")}>
                     <div><Image width={35} src={require('../public/icons/other.png')} /></div>
                     <div>other</div>
                 </div>
-                <div className={styles.category}>
+                <div className={`${styles.category} ${category=="archive" ? styles.selected_category : null}`} onClick={() => filterPassword("archive")}>
                     <div><Image width={35} src={require('../public/icons/archive.png')} /></div>
                     <div>archive</div>
                 </div>
@@ -97,6 +135,7 @@ export default function Home() {
     function getModalInfo(e){
         fetchPasswordById(e)
     }
+
     function closeModal(){
         setEKey(null)
         setEPassword(null)
