@@ -1,8 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Dimensions, Image, TextInput, TouchableOpacity, ScrollView, ImageBackground} from 'react-native';
+import { View, Text, Dimensions, Image, TextInput, TouchableOpacity, ScrollView, AsyncStorage, ToastAndroid} from 'react-native';
 const { width, height } = Dimensions.get("window");
 
 export default function Manage({navigation}){
+
+    const[key, setKey] = useState(null)
+    const[enableAdd, setEnableAdd] = useState(false)
+
+    const handleEnableAdd = () => {
+        enableAdd?setEnableAdd(false)&setKey(null):setEnableAdd(true)
+    }
+
+    _storeKey = async () => {
+        if(key!=null && key!=""){
+            try {
+                await AsyncStorage.setItem(
+                  'localKey', key
+                )
+                setEnableAdd(false)
+                setKey(null)
+                ToastAndroid.show("Key added successfully", ToastAndroid.SHORT)
+            } catch (error) {
+                ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT)
+            }
+        }
+    }
 
     function renderHeader(){
         return(
@@ -33,150 +55,120 @@ export default function Manage({navigation}){
     function renderFeatures(){
         return(
             <ScrollView horizontal showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{display: 'flex', flexDirection: 'row', marginTop: 10, marginHorizontal: 20}}>
-                <View style={{backgroundColor: '#4623B0', width: 250, marginRight: 7.5}}>
-                    <Image style={{width: 250, height: 250, marginTop: -175}} source={require('../assets/images/layers_light.png')} />
-                    <View style={{padding: 20, marginTop: 10}}>
-                        <Text style={{fontFamily: 'Cirka-Bold', fontSize: 18, color: '#E5FE40'}}>add new password</Text>
-                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 10}}>check you passwords </Text>
-                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 2.5}}>lets see what </Text>
-                        <Image />
+
+                <TouchableOpacity activeOpacity={0.75} onPress={() => navigation.navigate("AddPassword")} style={{backgroundColor: '#2A2A2A', padding: 25}}>
+                    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
+                        <Text style={{color: 'rgba(255, 255, 255, 0.9)', fontFamily: 'Gilroy-Bold', fontSize: 18}}>add Password</Text>
+                        <View style={{width: 10, height: 10, borderRadius: 100, backgroundColor: '#3F6FD9', marginLeft: 10}} />
                     </View>
-                    <View>
-                        <TouchableOpacity 
-                        onPress={() => navigation.navigate("AddPassword")}
-                        style={{
-                            backgroundColor: 'white',
-                            width: 150,
-                            height: 50,
-                            margin: 20,
-                            marginBottom: 35,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 1,
-                            marginTop: 25
-                        }}>
-                            <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'black'}}>add new</Text>
-                            <Image style={{tintColor: 'black', width: 20, height: 7.5, marginLeft: 15}} source={require('../assets/icons/left_arrow.png')} />
-                        </TouchableOpacity>
+                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 12, marginTop: 10}}>be carefull about input fields and key</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity activeOpacity={0.75} onPress={() => navigation.navigate("AddCard")} style={{backgroundColor: '#2A2A2A', padding: 25, marginLeft: 10}}>
+                    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
+                        <Text style={{color: 'rgba(255, 255, 255, 0.9)', fontFamily: 'Gilroy-Bold', fontSize: 18}}>add Card</Text>
+                        <View style={{width: 10, height: 10, borderRadius: 100, backgroundColor: '#3F6FD9', marginLeft: 10}} />
                     </View>
-                </View>
-                <View style={{backgroundColor: '#A40246', width: 250, marginHorizontal: 7.5}}>
-                    <Image style={{width: 250, height: 250, marginTop: -175}} source={require('../assets/images/layers_light.png')} />
-                    <View style={{padding: 20, marginTop: 10}}>
-                        <Text style={{fontFamily: 'Cirka-Bold', fontSize: 18, color: '#E5FE40'}}>add new card</Text>
-                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 10}}>check you passwords</Text>
-                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 2.5}}>lets see what </Text>
-                        <Image />
+                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 12, marginTop: 10}}>be carefull about input fields and key</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity activeOpacity={0.75} onPress={() => navigation.navigate("DeletePassword")} style={{backgroundColor: '#2A2A2A', padding: 25, marginLeft: 10}}>
+                    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
+                        <Text style={{color: 'rgba(255, 255, 255, 0.9)', fontFamily: 'Gilroy-Bold', fontSize: 18}}>delete Password</Text>
+                        <View style={{width: 10, height: 10, borderRadius: 100, backgroundColor: '#FFCB45', marginLeft: 10}} />
                     </View>
-                    <View>
-                        <TouchableOpacity 
-                        onPress={() => navigation.navigate("AddCard")}
-                        style={{
-                            backgroundColor: 'white',
-                            width: 150,
-                            height: 50,
-                            margin: 20,
-                            marginBottom: 35,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 1,
-                            marginTop: 25
-                        }}>
-                            <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'black'}}>add new</Text>
-                            <Image style={{tintColor: 'black', width: 20, height: 7.5, marginLeft: 15}} source={require('../assets/icons/left_arrow.png')} />
-                        </TouchableOpacity>
+                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 12, marginTop: 10}}>be carefull while deleteing any password</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity activeOpacity={0.75} style={{backgroundColor: '#2A2A2A', padding: 25, marginLeft: 10}}>
+                    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
+                        <Text style={{color: 'rgba(255, 255, 255, 0.9)', fontFamily: 'Gilroy-Bold', fontSize: 18}}>delete Card</Text>
+                        <View style={{width: 10, height: 10, borderRadius: 100, backgroundColor: '#FFCB45', marginLeft: 10}} />
                     </View>
-                </View>
-                <View style={{backgroundColor: '#004298', width: 250, marginHorizontal: 7.5}}>
-                    <Image style={{width: 250, height: 250, marginTop: -175}} source={require('../assets/images/layers_light.png')} />
-                    <View style={{padding: 20, marginTop: 10}}>
-                        <Text style={{fontFamily: 'Cirka-Bold', fontSize: 18, color: '#E5FE40'}}>delete passwords</Text>
-                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 10}}>check you passwords</Text>
-                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 2.5}}>lets see what </Text>
-                        <Image />
-                    </View>
-                    <View>
-                        <TouchableOpacity 
-                        onPress={() => navigation.navigate("DeletePassword")}
-                        style={{
-                            backgroundColor: 'white',
-                            width: 150,
-                            height: 50,
-                            margin: 20,
-                            marginBottom: 35,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 1,
-                            marginTop: 25
-                        }}>
-                            <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'black'}}>delete</Text>
-                            <Image style={{tintColor: 'black', width: 20, height: 7.5, marginLeft: 15}} source={require('../assets/icons/left_arrow.png')} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{backgroundColor: '#393838', width: 250, marginLeft: 7.5}}>
-                    <Image style={{width: 250, height: 250, marginTop: -175}} source={require('../assets/images/layers_light.png')} />
-                    <View style={{padding: 20, marginTop: 10}}>
-                        <Text style={{fontFamily: 'Cirka-Bold', fontSize: 18, color: '#E5FE40'}}>delete cards</Text>
-                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 10}}>check you passwords</Text>
-                        <Text style={{fontFamily: 'Gilroy-Medium', fontSize: 12, color: '#D2D2D2', marginTop: 2.5}}>lets see what </Text>
-                        <Image />
-                    </View>
-                    <View>
-                        <TouchableOpacity style={{
-                            backgroundColor: 'white',
-                            width: 150,
-                            height: 50,
-                            margin: 20,
-                            marginBottom: 35,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 1,
-                            marginTop: 25
-                        }}>
-                            <Text style={{fontFamily: 'Gilroy-Bold', fontSize: 14, color: 'black'}}>delete</Text>
-                            <Image style={{tintColor: 'black', width: 20, height: 7.5, marginLeft: 15}} source={require('../assets/icons/left_arrow.png')} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 12, marginTop: 10}}>be carefull while deleteing any card</Text>
+                </TouchableOpacity>
+
             </ScrollView>
         )
     }
 
     function renderAddKey(){
         return(
-            <View style={{display: 'flex', flexDirection: 'row', margin: 20, backgroundColor: '#6A35FF', padding: 20}}>
-                <View style={{display: 'flex', flex: 1}}>
-                    <View style={{marginTop: 10}}>
-                        <Text style={{fontSize: 18, fontFamily: 'Gilroy-Bold', color: 'white'}}>add local key</Text>
-                        <Text style={{fontSize: 14, fontFamily: 'Gilroy-Medium', color: '#B287FD', marginTop: 25, lineHeight: 20}}>add key to your local storage</Text>
+            <View style={{margin: 20, backgroundColor: '#0D0D0D', padding: 20}}>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <View style={{padding: 10}}>
+                        <Image
+                            style={{width: 100, height: 100}} 
+                            source={require('../assets/icons/score.png')}
+                        />
                     </View>
-                    <View style={{marginTop: 25, marginBottom: 10}}>
+                    <View style={{display: 'flex', flexDirection: 'column', marginLeft: 25, paddingVertical: 10}}>
+                        <Text style={{color: '#EDFE79', fontFamily: 'Gilroy-Black', fontSize: 12}}>S E C U R E</Text>
+                        <Text style={{color: '#D2D2D2', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 10}}>add key to local storage</Text>
+                        {/* <Text style={{color: '#3D3D3D', fontFamily: 'Gilroy-Medium', fontSize: 12, marginTop: 10}}>last updated on 5 March</Text> */}
                         <TouchableOpacity
-                            activeOpacity={0.75}
                             style={{
-                                backgroundColor: 'white',
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                padding: 12.5
+                                marginTop: 20,
+                                borderWidth: 1,
+                                borderColor: 'white',
+                                width: 100,
+                                paddingVertical: 10,
+                                borderRadius: 1,
+                                backgroundColor: 'black'
                             }}
+                            onPress={() => handleEnableAdd()}
                         >
-                            <Text style={{fontSize: 14, fontFamily: 'Gilroy-Bold', color: 'black'}}>add new key</Text>
+                            <Text style={{color: 'white', fontFamily: 'Gilroy-Medium', fontSize: 12}}>{enableAdd?"Cancel":"Add Key"}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
-                    <Image style={{width: 125, height: 125}} source={require('../assets/icons/secure.png')} />
-                </View>
+                {enableAdd ? 
+                <View style={{display: 'flex', flexDirection: 'row', marginTop: 20, marginBottom: 10}}>
+                    <TextInput 
+                        style={{
+                            display: 'flex',
+                            flex: 1,
+                            borderWidth: 1,
+                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            backgroundColor: 'black',
+                            paddingHorizontal: 20,
+                            paddingVertical: 10,
+                            fontFamily: 'Gilroy-Bold',
+                            color: 'white',
+                            borderRadius: 1,
+                            fontSize: 14
+                        }}
+                        value={key}
+                        onChangeText={e => setKey(e)}
+                        placeholder="add key"
+                        placeholderTextColor='rgba(255, 255, 255, 0.3)'
+                    />
+                    <TouchableOpacity
+                        onPress={() => _storeKey()}
+                        activeOpacity={0.75}
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderWidth: 1,
+                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            backgroundColor: 'black',
+                            paddingHorizontal: 20,
+                            paddingVertical: 10,
+                            fontFamily: 'Gilroy-Bold',
+                            color: 'white',
+                            borderRadius: 1,
+                            fontSize: 14
+                        }}
+                    >
+                        <Text style={{fontFamily: 'Gilroy-Bold', color: 'white'}}>add</Text>
+                        <Image style={{width: 12, height: 7, marginLeft: 10}} source={require('../assets/icons/right_arrow_small.png')} />
+                    </TouchableOpacity>
+                </View> : null}
             </View>
         )
     }
@@ -186,6 +178,7 @@ export default function Manage({navigation}){
             {renderHeader()}
             {renderFeatures()}
             {renderAddKey()}
+            <View style={{paddingBottom: 100}} />
         </ScrollView>
     );
 }
