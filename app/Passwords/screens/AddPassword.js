@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, Modal, ActivityIndicator, BackHandler} from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, Modal, ActivityIndicator, BackHandler, ToastAndroid} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 import {API} from '../API'
@@ -47,8 +47,13 @@ export default function AddPassword({navigation}){
             })
             .then(res=>res.json())
             .then(result=>{
-                navigation.navigate("Manage")
-                clearData()
+                if(backup){
+                    addBackupPassword()
+                } else {
+                    ToastAndroid.show("Password added Successfully", ToastAndroid.SHORT)
+                    navigation.navigate("Manage")
+                    clearData()
+                }
             })
             .catch((e) => {
                 console.log("Error in POST password "+e);
@@ -57,55 +62,29 @@ export default function AddPassword({navigation}){
         }
     }
 
-    const addWithBackupPassword = () => {
-        if (name==null||email==null||category==null||password==null||key==null||archive==null){
-            setFieldError(true)
-        } else {
-            setLoader(true)
-            setFieldError(false)
-
-            fetch(`https://password-manager-xpkf.onrender.com/passwords/newPassword`,{
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    "name": name.trim(),
-                    "email": email.trim(),
-                    "password": password.trim(),
-                    "key": key.trim(),
-                    "category": category.trim(),
-                    "archive": archive
-                })
-
+    const addBackupPassword = () => {
+        fetch(`https://password-manager-backup.onrender.com/passwords/newPassword`,{
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                "name": name.trim(),
+                "email": email.trim(),
+                "password": password.trim(),
+                "key": key.trim(),
+                "category": category.trim(),
+                "archive": archive
             })
-            .then(res=>res.json())
-            .then(res_main=>{
-                fetch(`https://password-manager-backup.onrender.com/passwords/newPassword`,{
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        "name": name.trim(),
-                        "email": email.trim(),
-                        "password": password.trim(),
-                        "key": key.trim(),
-                        "category": category.trim(),
-                        "archive": archive
-                    })
 
-                })
-                .then(res=>res.json())
-                .then(result=>{
-                    navigation.navigate("Manage")
-                    clearData()
-                })
-                .catch((e) => {
-                    console.log("Error in POST password "+e)
-                })
-            })
-            .catch((e) => {
-                console.log("Error in POST password "+e);
-                setLoader(false)
-            })
-        }
+        })
+        .then(res=>res.json())
+        .then(result=>{
+            ToastAndroid.show("Password with Backup added Successfully", ToastAndroid.SHORT)
+            navigation.navigate("Manage")
+            clearData()
+        })
+        .catch((e) => {
+            console.log("Error in POST password "+e)
+        })
     }
 
     useEffect(() => {
@@ -298,245 +277,249 @@ export default function AddPassword({navigation}){
         )
     }
 
+    function renderForm(){
+        return(
+            <View style={{alignItems: 'center', marginTop: 20}}>
+                <View style={{display: 'flex', flex: 1, flexDirection: 'row', }}>
+                    <Text style={{
+                        display: 'flex', 
+                        alignSelf: 'flex-end', 
+                        fontFamily: 'Gilroy-Bold', 
+                        fontSize: 16, 
+                        borderBottomWidth: 1, 
+                        borderColor: nameFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
+                        paddingVertical: 20,
+                        marginLeft: 30,
+                        width: 100,
+                        color: nameFocused ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.25)',
+                    }}>name</Text>
+                    <TextInput 
+                        style={{
+                            display: 'flex',
+                            flex: 1,
+                            marginRight: 30,
+                            borderBottomWidth: 1,
+                            borderColor: nameFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
+                            padding: 5,
+                            paddingHorizontal: 20,
+                            paddingVertical: 17.5,
+                            fontFamily: 'Gilroy-Medium',
+                            color: 'white',
+                            borderRadius: 1,
+                            fontSize: 16
+                        }}
+                        onBlur={() => setNameFocused(false)}
+                        onFocus={() => setNameFocused(true)}
+                        value={name}
+                        onChangeText={e => setName(e)}
+                        placeholderTextColor='rgba(255, 255, 255, 0.3)'
+                    />
+                </View>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <Text style={{
+                        display: 'flex', 
+                        alignSelf: 'flex-end', 
+                        fontFamily: 'Gilroy-Bold', 
+                        fontSize: 16, 
+                        borderBottomWidth: 1, 
+                        borderColor: emailFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
+                        paddingVertical: 20,
+                        marginLeft: 30,
+                        width: 100,
+                        color: emailFocused ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.25)',
+                    }}>email</Text>
+                    <TextInput 
+                        style={{
+                            display: 'flex',
+                            flex: 1,
+                            marginRight: 30,
+                            borderBottomWidth: 1,
+                            borderColor: emailFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
+                            padding: 5,
+                            paddingHorizontal: 20,
+                            paddingVertical: 17.5,
+                            fontFamily: 'Gilroy-Medium',
+                            color: 'white',
+                            borderRadius: 1,
+                            fontSize: 16
+                        }}
+                        onBlur={() => setEmailFocused(false)}
+                        onFocus={() => setEmailFocused(true)}
+                        value={email}
+                        onChangeText={e => setEmail(e)}
+                        placeholderTextColor='rgba(255, 255, 255, 0.3)'
+                    />
+                </View>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <Text style={{
+                        display: 'flex', 
+                        alignSelf: 'flex-end', 
+                        fontFamily: 'Gilroy-Bold', 
+                        fontSize: 16, 
+                        borderBottomWidth: 1, 
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        paddingVertical: 20,
+                        marginLeft: 30,
+                        width: 100,
+                        color: 'rgba(255, 255, 255, 0.25)',
+                    }}>category</Text>
+                    <TouchableOpacity 
+                        activeOpacity={0.75}
+                        style={{
+                            display: 'flex',
+                            flex: 1,
+                            marginRight: 30,
+                            borderBottomWidth: 1,
+                            borderColor:'rgba(255, 255, 255, 0.1)',
+                            padding: 5,
+                            paddingHorizontal: 20,
+                            paddingVertical: 17.5,
+                            fontFamily: 'Gilroy-Medium',
+                            color: 'white',
+                            borderRadius: 1,
+                            fontSize: 16
+                        }}
+                        onPress={() => setModalVisible(true)}
+                    >
+                        <Text style={{color: category==null?'rgba(255, 255, 255, 0.3)':'white', fontSize: 16, fontFamily: 'Gilroy-Medium', paddingVertical: 2.5}}>{category==null ? null : category}</Text>
+                    </TouchableOpacity>
+                </View>
+                
+                
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <Text style={{
+                        display: 'flex', 
+                        alignSelf: 'flex-end', 
+                        fontFamily: 'Gilroy-Bold', 
+                        fontSize: 16, 
+                        borderBottomWidth: 1, 
+                        borderColor: passwordFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
+                        paddingVertical: 20,
+                        marginLeft: 30,
+                        width: 100,
+                        color: passwordFocused ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.25)',
+                    }}>password</Text>
+                    <TextInput 
+                        style={{
+                            display: 'flex',
+                            flex: 1,
+                            marginRight: 30,
+                            borderBottomWidth: 1,
+                            borderColor: passwordFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
+                            padding: 5,
+                            paddingHorizontal: 20,
+                            paddingVertical: 17.5,
+                            fontFamily: 'Gilroy-Medium',
+                            color: 'white',
+                            borderRadius: 1,
+                            fontSize: 16
+                        }}
+                        onBlur={() => setPasswordFocused(false)}
+                        onFocus={() => setPasswordFocused(true)}
+                        value={password}
+                        onChangeText={e => setPassword(e)}
+                        placeholderTextColor='rgba(255, 255, 255, 0.3)'
+                    />
+                </View>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <Text style={{
+                        display: 'flex', 
+                        alignSelf: 'flex-end', 
+                        fontFamily: 'Gilroy-Bold', 
+                        fontSize: 16, 
+                        borderBottomWidth: 1, 
+                        borderColor: keyFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
+                        paddingVertical: 20,
+                        marginLeft: 30,
+                        width: 100,
+                        color: keyFocused ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.25)',
+                    }}>key</Text>
+                    <TextInput 
+                        style={{
+                            display: 'flex',
+                            flex: 1,
+                            marginRight: 30,
+                            borderBottomWidth: 1,
+                            borderColor: keyFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
+                            padding: 5,
+                            paddingHorizontal: 20,
+                            paddingVertical: 17.5,
+                            fontFamily: 'Gilroy-Medium',
+                            color: 'white',
+                            borderRadius: 1,
+                            fontSize: 16
+                        }}
+                        onBlur={() => setKeyFocused(false)}
+                        onFocus={() => setKeyFocused(true)}
+                        value={key}
+                        onChangeText={e => setKey(e)}
+                        placeholderTextColor='rgba(255, 255, 255, 0.3)'
+                    />
+                </View>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <Text style={{
+                        display: 'flex', 
+                        alignSelf: 'flex-end', 
+                        fontFamily: 'Gilroy-Bold', 
+                        fontSize: 16, 
+                        borderBottomWidth: 1, 
+                        borderColor: archiveFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
+                        paddingVertical: 20,
+                        marginLeft: 30,
+                        width: 100,
+                        color: 'rgba(255, 255, 255, 0.25)',
+                    }}>archive</Text>
+                    <TouchableOpacity 
+                        activeOpacity={0.75}
+                        style={{
+                            display: 'flex',
+                            flex: 1,
+                            marginRight: 30,
+                            borderBottomWidth: 1,
+                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            padding: 5,
+                            paddingHorizontal: 20,
+                            paddingVertical: 17.5,
+                            fontFamily: 'Gilroy-Medium',
+                            color: 'white',
+                            borderRadius: 1,
+                            fontSize: 16
+                        }}
+                        onPress={() => archive ? setArchive(false) : setArchive(true)}
+                    >
+                        <Text style={{color: category==null?'rgba(255, 255, 255, 0.3)':'white', fontSize: 16, fontFamily: 'Gilroy-Medium', paddingVertical: 5}}>{archive ? "Yes" : "No"}</Text>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                    activeOpacity={0.75}
+                    style={{
+                        backgroundColor: fieldError ? '#FF426F' : 'white',
+                        width: width - 60,
+                        padding: 15,
+                        marginTop: 50,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginBottom: 30,
+                        height: 50
+                    }}
+                    onPress={() => addNewPassword()}
+                >
+                    {loader ? <ActivityIndicator color="black" size="small" />
+                    : <Text style={{fontFamily: 'Gilroy-Bold', color: 'black', fontSize: 12}}>Submit</Text>}
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     return (
         <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{backgroundColor: 'black', height: height}}>
             
             {renderHeader()}
             {renderModal()}
             {renderCategory()}
+            {renderForm()}
             
-            <View style={{marginTop: 20}}>
-                <View style={{alignItems: 'center'}}>
-                    <View style={{display: 'flex', flex: 1, flexDirection: 'row', }}>
-                        <Text style={{
-                            display: 'flex', 
-                            alignSelf: 'flex-end', 
-                            fontFamily: 'Gilroy-Bold', 
-                            fontSize: 16, 
-                            borderBottomWidth: 1, 
-                            borderColor: nameFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
-                            paddingVertical: 20,
-                            marginLeft: 30,
-                            width: 100,
-                            color: nameFocused ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.25)',
-                        }}>name</Text>
-                        <TextInput 
-                            style={{
-                                display: 'flex',
-                                flex: 1,
-                                marginRight: 30,
-                                borderBottomWidth: 1,
-                                borderColor: nameFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
-                                padding: 5,
-                                paddingHorizontal: 20,
-                                paddingVertical: 17.5,
-                                fontFamily: 'Gilroy-Medium',
-                                color: 'white',
-                                borderRadius: 1,
-                                fontSize: 16
-                            }}
-                            onBlur={() => setNameFocused(false)}
-                            onFocus={() => setNameFocused(true)}
-                            value={name}
-                            onChangeText={e => setName(e)}
-                            placeholderTextColor='rgba(255, 255, 255, 0.3)'
-                        />
-                    </View>
-                    <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <Text style={{
-                            display: 'flex', 
-                            alignSelf: 'flex-end', 
-                            fontFamily: 'Gilroy-Bold', 
-                            fontSize: 16, 
-                            borderBottomWidth: 1, 
-                            borderColor: emailFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
-                            paddingVertical: 20,
-                            marginLeft: 30,
-                            width: 100,
-                            color: emailFocused ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.25)',
-                        }}>email</Text>
-                        <TextInput 
-                            style={{
-                                display: 'flex',
-                                flex: 1,
-                                marginRight: 30,
-                                borderBottomWidth: 1,
-                                borderColor: emailFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
-                                padding: 5,
-                                paddingHorizontal: 20,
-                                paddingVertical: 17.5,
-                                fontFamily: 'Gilroy-Medium',
-                                color: 'white',
-                                borderRadius: 1,
-                                fontSize: 16
-                            }}
-                            onBlur={() => setEmailFocused(false)}
-                            onFocus={() => setEmailFocused(true)}
-                            value={email}
-                            onChangeText={e => setEmail(e)}
-                            placeholderTextColor='rgba(255, 255, 255, 0.3)'
-                        />
-                    </View>
-                    <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <Text style={{
-                            display: 'flex', 
-                            alignSelf: 'flex-end', 
-                            fontFamily: 'Gilroy-Bold', 
-                            fontSize: 16, 
-                            borderBottomWidth: 1, 
-                            borderColor: 'rgba(255, 255, 255, 0.1)',
-                            paddingVertical: 20,
-                            marginLeft: 30,
-                            width: 100,
-                            color: 'rgba(255, 255, 255, 0.25)',
-                        }}>category</Text>
-                        <TouchableOpacity 
-                            activeOpacity={0.75}
-                            style={{
-                                display: 'flex',
-                                flex: 1,
-                                marginRight: 30,
-                                borderBottomWidth: 1,
-                                borderColor:'rgba(255, 255, 255, 0.1)',
-                                padding: 5,
-                                paddingHorizontal: 20,
-                                paddingVertical: 17.5,
-                                fontFamily: 'Gilroy-Medium',
-                                color: 'white',
-                                borderRadius: 1,
-                                fontSize: 16
-                            }}
-                            onPress={() => setModalVisible(true)}
-                        >
-                            <Text style={{color: category==null?'rgba(255, 255, 255, 0.3)':'white', fontSize: 16, fontFamily: 'Gilroy-Medium', paddingVertical: 2.5}}>{category==null ? null : category}</Text>
-                        </TouchableOpacity>
-                    </View>
-                    
-                    
-                    <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <Text style={{
-                            display: 'flex', 
-                            alignSelf: 'flex-end', 
-                            fontFamily: 'Gilroy-Bold', 
-                            fontSize: 16, 
-                            borderBottomWidth: 1, 
-                            borderColor: passwordFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
-                            paddingVertical: 20,
-                            marginLeft: 30,
-                            width: 100,
-                            color: passwordFocused ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.25)',
-                        }}>password</Text>
-                        <TextInput 
-                            style={{
-                                display: 'flex',
-                                flex: 1,
-                                marginRight: 30,
-                                borderBottomWidth: 1,
-                                borderColor: passwordFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
-                                padding: 5,
-                                paddingHorizontal: 20,
-                                paddingVertical: 17.5,
-                                fontFamily: 'Gilroy-Medium',
-                                color: 'white',
-                                borderRadius: 1,
-                                fontSize: 16
-                            }}
-                            onBlur={() => setPasswordFocused(false)}
-                            onFocus={() => setPasswordFocused(true)}
-                            value={password}
-                            onChangeText={e => setPassword(e)}
-                            placeholderTextColor='rgba(255, 255, 255, 0.3)'
-                        />
-                    </View>
-                    <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <Text style={{
-                            display: 'flex', 
-                            alignSelf: 'flex-end', 
-                            fontFamily: 'Gilroy-Bold', 
-                            fontSize: 16, 
-                            borderBottomWidth: 1, 
-                            borderColor: keyFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
-                            paddingVertical: 20,
-                            marginLeft: 30,
-                            width: 100,
-                            color: keyFocused ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.25)',
-                        }}>key</Text>
-                        <TextInput 
-                            style={{
-                                display: 'flex',
-                                flex: 1,
-                                marginRight: 30,
-                                borderBottomWidth: 1,
-                                borderColor: keyFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
-                                padding: 5,
-                                paddingHorizontal: 20,
-                                paddingVertical: 17.5,
-                                fontFamily: 'Gilroy-Medium',
-                                color: 'white',
-                                borderRadius: 1,
-                                fontSize: 16
-                            }}
-                            onBlur={() => setKeyFocused(false)}
-                            onFocus={() => setKeyFocused(true)}
-                            value={key}
-                            onChangeText={e => setKey(e)}
-                            placeholderTextColor='rgba(255, 255, 255, 0.3)'
-                        />
-                    </View>
-                    <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <Text style={{
-                            display: 'flex', 
-                            alignSelf: 'flex-end', 
-                            fontFamily: 'Gilroy-Bold', 
-                            fontSize: 16, 
-                            borderBottomWidth: 1, 
-                            borderColor: archiveFocused ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)',
-                            paddingVertical: 20,
-                            marginLeft: 30,
-                            width: 100,
-                            color: 'rgba(255, 255, 255, 0.25)',
-                        }}>archive</Text>
-                        <TouchableOpacity 
-                            activeOpacity={0.75}
-                            style={{
-                                display: 'flex',
-                                flex: 1,
-                                marginRight: 30,
-                                borderBottomWidth: 1,
-                                borderColor: 'rgba(255, 255, 255, 0.1)',
-                                padding: 5,
-                                paddingHorizontal: 20,
-                                paddingVertical: 17.5,
-                                fontFamily: 'Gilroy-Medium',
-                                color: 'white',
-                                borderRadius: 1,
-                                fontSize: 16
-                            }}
-                            onPress={() => archive ? setArchive(false) : setArchive(true)}
-                        >
-                            <Text style={{color: category==null?'rgba(255, 255, 255, 0.3)':'white', fontSize: 16, fontFamily: 'Gilroy-Medium', paddingVertical: 5}}>{archive ? "Yes" : "No"}</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity
-                        activeOpacity={0.75}
-                        style={{
-                            backgroundColor: fieldError ? '#FF426F' : 'white',
-                            width: width - 60,
-                            padding: 15,
-                            marginTop: 50,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginBottom: 30,
-                            height: 50
-                        }}
-                        onPress={() => backup ? addWithBackupPassword() : addNewPassword()}
-                    >
-                        {loader ? <ActivityIndicator color="black" size="small" />
-                        : <Text style={{fontFamily: 'Gilroy-Bold', color: 'black', fontSize: 12}}>Submit</Text>}
-                    </TouchableOpacity>
-                </View>
-            </View>
         </ScrollView>
     );
 }

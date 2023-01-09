@@ -125,6 +125,14 @@ export default function DeletePassword({navigation}){
         )
     }
 
+    function renderSmallLoading(){
+        return(
+            <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 65}}>
+                <ActivityIndicator color="white" size="large" />
+            </View>
+        )
+    }
+
     function renderError(){
         return(
             <View style={{height: height/1.75, width: width, justifyContent: 'center', alignItems: 'center'}}>
@@ -145,9 +153,9 @@ export default function DeletePassword({navigation}){
     function renderModal(){
         return(
             <Modal animationType="fade" transparent={true} visible={modalVisible}>
-                <View style={{display: 'flex', height: 300, width: width-40, marginTop: 215, marginLeft: 20, justifyContent: 'center', alignItems: 'center',  backgroundColor: '#111111', padding: 40}}>
+                <View style={{display: 'flex', height: 300, width: width-50, marginTop: 215, marginLeft: 25, justifyContent: 'center', alignItems: 'center',  backgroundColor: '#111111', padding: 40}}>
                     {passwordId==null || passwordName==null ? 
-                    renderLoading():
+                    renderSmallLoading():
                     <View>
                         <Text style={{display: 'flex', fontFamily: 'Gilroy-Bold', color: 'rgba(255, 255, 255, 0.75)', fontSize: 16, lineHeight: 24}}>Confirm to delete "{passwordName}" ?</Text>
                         {loader==null?
@@ -159,7 +167,7 @@ export default function DeletePassword({navigation}){
                                 <Text style={{display: 'flex', fontFamily: 'Gilroy-Bold', color: 'rgba(255, 255, 255, 0.75)', fontSize: 16}}>Confirm</Text>
                             </TouchableOpacity>
                         </View>:
-                        renderLoading()}
+                        renderSmallLoading()}
                     </View>}
                 </View>
             </Modal>
@@ -210,7 +218,7 @@ export default function DeletePassword({navigation}){
                 </View>
 
                 <View style={{paddingHorizontal: 25, paddingBottom: 25}}>
-                    <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>delete your passwords</Text>
+                    <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>delete your Passwords</Text>
                     <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>be careful while deleting your password</Text>
                 </View>
             </View>
