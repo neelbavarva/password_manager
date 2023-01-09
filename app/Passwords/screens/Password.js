@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, Clipboard, ToastAndroid, BackHandler} from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, Clipboard, ToastAndroid, BackHandler, AsyncStorage} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 
@@ -8,8 +8,10 @@ export default function Password({route, navigation}){
 
     const[password, setPassword] = useState(null)
     const[key, setKey] = useState(null)
+    const[localKey, setLocalKey] = useState(null)
 
     useEffect(() => {
+        _retrieveKey()
         const backAction = () => {
             setKey(null)
             setPassword(null)
@@ -22,6 +24,17 @@ export default function Password({route, navigation}){
     
         return () => backHandler.remove();
     }, []);
+
+    _retrieveKey = async () => {
+        try {
+            const value = await AsyncStorage.getItem('localKey');
+            if (value !== null) {
+                setLocalKey(value)
+            }
+        } catch (error) {
+            ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT)
+        }
+    };
 
     const copyToClipboard = () => {
         Clipboard.setString(password)
@@ -48,6 +61,29 @@ export default function Password({route, navigation}){
             }
         
             decrypted_key==key ? setPassword(decrypted_string)&setKey(null) : setPassword("wrong_key");
+        }
+    }
+
+    function  decryptWithLocalKey(){
+        _retrieveKey()
+        if(localKey!=null){
+            let decrypted_string = "";
+            let decrypted_key = "";
+            let key_length = (localKey.length-1)*3 + 1;
+        
+            for(let i=0;i<_password.length-key_length;i++){
+                if((i+1)%3==0){
+                    decrypted_string += String.fromCharCode(_password.charAt(i).charCodeAt(0) - 4);
+                }
+            }
+        
+            for(let i=_password.length-key_length;i<_password.length;i++){
+                if((i+1)%3==0){
+                    decrypted_key += String.fromCharCode(_password.charAt(i).charCodeAt(0) - 4);
+                }
+            }
+        
+            decrypted_key==localKey ? setPassword(decrypted_string)&setKey(null)&setLocalKey(null)&ToastAndroid.show("Decrypted using Local Key", ToastAndroid.SHORT) : setPassword("wrong_key")
         }
     }
 
@@ -105,7 +141,7 @@ export default function Password({route, navigation}){
                             }}
                             source={password==null ? require('../assets/icons/box.png') : password=="wrong_key" ? require('../assets/icons/warning.png') : require('../assets/icons/done_green.png')}
                         />
-                        <Text style={{fontFamily:'Gilroy-Bold', fontSize: 14, marginLeft: 30, lineHeight: 16, color: 'rgba(255, 255, 255, 0.5)', marginTop: 0}}>{password==null?_password.substring(0, 26):password=="wrong_key"?"Wrong Key":password}</Text>
+                        <Text style={{fontFamily:'Gilroy-Bold', fontSize: 14, marginLeft: password==null||password=="wrong_key"?30:25, lineHeight: 16, color: 'rgba(255, 255, 255, 0.5)', marginTop: 0}}>{password==null?_password.substring(0, 26):password=="wrong_key"?"Wrong Key":password}</Text>
                     </TouchableOpacity>
                     <View style={{display: 'flex', flexDirection: 'row', marginTop: 15}}>
                         <TextInput 
@@ -147,6 +183,7 @@ export default function Password({route, navigation}){
                             borderRadius: 1,
                         }}
                         onPress={() => decryptPassword()}
+                        onLongPress={() => decryptWithLocalKey()}
                     >
                         <Text style={{fontFamily: 'Gilroy-Bold', color: 'black', fontSize: 14}}>decrypt</Text>
                     </TouchableOpacity>
