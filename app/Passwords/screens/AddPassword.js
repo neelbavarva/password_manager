@@ -6,23 +6,25 @@ import {API} from '../API'
 
 export default function AddPassword({navigation}){
     
+    // form fields
     const[name, setName] = useState(null)
     const[email, setEmail] = useState(null)
     const[category, setCategory] = useState(null)
     const[password, setPassword] = useState(null)
     const[key, setKey] = useState(null)
-    const[fieldError, setFieldError] = useState(false)
     const[archive, setArchive] = useState(false)
+
+    const[loader, setLoader] = useState(false)
+    const[fieldError, setFieldError] = useState(false)
     const[modalVisible, setModalVisible] = useState(false)
     const[backup, setBackup] = useState(false)
 
+    // focus states
     const[nameFocused, setNameFocused] = useState(false)
     const[emailFocused, setEmailFocused] = useState(false)
     const[passwordFocused, setPasswordFocused] = useState(false)
     const[keyFocused, setKeyFocused] = useState(false)
     const[archiveFocused, setArchiveFocused] = useState(false)
-
-    const[loader, setLoader] = useState(false)
 
     const addNewPassword = () => {
         if (name==null||email==null||category==null||password==null||key==null||archive==null){
@@ -181,7 +183,7 @@ export default function AddPassword({navigation}){
                 </View>
 
                 <View style={{paddingHorizontal: 25, paddingBottom: 25}}>
-                    <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>add password</Text>
+                    <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>add Password</Text>
                     <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>check fields carefully before submitting</Text>
                 </View>
             </View>
