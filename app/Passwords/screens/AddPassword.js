@@ -14,6 +14,7 @@ export default function AddPassword({navigation}){
     const[fieldError, setFieldError] = useState(false)
     const[archive, setArchive] = useState(false)
     const[modalVisible, setModalVisible] = useState(false)
+    const[backup, setBackup] = useState(false)
 
     const[nameFocused, setNameFocused] = useState(false)
     const[emailFocused, setEmailFocused] = useState(false)
@@ -54,6 +55,57 @@ export default function AddPassword({navigation}){
         }
     }
 
+    const addWithBackupPassword = () => {
+        if (name==null||email==null||category==null||password==null||key==null||archive==null){
+            setFieldError(true)
+        } else {
+            setLoader(true)
+            setFieldError(false)
+
+            fetch(`https://password-manager-xpkf.onrender.com/passwords/newPassword`,{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    "name": name.trim(),
+                    "email": email.trim(),
+                    "password": password.trim(),
+                    "key": key.trim(),
+                    "category": category.trim(),
+                    "archive": archive
+                })
+
+            })
+            .then(res=>res.json())
+            .then(res_main=>{
+                fetch(`https://password-manager-backup.onrender.com/passwords/newPassword`,{
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        "name": name.trim(),
+                        "email": email.trim(),
+                        "password": password.trim(),
+                        "key": key.trim(),
+                        "category": category.trim(),
+                        "archive": archive
+                    })
+
+                })
+                .then(res=>res.json())
+                .then(result=>{
+                    navigation.navigate("Manage")
+                    clearData()
+                })
+                .catch((e) => {
+                    console.log("Error in POST password "+e)
+                })
+            })
+            .catch((e) => {
+                console.log("Error in POST password "+e);
+                setLoader(false)
+            })
+        }
+    }
+
     useEffect(() => {
         const backAction = () => {
             clearData()
@@ -82,6 +134,7 @@ export default function AddPassword({navigation}){
         setModalVisible(false)
         setLoader(false)
         setFieldError(false)
+        setBackup(false)
     }
 
     function renderHeader(){
@@ -131,6 +184,45 @@ export default function AddPassword({navigation}){
                     <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>add password</Text>
                     <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>check fields carefully before submitting</Text>
                 </View>
+            </View>
+        )
+    }
+
+    function renderCategory(){
+        return(
+            <View style={{display: 'flex', flexDirection: 'row', backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: 100, marginHorizontal: 25, marginTop: 10}}>
+                <TouchableOpacity
+                    onPress={() => setBackup(false)}
+                    style={{
+                        flex: 1,
+                        padding: 10,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 100,
+                        backgroundColor: !backup ? 'rgba(255, 255, 255, 0.1)' : null,
+                    }}
+                >
+                    <View style={{width: 7.5, height: 7.5, borderRadius: 100, backgroundColor: '#FFCB45', marginTop: 1.75}} />
+                    <Text style={{fontFamily: !backup ? 'Gilroy-Bold' : 'Gilroy-Medium', fontSize: 12, marginLeft: 7.5, color: '#D2D2D2'}}>without backup</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => setBackup(true)}
+                    style={{
+                        flex: 1,
+                        padding: 10,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 100,
+                        backgroundColor: backup ? 'rgba(255, 255, 255, 0.1)' : null,
+                    }}
+                >
+                    <View style={{width: 7.5, height: 7.5, borderRadius: 100, backgroundColor: '#3F6FD9', marginTop: 1.75}} />
+                    <Text style={{fontFamily: backup ? 'Gilroy-Bold' : 'Gilroy-Medium', fontSize: 12, marginLeft: 7.5, color: '#D2D2D2'}}>with backup</Text>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -209,6 +301,7 @@ export default function AddPassword({navigation}){
             
             {renderHeader()}
             {renderModal()}
+            {renderCategory()}
             
             <View style={{marginTop: 20}}>
                 <View style={{alignItems: 'center'}}>
@@ -435,7 +528,7 @@ export default function AddPassword({navigation}){
                             marginBottom: 30,
                             height: 50
                         }}
-                        onPress={() => addNewPassword()}
+                        onPress={() => backup ? addWithBackupPassword() : addNewPassword()}
                     >
                         {loader ? <ActivityIndicator color="black" size="small" />
                         : <Text style={{fontFamily: 'Gilroy-Bold', color: 'black', fontSize: 12}}>Submit</Text>}
