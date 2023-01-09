@@ -58,7 +58,7 @@ export default function Banking({navigation}){
         fetchCards()
         fetchPasswords()
         fetchArchivePasswords()
-        ToastAndroid.show("Refreshing Cards & Passwords", ToastAndroid.SHORT)
+        ToastAndroid.show("Refreshing Banking Data", ToastAndroid.SHORT)
     }
 
     useEffect(()=>{
@@ -260,10 +260,10 @@ export default function Banking({navigation}){
                                 </View>
                                 <View style={{display: 'flex', flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
                                     <Image 
-                                        source={require('../assets/icons/right_arrow.png')}
+                                        source={require('../assets/icons/right_arrow_small.png')}
                                         style={{
-                                            width: 20,
-                                            height: 7,
+                                            width: 15,
+                                            height: 8,
                                             marginRight: 10,
                                             tintColor: 'rgba(255, 255, 255, 0.5)'
                                         }}
@@ -282,7 +282,7 @@ export default function Banking({navigation}){
             {renderHeader()}
             {cards==null||passwords==null ? renderLoading() : 
             <View>
-                {renderCards()}
+                {cards.length>0 && renderCards()}
                 {renderCategory()}
                 {renderPasswords()}
             </View>}
