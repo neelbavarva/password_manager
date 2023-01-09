@@ -3,7 +3,7 @@ import { View, Image, Text} from "react-native";
 import { createBottomTabNavigator, BottomTabBar } from "@react-navigation/bottom-tabs"
 
 import Home from "../screens/Home";
-import Pawned from "../screens/Pawned";
+import Notes from "../screens/Notes";
 import Banking from "../screens/Banking";
 import Manage from "../screens/Manage";
 import More from "../screens/More";
@@ -12,6 +12,7 @@ import Card from '../screens/Card'
 import AddPassword from "../screens/AddPassword";
 import AddCard from "../screens/AddCard";
 import DeletePassword from "../screens/DeletePassword";
+import DeleteCard from "../screens/DeleteCard";
 
 const Tab = createBottomTabNavigator()
 
@@ -94,8 +95,8 @@ export default function Tabs() {
             />
 
             <Tab.Screen
-                name="Pawned"
-                component={Pawned}
+                name="Manage"
+                component={Manage}
                 options={{
                     headerShown: false,
                     tabBarIcon:({focused}) => ( 
@@ -116,15 +117,15 @@ export default function Tabs() {
                                     height: focused ? 25 : 25
                                 }}
                             />
-                            <Text style={{color: focused ? 'white' : '#8A8A8A', fontFamily: 'Gilroy-Medium', fontSize: 10, marginTop: 7.5}}>pawned</Text>
+                            <Text style={{color: focused ? 'white' : '#8A8A8A', fontFamily: 'Gilroy-Medium', fontSize: 10, marginTop: 7.5}}>manage</Text>
                         </View>
                     )
                 }}
             />
 
             <Tab.Screen
-                name="Manage"
-                component={Manage}
+                name="Notes"
+                component={Notes}
                 options={{
                     headerShown: false,
                     tabBarIcon:({focused}) => ( 
@@ -145,7 +146,7 @@ export default function Tabs() {
                                     height: focused ? 25 : 22.5
                                 }}
                             />
-                            <Text style={{color: focused ? 'white' : '#8A8A8A', fontFamily: 'Gilroy-Medium', fontSize: 10, marginTop: 7.5}}>manage</Text>
+                            <Text style={{color: focused ? 'white' : '#8A8A8A', fontFamily: 'Gilroy-Medium', fontSize: 10, marginTop: 7.5}}>notes</Text>
                         </View>
                     )
                 }}
@@ -231,6 +232,18 @@ export default function Tabs() {
             <Tab.Screen
                 name="DeletePassword"
                 component={DeletePassword}
+                options={() => ({
+                    headerShown: false, tabBarItemStyle: { display: 'none'},
+                    tabBarStyle: {
+                      display: "none",
+                    },
+                    tabBarButton: () => null,
+                })}
+            />
+
+            <Tab.Screen
+                name="DeleteCard"
+                component={DeleteCard}
                 options={() => ({
                     headerShown: false, tabBarItemStyle: { display: 'none'},
                     tabBarStyle: {

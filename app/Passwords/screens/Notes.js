@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 import {API} from '../API'
 
-export default function Pawned({navigation}){
+export default function Notes({navigation}){
 
     function renderHeader(){
         return(
@@ -54,7 +54,7 @@ export default function Pawned({navigation}){
                 </View>
 
                 <View style={{paddingHorizontal: 25, paddingBottom: 25}}>
-                    <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>your all pawned details</Text>
+                    <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>take your Notes</Text>
                     <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>check your all pawned emails and passwords</Text>
                 </View>
             </View>

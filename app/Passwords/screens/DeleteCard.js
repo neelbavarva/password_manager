@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 import {API} from '../API'
 
-export default function DeletePassword({navigation}){
+export default function DeleteCard({navigation}){
 
     const[allPasswords, setAllPasswords] = useState(null) //fetched unarchived Passwords
     const[archivePasswords, setArchivePasswords] = useState(null) //fetched archived Passwords
@@ -210,8 +210,8 @@ export default function DeletePassword({navigation}){
                 </View>
 
                 <View style={{paddingHorizontal: 25, paddingBottom: 25}}>
-                    <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>delete your passwords</Text>
-                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>be careful while deleting your password</Text>
+                    <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>delete your Cards</Text>
+                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>be careful while deleting your cards</Text>
                 </View>
             </View>
         )
