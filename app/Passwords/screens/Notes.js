@@ -55,7 +55,7 @@ export default function Notes({navigation}){
 
                 <View style={{paddingHorizontal: 25, paddingBottom: 25}}>
                     <Text style={{color: 'white', fontFamily: 'Cirka-Bold', fontSize: 28}}>take your Notes</Text>
-                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>check your all pawned emails and passwords</Text>
+                    <Text style={{color: 'rgba(255, 255, 255, 0.3)', fontFamily: 'Gilroy-Medium', fontSize: 14, marginTop: 5}}>notes added in this screen are stored locally</Text>
                 </View>
             </View>
         )
@@ -64,7 +64,6 @@ export default function Notes({navigation}){
     return (
         <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={{backgroundColor: 'black', height: height}}>
             {renderHeader()}
-            
         </ScrollView>
     );
 }
