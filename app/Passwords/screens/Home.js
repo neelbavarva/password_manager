@@ -376,10 +376,10 @@ export default function Home({navigation}){
                                 </View>
                                 <View style={{display: 'flex', flexDirection: 'row', flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
                                     <Image 
-                                        source={require('../assets/icons/right_arrow.png')}
+                                        source={require('../assets/icons/right_arrow_small.png')}
                                         style={{
-                                            width: 20,
-                                            height: 7,
+                                            width: 15,
+                                            height: 8,
                                             marginRight: 10,
                                             tintColor: 'rgba(255, 255, 255, 0.5)'
                                         }}
