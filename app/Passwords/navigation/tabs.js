@@ -55,8 +55,8 @@ export default function Tabs() {
                                 source={focused ? require('../assets/icons/home_selected.png') : require('../assets/icons/home_unselected.png')}
                                 resizeMode="contain"
                                 style={{
-                                    width: focused ? 25 : 25,
-                                    height: focused ? 25 : 25
+                                    width: focused ? 25 : 22.5,
+                                    height: focused ? 25 : 22.5
                                 }}
                             />
                             <Text style={{color: focused ? 'white' : '#8A8A8A', fontFamily: 'Gilroy-Medium', fontSize: 10, marginTop: 7.5}}>home</Text>
@@ -84,8 +84,8 @@ export default function Tabs() {
                                 source={focused ? require('../assets/icons/card_selected.png') : require('../assets/icons/card_unselected.png')}
                                 resizeMode="contain"
                                 style={{
-                                    width: focused ? 25 : 27.5,
-                                    height: focused ? 25 : 27.5
+                                    width: focused ? 25 : 25,
+                                    height: focused ? 25 : 25
                                 }}
                             />
                             <Text style={{color: focused ? 'white' : '#8A8A8A', fontFamily: 'Gilroy-Medium', fontSize: 10, marginTop: 7.5}}>bank</Text>
