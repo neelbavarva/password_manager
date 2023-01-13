@@ -133,7 +133,6 @@ router.get('/:id', async(req, res)=> {
 
 router.post('/newPassword', async(req, res) => {
     const encrypted_string = encrypt(req.body.password, req.body.key)
-    console.log(encrypted_string)
     const passowrd = new Password({
         name: req.body.name,
         email: req.body.email,

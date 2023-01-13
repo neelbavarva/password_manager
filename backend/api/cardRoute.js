@@ -74,12 +74,14 @@ router.get('/getCards/:id', async(req, res)=> {
 })
 
 router.post('/newCard', async(req, res) => {
+    const encrypted_validTill = encrypt(req.body.validTill, req.body.key)
+    const encrypted_cvv = encrypt(req.body.cvv, req.body.key)
     const card = new Card({
         bankName: req.body.bankName,
         cardName: req.body.cardName,
         number: req.body.number,
-        validTill: encrypt(req.body.validTill, req.body.key),
-        cvv: encrypt(req.body.cvv, req.body.key),
+        validTill: encrypted_validTill,
+        cvv: encrypted_cvv,
         visa: req.body.visa
     })
     try{
