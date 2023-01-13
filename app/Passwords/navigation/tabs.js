@@ -171,8 +171,8 @@ export default function Tabs() {
                                 source={focused ? require('../assets/icons/more_selected.png') : require('../assets/icons/more_unselected.png')}
                                 resizeMode="contain"
                                 style={{
-                                    width: focused ? 25 : 25,
-                                    height: focused ? 25 : 25
+                                    width: focused ? 22.5 : 22.5,
+                                    height: focused ? 22.5 : 22.5
                                 }}
                             />
                             <Text style={{color: focused ? 'white' : '#8A8A8A', fontFamily: 'Gilroy-Medium', fontSize: 10, marginTop: 7.5}}>more</Text>

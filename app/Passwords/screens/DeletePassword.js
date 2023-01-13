@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, ActivityIndicator, Modal, BackHandler} from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, ActivityIndicator, Modal, BackHandler, ToastAndroid} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 import {API} from '../API'
@@ -55,10 +55,17 @@ export default function DeletePassword({navigation}){
             setPasswordName(null)
             navigation.navigate("Manage")
             setLoader(null)
+            ToastAndroid.show("Password Deleted Successfully", ToastAndroid.SHORT)
         })
         .catch((e) => {
-            console.log("Error in DELETE password "+e);
+            fetchPasswords()
+            fetchArchivePasswords()
+            setModalVisible(false)
+            setPasswordId(null)
+            setPasswordName(null)
+            navigation.navigate("Manage")
             setLoader(null)
+            ToastAndroid.show("ERROR while deleting the Password", ToastAndroid.SHORT)
         })
     }
 
