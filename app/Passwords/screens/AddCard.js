@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, Dimensions, Image, TextInput, TouchableOpacity, ScrollView, ActivityIndicator} from 'react-native';
-const { width, height } = Dimensions.get("window");
+import { View, Text, Dimensions, Image, TextInput, TouchableOpacity, BackHandler, ScrollView, ActivityIndicator, ToastAndroid} from 'react-native';
+import {API} from '../API'
+const { width, height } = Dimensions.get("window")
 
 export default function AddCard({navigation}){
 
@@ -28,29 +29,66 @@ export default function AddCard({navigation}){
         } else {
             setLoader(true)
             setFieldError(false)
-            fetch(`https://password-manager-v2.herokuapp.com/cards`,{
+            fetch(`${API}/cards/newCard`,{
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
-                    "bankName": bankName.toUpperCase(),
-                    "cardName": cardName.toUpperCase(),
-                    "number": number,
-                    "validTill": CryptoJS.AES.encrypt(JSON.stringify(valitTill), key).toString(),
-                    "cvv": CryptoJS.AES.encrypt(JSON.stringify(cvv), key).toString(),
-                    "visa": visa
+                    "bankName": bankName.toUpperCase().trim(),
+                    "cardName": cardName.toUpperCase().trim(),
+                    "number": number.trim(),
+                    "validTill": valitTill.trim(),
+                    "cvv": cvv.trim(),
+                    "visa": visa,
+                    "key": key
                 })
 
             })
             .then(res=>res.json())
             .then(result=>{
-                console.log(result)
-                navigation.navigate('Feature')
+                ToastAndroid.show("Card added Successfully", ToastAndroid.SHORT)
+                renderBack()
             })
             .catch((e) => {
-                setLoader(false)
-                console.log("Error in POST card "+e);
+                ToastAndroid.show("ERROR while adding Card", ToastAndroid.SHORT)
+                renderBack()
             })
         }
+    }
+
+    useEffect(() => {
+        const backAction = () => {
+            clearData()
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+    
+        return () => backHandler.remove();
+    }, []);
+
+    function renderBack(){
+        navigation.navigate("Manage")
+        clearData()
+    }
+
+    function clearData(){
+        setBankName(null)
+        setCardName(null)
+        setNumber(null)
+        setValitTill(null)
+        setCVV(null)
+        setKey(null)
+        setVisa(false)
+
+        setBankFocus(false)
+        setNameFocus(false)
+        setNumberFocus(false)
+        setValidFocus(false)
+        setCVVFocus(false)
+        setFieldError(null)
+        setLoader(false)
     }
 
     function renderHeader(){
@@ -76,7 +114,7 @@ export default function AddCard({navigation}){
                     </View>
                     <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
                         <TouchableOpacity 
-                        // onPress={() => renderBack()}
+                        onPress={() => renderBack()}
                         activeOpacity={0.75}
                         style={{
                             padding: 12.5,

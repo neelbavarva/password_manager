@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Dimensions, Image, TextInput, TouchableOpacity, ScrollView, ImageBackground} from 'react-native';
+import { View, Text, Dimensions, Image, TextInput, TouchableOpacity, ScrollView, ImageBackground, BackHandler} from 'react-native';
 const { width, height } = Dimensions.get("window");
 
 export default function CardScreen({route, navigation}){
@@ -14,7 +14,25 @@ export default function CardScreen({route, navigation}){
     useEffect(()=>{
         setValidTill(_validTill)
         setCVV(_cvv)
+
+        const backAction = () => {
+            clearData()
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+    
+        return () => backHandler.remove();
     },[])
+
+    function clearData(){
+        setKey(null)
+        setValidKey(false)
+        setValidTill(_validTill)
+        setCVV(_cvv)
+    }
 
     function renderHeader(){
         return(
@@ -83,36 +101,43 @@ export default function CardScreen({route, navigation}){
 
     function decryptCard(){
         if(key!=null){
-            const bytes_valid = CryptoJS.AES.decrypt(validTill, key);
-            const bytes_cvv = CryptoJS.AES.decrypt(cvv, key);
-            if(bytes_valid.sigBytes>=0&&bytes_cvv.sigBytes>=0){ 
-                setValidKey(true)
-                setValidTill(bytes_valid.toString(CryptoJS.enc.Utf8))
-                setCVV(bytes_cvv.toString(CryptoJS.enc.Utf8))
-            }
-        }
-    }
-
-    function decryptPassword(){
-        console.log(key)
-        if(key!=null){
             let decrypted_string = "";
             let decrypted_key = "";
             let key_length = (key.length-1)*3 + 1;
         
-            for(let i=0;i<_password.length-key_length;i++){
+            for(let i=0;i<validTill.length-key_length;i++){
                 if((i+1)%3==0){
-                    decrypted_string += String.fromCharCode(_password.charAt(i).charCodeAt(0) - 4);
+                    decrypted_string += String.fromCharCode(validTill.charAt(i).charCodeAt(0) - 4);
                 }
             }
         
-            for(let i=_password.length-key_length;i<_password.length;i++){
+            for(let i=validTill.length-key_length;i<validTill.length;i++){
                 if((i+1)%3==0){
-                    decrypted_key += String.fromCharCode(_password.charAt(i).charCodeAt(0) - 4);
+                    decrypted_key += String.fromCharCode(validTill.charAt(i).charCodeAt(0) - 4);
                 }
             }
         
-            decrypted_key==key ? setPassword(decrypted_string)&setKey(null) : setPassword("wrong_key");
+            decrypted_key==key ? setValidTill(decrypted_string) : setValidTill("wrong_key")
+
+            decrypted_string = "";
+            decrypted_key = "";
+            key_length = (key.length-1)*3 + 1;
+        
+            for(let i=0;i<cvv.length-key_length;i++){
+                if((i+1)%3==0){
+                    decrypted_string += String.fromCharCode(cvv.charAt(i).charCodeAt(0) - 4);
+                }
+            }
+        
+            for(let i=cvv.length-key_length;i<cvv.length;i++){
+                if((i+1)%3==0){
+                    decrypted_key += String.fromCharCode(cvv.charAt(i).charCodeAt(0) - 4);
+                }
+            }
+        
+            decrypted_key==key ? setCVV(decrypted_string)&setKey(null) : setCVV("wrong_key")
+
+            cvv!="wrong_key"&&validTill!="wrong_key" ? setValidKey(true) : setValidKey(false)
         }
     }
 
