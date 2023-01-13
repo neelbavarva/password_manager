@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const app = express()
 const router = express.Router()
 const Password = require('./password')
-const Cryptr = require('cryptr');
 
 // encryption - decryption algos
 
