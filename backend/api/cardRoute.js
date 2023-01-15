@@ -63,6 +63,17 @@ router.post('/newCard', async(req, res) => {
     }
 })
 
+router.post('/decryptCard', async(req, res) => {
+    const decrypted_validTill = decrypt(req.body.validTill, req.body.key)
+    const decrypted_cvv = decrypt(req.body.cvv, req.body.key)
+    try{
+        res.status(201).json({"validTill" : decrypted_validTill, "cvv": decrypted_cvv})
+    } catch(err){
+        res.status(400)
+    }
+})
+
+
 router.delete('/deleteCard/:id',  async (req, res) => {
     const id = req.params.id;
     try {
