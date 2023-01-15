@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Dimensions, Image, TextInput, TouchableOpacity, ScrollView, ImageBackground, BackHandler} from 'react-native';
+import { View, Text, Dimensions, Image, TextInput, TouchableOpacity, ScrollView, ImageBackground, BackHandler, ToastAndroid, ActivityIndicator} from 'react-native';
 const { width, height } = Dimensions.get("window");
+import {API} from '../API'
 
 export default function CardScreen({route, navigation}){
 
@@ -10,6 +11,7 @@ export default function CardScreen({route, navigation}){
     const[cvv, setCVV] = useState(null)
     const[key, setKey] = useState(null)
     const[validKey, setValidKey] = useState(false)
+    const[loader, setLoader] = useState(false)
 
     useEffect(()=>{
         setValidTill(_validTill)
@@ -32,6 +34,7 @@ export default function CardScreen({route, navigation}){
         setValidKey(false)
         setValidTill(_validTill)
         setCVV(_cvv)
+        setLoader(false)
     }
 
     function renderHeader(){
@@ -99,48 +102,32 @@ export default function CardScreen({route, navigation}){
         )
     }
 
-    function decryptCard(){
+    function decryptCard() {
         if(key!=null){
-            let decrypted_string = "";
-            let decrypted_key = "";
-            let key_length = (key.length-1)*3 + 1;
-        
-            for(let i=0;i<validTill.length-key_length;i++){
-                if((i+1)%3==0){
-                    decrypted_string += String.fromCharCode(validTill.charAt(i).charCodeAt(0) - 4);
-                }
-            }
-        
-            for(let i=validTill.length-key_length;i<validTill.length;i++){
-                if((i+1)%3==0){
-                    decrypted_key += String.fromCharCode(validTill.charAt(i).charCodeAt(0) - 4);
-                }
-            }
-        
-            decrypted_key==key ? setValidTill(decrypted_string) : setValidTill("wrong_key")
+            setLoader(true)
+            fetch(`${API}/cards/decryptCard`,{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    "validTill": validTill,
+                    "cvv": cvv,
+                    "key": key
+                })
 
-            decrypted_string = "";
-            decrypted_key = "";
-            key_length = (key.length-1)*3 + 1;
-        
-            for(let i=0;i<cvv.length-key_length;i++){
-                if((i+1)%3==0){
-                    decrypted_string += String.fromCharCode(cvv.charAt(i).charCodeAt(0) - 4);
-                }
-            }
-        
-            for(let i=cvv.length-key_length;i<cvv.length;i++){
-                if((i+1)%3==0){
-                    decrypted_key += String.fromCharCode(cvv.charAt(i).charCodeAt(0) - 4);
-                }
-            }
-        
-            decrypted_key==key ? setCVV(decrypted_string)&setKey(null) : setCVV("wrong_key")
-
-            cvv!="wrong_key"&&validTill!="wrong_key" ? setValidKey(true) : setValidKey(false)
+            })
+            .then(res=>res.json())
+            .then(result=>{
+                setKey(null)
+                setLoader(false)
+                result.validTill == "wrong_key" || result.cvv == "wrong_key" ? setValidKey(false) & ToastAndroid.show("Wrong Key", ToastAndroid.SHORT) : setValidKey(true) & setValidTill(result.validTill) & setCVV(result.cvv) & ToastAndroid.show("Card Decrypted Successfully", ToastAndroid.SHORT)
+            })
+            .catch((e) => {
+                ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT)
+                setKey(null)
+                setLoader(false)
+            })
         }
     }
-
 
     function renderDecrypt(){
         return(
@@ -179,7 +166,7 @@ export default function CardScreen({route, navigation}){
                         }}
                         onPress={() => decryptCard()}
                     >
-                        <Text style={{fontFamily: 'Gilroy-Bold', color: 'black'}}>decrypt</Text>
+                        {loader ? <ActivityIndicator color="black" size="small" /> : <Text style={{fontFamily: 'Gilroy-Bold', color: 'black', fontSize: 14}}>decrypt</Text>}
                     </TouchableOpacity>
                 </View>
             </View>
