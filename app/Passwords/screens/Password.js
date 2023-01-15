@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, Clipboard, ToastAndroid, BackHandler, AsyncStorage} from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView, Clipboard, ToastAndroid, BackHandler, AsyncStorage, ActivityIndicator} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
+import {API} from '../API'
 
 export default function Password({route, navigation}){
     const { _id, _name, _email, _password, _category} = route.params;
@@ -9,6 +10,7 @@ export default function Password({route, navigation}){
     const[password, setPassword] = useState(null)
     const[key, setKey] = useState(null)
     const[localKey, setLocalKey] = useState(null)
+    const[loader, setLoader] = useState(false)
 
     useEffect(() => {
         _retrieveKey()
@@ -41,49 +43,56 @@ export default function Password({route, navigation}){
         ToastAndroid.show("Copied to Clipboard", ToastAndroid.SHORT)
     }
 
-    function decryptPassword(){
-        console.log(key)
+    function decryptPassword() {
         if(key!=null){
-            let decrypted_string = "";
-            let decrypted_key = "";
-            let key_length = (key.length-1)*3 + 1;
-        
-            for(let i=0;i<_password.length-key_length;i++){
-                if((i+1)%3==0){
-                    decrypted_string += String.fromCharCode(_password.charAt(i).charCodeAt(0) - 4);
-                }
-            }
-        
-            for(let i=_password.length-key_length;i<_password.length;i++){
-                if((i+1)%3==0){
-                    decrypted_key += String.fromCharCode(_password.charAt(i).charCodeAt(0) - 4);
-                }
-            }
-        
-            decrypted_key==key ? setPassword(decrypted_string)&setKey(null) : setPassword("wrong_key");
+            setLoader(true)
+            fetch(`${API}/passwords/decryptPassword`,{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    "password": _password,
+                    "key": key
+                })
+
+            })
+            .then(res=>res.json())
+            .then(result=>{
+                setPassword(result)
+                setKey(null)
+                setLoader(false)
+            })
+            .catch((e) => {
+                ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT)
+                setKey(null)
+                setLoader(false)
+            })
         }
     }
 
-    function  decryptWithLocalKey(){
+    function decryptWithLocalKey() {
         _retrieveKey()
         if(localKey!=null){
-            let decrypted_string = "";
-            let decrypted_key = "";
-            let key_length = (localKey.length-1)*3 + 1;
-        
-            for(let i=0;i<_password.length-key_length;i++){
-                if((i+1)%3==0){
-                    decrypted_string += String.fromCharCode(_password.charAt(i).charCodeAt(0) - 4);
-                }
-            }
-        
-            for(let i=_password.length-key_length;i<_password.length;i++){
-                if((i+1)%3==0){
-                    decrypted_key += String.fromCharCode(_password.charAt(i).charCodeAt(0) - 4);
-                }
-            }
-        
-            decrypted_key==localKey ? setPassword(decrypted_string)&setKey(null)&setLocalKey(null)&ToastAndroid.show("Decrypted using Local Key", ToastAndroid.SHORT) : setPassword("wrong_key")
+            setLoader(true)
+            fetch(`${API}/passwords/decryptPassword`,{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    "password": _password,
+                    "key": localKey
+                })
+
+            })
+            .then(res=>res.json())
+            .then(result=>{
+                setPassword(result)
+                setKey(null)
+                setLoader(false)
+            })
+            .catch((e) => {
+                ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT)
+                setKey(null)
+                setLoader(false)
+            })
         }
     }
 
@@ -185,7 +194,7 @@ export default function Password({route, navigation}){
                         onPress={() => decryptPassword()}
                         onLongPress={() => decryptWithLocalKey()}
                     >
-                        <Text style={{fontFamily: 'Gilroy-Bold', color: 'black', fontSize: 14}}>decrypt</Text>
+                        {loader ? <ActivityIndicator color="black" size="small" /> : <Text style={{fontFamily: 'Gilroy-Bold', color: 'black', fontSize: 14}}>decrypt</Text>}
                     </TouchableOpacity>
                 </View>
             </View>

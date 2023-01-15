@@ -21,7 +21,7 @@ function decrypt(encryptedText, password) {
         decrypted += decipher.final('utf8');
         return decrypted;
     } catch (err) {
-        return "Invalid key";
+        return "wrong_key";
     }
 }
 
