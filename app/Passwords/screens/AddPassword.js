@@ -88,6 +88,15 @@ export default function AddPassword({navigation}){
     }
 
     useEffect(() => {
+        fetch("https://password-manager-backup.onrender.com/passwords/getAllPasswords")
+        .then(res=>res.json())
+        .then(result=>{
+            // null
+        })
+        .catch((e) => {
+            // null
+        })
+
         const backAction = () => {
             clearData()
         };
