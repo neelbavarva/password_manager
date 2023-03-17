@@ -1,0 +1,60 @@
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background-color: black;
+}
+
+::-moz-selection {
+    background: rgb(210, 255, 209);
+    color: black;
+}
+::selection {
+    background: rgb(210, 255, 209);
+    color: black;
+}
+
+*{
+    -webkit-tap-highlight-color: transparent;
+}
+
+@font-face {
+    font-family: "GilroyBlack";
+    src: local("GilroyBlack"),
+        url(../public/fonts/Gilroy/Gilroy-Black.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "GilroyBold";
+    src: local("GilroyBold"),
+        url(../public/fonts/Gilroy/Gilroy-Bold.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "GilroyMedium";
+    src: local("GilroyMedium"),
+        url(../public/fonts/Gilroy/Gilroy-Medium.ttf) format("truetype");
+}
+  
+@font-face {
+    font-family: "GilroyRegular";
+    src: local("GilroyRegular"),
+        url(../public/fonts/Gilroy/Gilroy-Regular.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "GilroyLight";
+    src: local("GilroyLight"),
+        url(../public/fonts/Gilroy/Gilroy-Light.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "GilroyBoldItalic";
+    src: local("GilroyBoldItalic"),
+        url(../public/fonts/Gilroy/Gilroy-BoldItalic.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "CirkaBold";
+    src: local("CirkaBold"),
+        url(../public/fonts/Cirka/Cirka-Bold.ttf) format("truetype");
+}

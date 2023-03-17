@@ -1,0 +1,22 @@
+.navbar_container{
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.navbar{
+    display: flex;
+    justify-content: center;
+    border-radius: 100px;
+    background-color: white;
+    padding: 1rem;
+}
+
+.navbar_container a{
+    margin-left: 1rem;
+    margin-right: 1rem;
+    text-decoration: none;
+    font-family: 'SilkaMedium';
+    font-size: 14px;
+    color: #A9BEF0;
+}

@@ -4,7 +4,6 @@
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 5rem;
-    margin-top: 2.5rem;
 }
 
 @media (max-width: 1000px) {
@@ -40,31 +39,15 @@
     }
 }
 
-.modal_loader{
-    margin-left: 0.5rem;
-}
-
-.loader {
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    width: 30px;
-    height: 30px;
-    background-color: aqua;
-    border: 2.5px solid black;
-    border-bottom-color: transparent;
-    border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
-    animation: rotation 0.75s linear infinite;
-}
-
-@keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+.loader{
+    color: #8A8A8A;
+    font-family: 'GilroyBold';
+    font-size: 20px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20vh;
 }
 
 .password_container{
@@ -72,8 +55,6 @@
     padding-top: 1rem;
     padding-bottom: 1rem;
     text-decoration: none;
-    background-color: white;
-    border-radius: 16px;
 }
 
 .password_container >div:last-child{
@@ -87,21 +68,72 @@
 .password_name{
     padding-left: 1rem;
     padding-right: 1rem;
-    margin-top: 0.25rem;
-    margin-bottom: 0.25rem;
 }
 
 .password_name >div:first-child{
-    font-family: 'MorangaBold';
-    color: black;
+    font-family: 'GilroyBold';
+    color: #FFFFFF;
     font-size: 14px;
+    margin-top: 0.5rem;
 }
 
 .password_name >div:last-child{
-    font-family: 'SilkaMedium';
+    font-family: 'GilroyMedium';
     color: #8A8A8A;
-    font-size: 12px;
+    font-size: 14px;
     margin-top: 0.5rem;
+}
+
+.category_container{
+    display: flex;
+    margin-top: 5vh;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+    background-color: #0D0D0D;
+    padding: 1rem;
+    border-radius: 100px;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    overflow: auto;
+}
+
+.category{
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding-right: 1rem;
+    transition: 0.35s;
+    cursor: pointer;
+}
+
+.category:hover{
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: 0.35s;
+}
+
+.selected_category{
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.category >div:first-child{
+    margin-top: 2.5px;
+    margin-left: -0.5rem;
+}
+
+.category >div:last-child{
+    display: flex;
+    flex: 1;
+    font-family: 'GilroyMedium';
+    font-size: 14px;
+    color: #D2D2D2;
+    margin-left: 10px;
+    justify-content: center;
+    align-items: center;
 }
 
 /* masonry css */
@@ -116,11 +148,13 @@
     display: inline-block;
     margin-bottom: 16px;
     width: 100%;
+    border: 1px solid #ffffff15;
     cursor: pointer;
     transition: 0.35s;
 }
 
 .masonry .mItem:hover{
+    border: 1px solid #ffffff35;
     transform: 0.35s;
 }
 
@@ -168,8 +202,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 2em;
-    background: white;
-    border-radius: 24px;
+    background: #121212;
 }
 
 .modal_window div:not(:last-of-type) {
@@ -191,8 +224,8 @@
     display: flex;
     flex: 1;
     font-size: 16px;
-    color: black;
-    font-family: 'MorangaBold';
+    color: #D2D2D2;
+    font-family: 'GilroyBold';
     justify-content: flex-start;
     align-items: center;
 }
@@ -200,9 +233,9 @@
 .modal_name>div>div:last-child{
     display: flex;
     flex: 1;
-    font-size: 14px;
+    font-size: 16px;
     color: #8A8A8A;
-    font-family: 'SilkaMedium';
+    font-family: 'GilroyBold';
     margin-top: -0.5rem;
     justify-content: flex-start;
     align-items: flex-end;
@@ -212,7 +245,7 @@
 .modal_password{
     font-size: 12px;
     color: #8A8A8A;
-    font-family: 'SilkaRegular';
+    font-family: 'GilroyBold';
     margin-left: 0.1rem;
     padding-top: 0.5rem;
 }
@@ -265,16 +298,12 @@
 }
 
 .close_container > a{
-    color: black;
+    color: #D2D2D2;
     font-size: 14px;
     text-decoration: none;
-    font-family: 'SilkaMedium';
-    border-radius: 100px;
-    background-color: #FFF2EC;
-    padding: 0.75rem;
-    padding-top: 0.8rem;
-    padding-left: 0.9rem;
-    padding-right: 0.9rem;
+    font-family: 'GilroyMedium';
+    background-color: black;
+    padding: 1rem;
     cursor: pointer;
     margin-left: -0.25rem;
 }
@@ -320,14 +349,13 @@
 .input_container input{
     display: flex;
     flex: 1;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid rgb(240, 242, 248);
-    font-family: 'SilkaMedium';
-    font-size: 12px;
+    background-color: black;
+    border: 1px solid #121212;
+    font-family: 'GilroyMedium';
+    font-size: 14px;
     padding: 1rem;
     outline: none;
-    color: black;
+    color: #D2D2D2;
 }
 
 .input_container input ::placeholder{
@@ -339,17 +367,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'SilkaMedium';
-    font-size: 12px;
-    padding: 0.925rem;
+    font-family: 'GilroyMedium';
+    font-size: 16px;
+    padding: 1.3rem;
     width: 5rem;
     border-radius: 0px;
     border: none;
-    color: black;
-    margin-left: -1.95rem;
-    border-radius: 100px;
-    background-color: transparent;
-    border: 2px solid rgb(240, 242, 248);
+    background-color: black;
 }
 
 @media (max-width: 600px) {

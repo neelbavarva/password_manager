@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import Navbar from '@/components/Navbar'
-import {API} from '../API'
+import { useEffect, useState } from 'react'
+import Header from '../components/Header'
+import { API } from '../API'
 
 export default function Home() {
 
@@ -101,6 +101,37 @@ export default function Home() {
         fetchArchivePasswords()
     },[])
 
+    function renderCategories(){
+        return(
+            <div className={styles.category_container}>
+                <div className={`${styles.category} ${category=="all" ? styles.selected_category : null}`} onClick={() => filterPassword("all")}>
+                    <div><Image width={35} src={require('../public/icons/all.png')} /></div>
+                    <div>all</div>
+                </div>
+                <div className={`${styles.category} ${category=="web-app" ? styles.selected_category : null}`} onClick={() => filterPassword("web-app")}>
+                    <div><Image width={35} src={require('../public/icons/web_app.png')} /></div>
+                    <div>web_app</div>
+                </div>
+                <div className={`${styles.category} ${category=="email" ? styles.selected_category : null}`} onClick={() => filterPassword("email")}>
+                    <div><Image width={35} src={require('../public/icons/email.png')} /></div>
+                    <div>email</div>
+                </div>
+                <div className={`${styles.category} ${category=="banking" ? styles.selected_category : null}`} onClick={() => filterPassword("banking")}>
+                    <div><Image width={35} src={require('../public/icons/banking.png')} /></div>
+                    <div>banking</div>
+                </div>
+                <div className={`${styles.category} ${category=="other" ? styles.selected_category : null}`} onClick={() => filterPassword("other")}>
+                    <div><Image width={35} src={require('../public/icons/other.png')} /></div>
+                    <div>other</div>
+                </div>
+                <div className={`${styles.category} ${category=="archive" ? styles.selected_category : null}`} onClick={() => filterPassword("archive")}>
+                    <div><Image width={35} src={require('../public/icons/archive.png')} /></div>
+                    <div>archive</div>
+                </div>
+            </div>
+        )
+    }
+
     function getModalInfo(e){
         fetchPasswordById(e)
     }
@@ -118,15 +149,7 @@ export default function Home() {
         )
     }
 
-    function renderHeader(){
-        return(
-            <div>
-
-            </div>
-        )
-    }
-
-    function renderPasswords(){
+    function renderAllPasswords(){
         return(
             <div className={styles.masonry}>
                 <div>
@@ -139,20 +162,18 @@ export default function Home() {
                                         <div>{item.email}</div>
                                     </div>
                                     <div>
-                                        {/* <Image width={25} src={require('../public/icons/right_arrow.png')} /> */}
+                                        <Image width={25} src={require('../public/icons/right_arrow.png')} />
                                     </div>
                                 </a>
                                 <div id="open-modal" className={styles.modal_window}>
                                     <div>
                                         <div className={styles.close_container}>
-                                            <a onClick={() => closeModal()} href="#">
-                                                <Image src={require('../public/icons/close.svg')} />
-                                            </a>
+                                            <a onClick={() => closeModal()} href="#">Close</a>
                                         </div>
                                         {modalInfo==null?loading():
                                         <div className={styles.modal_info}>
                                             <div className={styles.modal_name}>
-                                                {/* <Image height={100} src={require('../public/icons/user_frame.png')} /> */}
+                                                <Image height={100} src={require('../public/icons/user_frame.png')} />
                                                 <div>
                                                     <div>{modalInfo.name}</div>
                                                     <div>{modalInfo.email}</div>
@@ -163,24 +184,24 @@ export default function Home() {
                                                 <div className={styles.modal_password}>
                                                     {ePassword==null ? null : ePassword=="wrong_key" ? 
                                                     <div className={styles.wrong_key}>
-                                                        {/* <Image width={20} src={require('../public/icons/cross.png')} /> */}
+                                                        <Image width={20} src={require('../public/icons/cross.png')} />
                                                         <div>Wrong Key Entered</div>
                                                     </div> : null}
                                                     {ePassword!=null && ePassword!="wrong_key" ? 
                                                     <div className={styles.decrypted_password}>
-                                                        {/* <Image width={30} src={require('../public/icons/done_green.png')} /> */}
+                                                        <Image width={30} src={require('../public/icons/done_green.png')} />
                                                         <div>{ePassword}</div>
                                                     </div> : null}
                                                     {ePassword==null ? 
                                                     <div className={styles.encrypted_password}>
-                                                        {/* <Image width={30} src={require('../public/icons/box.png')} /> */}
+                                                        <Image width={30} src={require('../public/icons/box.png')} />
                                                         <div>{modalInfo.password.substring(0,25)}</div>
                                                     </div> : null}
                                                 </div>
 
                                                 <div className={styles.input_container}>
                                                     <input type="password" placeholder='key' value={eKey} onChange={e => setEKey(e.target.value)} />
-                                                    <button onClick={() => fetchDecryptPassword()}>submit</button>
+                                                    <button onClick={() => fetchDecryptPassword()}><Image width={20} src={require('../public/icons/right_arrow.png')} /></button>
                                                 </div>
                                             </div>}
                                         </div>
@@ -198,15 +219,23 @@ export default function Home() {
     return (
         <>
             <Head>
-                <title>Create Next App</title>
+                <title>Password Manager</title>
                 <meta name="description" content="Generated by create next app" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Navbar />
 
             <div className={styles.container}>
-                {passwords==null ? loading() : renderPasswords()}
+                
+                <Header />
+                {renderCategories()}
+                {passwords==null?
+                <div className={styles.home_loading}>{loading()}</div>:renderAllPasswords()}
+
+                {passwords==null?null:
+                <div className={styles.copyright}>
+                    {(new Date().getFullYear())} © <a target="_blank" rel="noreferrer"  href="https://neelbavarva.tech/">Neel Bavarva</a> — Be kind to each other.
+                </div>}
             </div>
         </>
     )
