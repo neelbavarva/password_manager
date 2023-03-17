@@ -7,7 +7,7 @@ export default function Navbar() {
     return (
         <div className={styles.navbar_container}>
             <div className={styles.navbar}>
-                <Link href="/">
+                <Link href="/"  className={styles.selected}>
                     <div>Home</div>
                 </Link>
                 <Link href="/">

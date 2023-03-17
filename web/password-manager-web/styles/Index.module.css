@@ -1,0 +1,64 @@
+.auth_container{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth_header{
+    font-family: 'MorangaBold';
+    color: black;
+    font-size: 18px;
+    margin-bottom: 1rem;
+}
+
+.auth_container img{
+    width: 100px;
+    height: auto;
+}
+
+.macaddress{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 32px;
+    font-family: 'SilkaMedium';
+    font-size: 12px;
+    line-height: 18px;
+    color: rgb(138, 148, 158);
+}
+
+.macaddress > div{
+    display: flex;
+    flex: 1;
+}
+
+.auth_input{
+    margin-top: 1rem;
+}
+
+.macaddress input{
+    display: flex;
+    flex: 1;
+    margin-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border: none;
+    border-bottom: 2px solid rgb(240, 242, 248);
+    outline: none;
+    font-family: 'SilkaMedium';
+}
+
+.macaddress button{
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    font-size: 12px;
+    font-family: 'SilkaMedium';
+    color: rgb(138, 148, 158);
+    border-bottom: 2px solid rgb(240, 242, 248);
+}

@@ -1,9 +1,54 @@
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '@/styles/Home.module.css'
+import styles from '@/styles/Index.module.css'
+import { API } from '../API'
 import Navbar from '@/components/Navbar'
+import Home from './Home'
 
 export default function Index() {
+
+    const[auth, setAuth] = useState(null)
+    const[verified, setVerified] = useState(null)
+    const[macAddress, setMacAddress] = useState(null)
+    const validMacAddresses = []
+
+    const fetchAuth = () => {
+        fetch(`${API}/getMacAddress`)
+        .then(res=>res.json())
+        .then(result=>{
+            setMacAddress(result)
+            validMacAddresses.includes(result) ? setVerified(true) : setVerified(false)
+        })
+        .catch((e) => {
+            console.log("Error in Fetching /getMacAddress "+e);
+        })
+    }
+
+    useEffect(()=>{
+        fetchAuth()
+    },[])
+
+    function renderAuth(){
+        return(
+            <div className={styles.auth_container}>
+                <Image src={require('../public/icons/memoji.png')} />
+                <div className={styles.macaddress}>
+                    <div className={styles.auth_header}>
+                        Enter your password
+                    </div>
+                    <div className={styles.auth_info}>
+                        Your mac address 02:6f:7a:e3:a6:a7 does not <br/> match to owner's mac adddress.
+                    </div>
+                    <div className={styles.auth_input}>
+                        <input placeholder='password' />
+                        <button>Submit</button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <>
             <Head>
@@ -12,7 +57,13 @@ export default function Index() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Navbar />
+            
+            {true ? 
+            <>
+                <Navbar />
+                <Home />
+            </> : renderAuth()}
+
         </>
     )
 }

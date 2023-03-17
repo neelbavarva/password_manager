@@ -7,16 +7,23 @@
 .navbar{
     display: flex;
     justify-content: center;
+    align-items: center;
     border-radius: 100px;
-    background-color: white;
-    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.04);
 }
 
 .navbar_container a{
-    margin-left: 1rem;
-    margin-right: 1rem;
+    padding: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin: 6px;
     text-decoration: none;
     font-family: 'SilkaMedium';
     font-size: 14px;
-    color: #A9BEF0;
+    color: rgb(13, 17, 23);
+}
+
+.selected{
+    border-radius: 100px;
+    background-color: white;
 }
