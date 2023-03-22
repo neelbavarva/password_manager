@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import Navbar from '@/components/Navbar'
+import styles from '../styles/Banking.module.css'
 import {API} from '../API'
 
-export default function Home() {
+export default function Banking() {
 
     const[allPasswords, setAllPasswords] = useState(null) //fetched unarchived Passwords
     const[archivePasswords, setArchivePasswords] = useState(null) //fetched archived Passwords
@@ -18,7 +17,7 @@ export default function Home() {
     const[decryptRender, setDecryptRender] = useState(false)
 
     const fetchAllPasswords = () => {
-        fetch(`${API}/passwords/getAllPasswords`)
+        fetch(`${API}/passwords/getBankingPasswords`)
         .then(res=>res.json())
         .then(result=>{
             console.log(result)
@@ -32,7 +31,7 @@ export default function Home() {
     }
 
     const fetchArchivePasswords = () => {
-        fetch(`${API}/passwords/getArchivePasswords`)
+        fetch(`${API}/passwords/getBankingArchivePasswords`)
         .then(res=>res.json())
         .then(result=>{
             setArchivePasswords(result)
@@ -136,22 +135,6 @@ export default function Home() {
                     <div>😄</div>
                     <div>all</div>
                 </div>
-                <div className={`${styles.category} ${category=="web-app" ? styles.selected_category : null}`} onClick={() => filterPassword("web-app")}>
-                    <div>🌐</div>
-                    <div>web_app</div>
-                </div>
-                <div className={`${styles.category} ${category=="email" ? styles.selected_category : null}`} onClick={() => filterPassword("email")}>
-                    <div>📨</div>
-                    <div>email</div>
-                </div>
-                <div className={`${styles.category} ${category=="banking" ? styles.selected_category : null}`} onClick={() => filterPassword("banking")}>
-                    <div>🏦</div>
-                    <div>banking</div>
-                </div>
-                <div className={`${styles.category} ${category=="other" ? styles.selected_category : null}`} onClick={() => filterPassword("other")}>
-                    <div>🤔</div>
-                    <div>other</div>
-                </div>
                 <div className={`${styles.category} ${category=="archive" ? styles.selected_category : null}`} onClick={() => filterPassword("archive")}>
                     <div>😵</div>
                     <div>archive</div>
@@ -180,7 +163,7 @@ export default function Home() {
                                     <div>
                                         <div className={styles.close_container}>
                                             <a onClick={() => closeModal()} href="#">
-                                                <Image src={require('../public/icons/close.svg')} />
+                                                <Image src={require('../public/icons/close.svg')} alt="close" />
                                             </a>
                                         </div>
                                         {modalInfo==null?loading():

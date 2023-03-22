@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/Index.module.css'
 import { API } from '../API'
-import Navbar from '@/components/Navbar'
-import Home from './Home'
+import Home from '../components/Home'
+import Banking from '@/components/Banking'
+import Manage from '@/components/Manage'
 
 export default function Index() {
 
@@ -12,39 +14,76 @@ export default function Index() {
     const[verified, setVerified] = useState(null)
     const[macAddress, setMacAddress] = useState(null)
     const validMacAddresses = []
-
-    const fetchAuth = () => {
-        fetch(`${API}/getMacAddress`)
-        .then(res=>res.json())
-        .then(result=>{
-            setMacAddress(result)
-            validMacAddresses.includes(result) ? setVerified(true) : setVerified(false)
-        })
-        .catch((e) => {
-            console.log("Error in Fetching /getMacAddress "+e);
-        })
-    }
+    const[page, setPage] = useState("Home")
 
     useEffect(()=>{
+        const fetchAuth = () => {
+            fetch(`${API}/getMacAddress`)
+            .then(res=>res.json())
+            .then(result=>{
+                setMacAddress(result)
+                validMacAddresses.includes(result) ? setVerified(true) : setVerified(false)
+            })
+            .catch((e) => {
+                console.log("Error in Fetching /getMacAddress "+e);
+            })
+        }
+        
         fetchAuth()
     },[])
+
+
+    function verifyAuth(){
+        auth.substring(0,5)=="14352" && auth.substring(5)=="74849" ? setVerified(true) : null
+    }
+
+    function navbar(){
+        return(
+            <div className={styles.navbar_container}>
+                <div className={styles.navbar}>
+                    <Link href="/" onClick={() => setPage("Home")} className={page=="Home"?styles.selected:null}>
+                        <div>Home</div>
+                    </Link>
+                    <Link href="/" onClick={() => setPage("Banking")} className={page=="Banking"?styles.selected:null}>
+                        <div>Banking</div>
+                    </Link>
+                    <Link href="/" onClick={() => setPage("Manage")} className={page=="Manage"?styles.selected:null}>
+                        <div>Manage</div>
+                    </Link>
+                </div>
+            </div>
+        )
+    }
+
+    function loading(){
+        return(
+            <div className={styles.loading_container}>
+                <Image width={100} height={100} src={require('../public/images/memoji_normal.png')} alt="Memoji" />
+                <span className={styles.loader}></span>
+            </div>
+        )
+    }
 
     function renderAuth(){
         return(
             <div className={styles.auth_container}>
-                <Image src={require('../public/icons/memoji.png')} />
-                <div className={styles.macaddress}>
-                    <div className={styles.auth_header}>
-                        Enter your password
+                {macAddress==null ? loading() : !verified ?
+                    <div>
+                        <Image src={require(auth==null||auth==""?'../public/images/memoji_normal.png':auth=="1435274849"?'../public/images/memoji_eyeblink.png':'../public/images/memoji_thinking.png')} alt="Memoji" />
+                        <div className={styles.macaddress}>
+                            <div className={styles.auth_header}>
+                                Enter your password
+                            </div>
+                            <div className={styles.auth_info}>
+                                Your mac address {macAddress} does not <br/> match to owner&apos;s mac adddress.
+                            </div>
+                            <div className={styles.auth_input}>
+                                <input type="password" placeholder="password" value={auth} onChange={e => setAuth(e.target.value)} />
+                                <button onClick={() => verifyAuth()}>Submit</button>
+                            </div>
+                        </div>
                     </div>
-                    <div className={styles.auth_info}>
-                        Your mac address 02:6f:7a:e3:a6:a7 does not <br/> match to owner's mac adddress.
-                    </div>
-                    <div className={styles.auth_input}>
-                        <input placeholder='password' />
-                        <button>Submit</button>
-                    </div>
-                </div>
+                :null}
             </div>
         )
     }
@@ -58,10 +97,12 @@ export default function Index() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             
-            {true ? 
+            {verified ? 
             <>
-                <Navbar />
-                <Home />
+                {navbar()}
+                {page=="Home" && <Home/>}
+                {page=="Banking" && <Banking/>}
+                {page=="Manage" && <Manage/>}
             </> : renderAuth()}
 
         </>
