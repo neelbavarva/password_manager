@@ -17,14 +17,6 @@
 }
 @media (min-width: 1000px) {
     .container {
-      width: 90%;
-    }
-    .img {
-      width: 90%;
-    }
-}
-@media (min-width: 1000px) {
-    .container {
       width: 850px;
     }
     .img {

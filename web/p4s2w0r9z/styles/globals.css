@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background-color: white;
+    /* background-color: #F6F6F6; */
+}
+
+@font-face {
+    font-family: "SF-Bold";
+    src: local("SF-Bold"),
+        url(../public/fonts/SF-Bold.OTF) format("truetype");
+}
+
+@font-face {
+    font-family: "SF-Medium";
+    src: local("SF-Medium"),
+        url(../public/fonts/SF-Medium.OTF) format("truetype");
+}
+
+@font-face {
+    font-family: "SF-Regular";
+    src: local("SF-Regular"),
+        url(../public/fonts/SF-Regular.OTF) format("truetype");
+}

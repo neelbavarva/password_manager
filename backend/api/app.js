@@ -4,6 +4,7 @@ const app = express()
 const router = express.Router()
 const Password = require('./password')
 const Card = require('./card')
+const Auth = require('./auth')
 var cors = require('cors')
 const address = require('address');
 
@@ -26,6 +27,13 @@ app.get('/getMacAddress', async(req, res)=> {
     address.mac(function (err, addr) {
         res.json(addr)
     });
+})
+
+app.post('/getAuthentication', async(req, res)=> {
+    const querryPassword = req.body.password;
+    const databasePassword = await Auth.find();
+    console.log(databasePassword[0].password)
+    res.json(querryPassword==databasePassword[0].password || querryPassword===databasePassword[0].password)
 })
 
 const PORT = process.env.PORT || 3001;
