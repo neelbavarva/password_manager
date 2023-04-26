@@ -12,9 +12,20 @@ body {
     color: #FFF2EC;
 }
 
+::-webkit-scrollbar {
+    background: transparent;
+    width: 10px;
+    height: 10px; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
 *{
     -webkit-tap-highlight-color: transparent;
 }
+
 
 @font-face {
     font-family: "MetropolisBlack";

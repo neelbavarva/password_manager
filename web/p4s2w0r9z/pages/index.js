@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
+import styles from '../styles/Index.module.css'
 import {API} from '../API'
 
 import Passwords from '@/components/Passwords'
@@ -8,6 +10,7 @@ import Passwords from '@/components/Passwords'
 export default function Home() {
 
     const[navigation, setNavigation] = useState("Passwords")
+    const[currentPage, setCurrentPage] = useState("Passwords")
 
     const[enableAuth, setEnableAuth] = useState(false)
     const[loading, setLoading] = useState(false)
@@ -47,7 +50,7 @@ export default function Home() {
         return(
             <div>
                 {navigation=="Passwords" && <Passwords />}
-                {/* {renderNavbar()} */}
+                {renderNavbar()}
             </div>
         )
     }
@@ -55,9 +58,7 @@ export default function Home() {
     function renderNavbar(){
         return(
             <div>
-                <button onClick={() => setNavigation("Passwords")}>Passwords</button>
-                <button onClick={() => setNavigation("Banking")}>Banking</button>
-                <button onClick={() => setNavigation("Manage")}>Manage</button>
+                Navbar
             </div>
         )
     }
