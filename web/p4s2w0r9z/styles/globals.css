@@ -1,24 +1,48 @@
 body {
     margin: 0;
     overflow-x: hidden;
-    background-color: white;
-    /* background-color: #F6F6F6; */
+}
+
+::-moz-selection {
+    background: #A9BEF0;
+    color: #FFF2EC;
+}
+::selection {
+    background: #A9BEF0;
+    color: #FFF2EC;
+}
+
+*{
+    -webkit-tap-highlight-color: transparent;
 }
 
 @font-face {
-    font-family: "SF-Bold";
-    src: local("SF-Bold"),
-        url(../public/fonts/SF-Bold.OTF) format("truetype");
+    font-family: "MetropolisBlack";
+    src: local("MetropolisBlack"),
+        url(../public/fonts/Metropolis-Black.otf) format("truetype");
 }
-
 @font-face {
-    font-family: "SF-Medium";
-    src: local("SF-Medium"),
-        url(../public/fonts/SF-Medium.OTF) format("truetype");
+    font-family: "MetropolisBold";
+    src: local("MetropolisBold"),
+        url(../public/fonts/Metropolis-Bold.otf) format("truetype");
 }
-
 @font-face {
-    font-family: "SF-Regular";
-    src: local("SF-Regular"),
-        url(../public/fonts/SF-Regular.OTF) format("truetype");
+    font-family: "MetropolisSemiBold";
+    src: local("MetropolisSemiBold"),
+        url(../public/fonts/Metropolis-SemiBold.otf) format("truetype");
+}
+@font-face {
+    font-family: "MetropolisMedium";
+    src: local("MetropolisMedium"),
+        url(../public/fonts/Metropolis-Medium.otf) format("truetype");
+}
+@font-face {
+    font-family: "MetropolisRegular";
+    src: local("MetropolisRegular"),
+        url(../public/fonts/Metropolis-Regular.otf) format("truetype");
+}
+@font-face {
+    font-family: "MetropolisThin";
+    src: local("MetropolisThin"),
+        url(../public/fonts/Metropolis-Thin.otf) format("truetype");
 }
