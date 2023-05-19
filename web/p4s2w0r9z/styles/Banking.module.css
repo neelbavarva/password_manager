@@ -1,0 +1,159 @@
+.container {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (max-width: 1000px) {
+    .container {
+      width: 100%;
+    }
+}
+@media (min-width: 1000px) {
+    .container {
+      width: 850px;
+    }
+}
+
+.password_page{
+    background-color: #090d11;
+}
+
+.header_container{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Moranga';
+    color: white;
+    font-size: 20px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.category_container{
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+    white-space: nowrap;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-left: 0.5rem;
+}
+
+.category{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    padding: 0.75rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 100px;
+    background-color: #141414;
+    color: white;
+    font-family: 'SilkaRegular';
+}
+
+.password_container{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 4rem;
+}
+
+.password_card{
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border-radius: 10px;
+    background-color: #0e1117;
+    border: 1px solid #30363c59;
+}
+
+.password_logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Moranga';
+    font-size: 20px;
+    height: 3rem;
+    width: 3rem;
+    margin-left: 1rem;
+    border-radius: 100%;
+    background-color: rgba(39, 39, 39, 0.443);
+    color: aliceblue;
+}
+
+.password_detail{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 1rem;
+}
+
+.password_detail > div:first-child{
+    color: white;
+    font-size: 18px;
+    font-family: 'Moranga';
+}
+
+.password_detail > div:last-child{
+    color: #BBC0C6;
+    margin-top: 0.5rem;
+    font-size: 14px;
+    font-family: 'SilkaRegular';
+}
+
+.password_arrow{
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+/* masonry css */
+  
+.masonry {
+    margin-top: 20vh;
+    column-count: 2;
+    column-gap: 16px;
+}
+
+.masonry .mItem {
+    display: inline-block;
+    margin-bottom: 16px;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.35s;
+}
+
+.masonry .mItem:hover{
+    transform: 0.35s;
+}
+
+@media (max-width: 1199px) {
+    .masonry {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 991px) {
+    .masonry {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .masonry {
+        column-count: 1;
+    }
+}

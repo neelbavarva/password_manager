@@ -6,10 +6,11 @@ import styles from '../styles/Index.module.css'
 import {API} from '../API'
 
 import Passwords from '@/components/Passwords'
+import Banking from '@/components/Banking'
+import Manage from '@/components/Manage'
 
 export default function Home() {
 
-    const[navigation, setNavigation] = useState("Passwords")
     const[currentPage, setCurrentPage] = useState("Passwords")
 
     const[enableAuth, setEnableAuth] = useState(false)
@@ -39,9 +40,12 @@ export default function Home() {
 
     function renderAuthContainer(){
         return(
-            <div>
-                <input value={password} onChange={e => setPassword(e.target.value)} placeholder='password' />
-                <button onClick={() => fetchAuth()}>Click</button>
+            <div className={styles.auth_page}>
+                Enter your password
+                <div className={styles.auth_container}>
+                    <input value={password} onChange={e => setPassword(e.target.value)} placeholder='password' />
+                    <button onClick={() => fetchAuth()}>Click</button>
+                </div>
             </div>
         )
     }
@@ -49,7 +53,9 @@ export default function Home() {
     function renderPasswordApp(){
         return(
             <div>
-                {navigation=="Passwords" && <Passwords />}
+                {currentPage=="Passwords" && <Passwords />}
+                {currentPage=="Banking" && <Banking />}
+                {currentPage=="Manage" && <Manage />}
                 {renderNavbar()}
             </div>
         )
@@ -57,8 +63,12 @@ export default function Home() {
 
     function renderNavbar(){
         return(
-            <div>
-                Navbar
+            <div className={styles.container}>
+                <div className={`${styles.navbar}`}>
+                    <a onClick={()=>setCurrentPage("Passwords")}>Passwords</a>
+                    <a onClick={()=>setCurrentPage("Banking")}>Banking</a>
+                    <a onClick={()=>setCurrentPage("Manage")}>Manage</a>
+                </div>
             </div>
         )
     }

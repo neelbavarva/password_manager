@@ -1,6 +1,7 @@
 body {
     margin: 0;
     overflow-x: hidden;
+    background-color: #090d11;
 }
 
 ::-moz-selection {
@@ -26,34 +27,20 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
+@font-face {
+    font-family: "Moranga";
+    src: local("Moranga"),
+        url(../public/fonts/Moranga-Bold.woff) format("truetype");
+}
 
 @font-face {
-    font-family: "MetropolisBlack";
-    src: local("MetropolisBlack"),
-        url(../public/fonts/Metropolis-Black.otf) format("truetype");
+    font-family: "SilkaMedium";
+    src: local("SilkaMedium"),
+        url(../public/fonts/Silka-Medium.woff) format("truetype");
 }
+
 @font-face {
-    font-family: "MetropolisBold";
-    src: local("MetropolisBold"),
-        url(../public/fonts/Metropolis-Bold.otf) format("truetype");
-}
-@font-face {
-    font-family: "MetropolisSemiBold";
-    src: local("MetropolisSemiBold"),
-        url(../public/fonts/Metropolis-SemiBold.otf) format("truetype");
-}
-@font-face {
-    font-family: "MetropolisMedium";
-    src: local("MetropolisMedium"),
-        url(../public/fonts/Metropolis-Medium.otf) format("truetype");
-}
-@font-face {
-    font-family: "MetropolisRegular";
-    src: local("MetropolisRegular"),
-        url(../public/fonts/Metropolis-Regular.otf) format("truetype");
-}
-@font-face {
-    font-family: "MetropolisThin";
-    src: local("MetropolisThin"),
-        url(../public/fonts/Metropolis-Thin.otf) format("truetype");
+    font-family: "SilkaRegular";
+    src: local("SilkaRegular"),
+        url(../public/fonts/Silka-Regular.woff) format("truetype");
 }
