@@ -41,9 +41,11 @@ export default function Home() {
     function renderAuthContainer(){
         return(
             <div className={styles.auth_page}>
-                Enter your password
+                <div className={styles.auth_detail}>
+                    Enter your password
+                </div>
                 <div className={styles.auth_container}>
-                    <input value={password} onChange={e => setPassword(e.target.value)} placeholder='password' />
+                    <input type='password' value={password} onChange={e => setPassword(e.target.value)} placeholder='password' />
                     <button onClick={() => fetchAuth()}>Click</button>
                 </div>
             </div>
@@ -75,9 +77,7 @@ export default function Home() {
 
     function renderLoading(){
         return(
-            <div>
-                Loading...
-            </div>
+            <div/>
         )
     }
 

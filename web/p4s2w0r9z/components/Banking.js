@@ -7,22 +7,109 @@ import styles from '../styles/Banking.module.css'
 
 export default function Banking() {
 
-    const[passwords, setPasswords] = useState(null);
+    const[allPasswords, setAllPasswords] = useState(null)
+    const[archivePasswords, setArchivePasswords] = useState(null)
+    const[passwords, setPasswords] = useState(null)
+    const[category, setCategory] = useState("all")
+
+    const[modalInfo, setModalInfo] = useState(null)
+    const[eKey, setEKey] = useState(null)
+    const[ePassword, setEPassword] = useState(null)
+    const[decryptRender, setDecryptRender] = useState(false)
 
     const fetchPasswords = () => {
         fetch(`${API}/passwords/getBankingPasswords`)
         .then(res=>res.json())
         .then(result=>{
             setPasswords(result)
+            setAllPasswords(result)
         })
         .catch((e) => {
             setPasswords("network_error")
         })
     }
 
-    useEffect(() => {
+    const fetchArchivePasswords = () => {
+        fetch(`${API}/passwords/getBankingArchivePasswords`)
+        .then(res=>res.json())
+        .then(result=>{
+            setArchivePasswords(result)
+        })
+        .catch((e) => {
+            setArchivePasswords("network_error");
+        })
+    }
+
+    const fetchPasswordById = (e) => {
+        fetch(`${API}/passwords/${e}`)
+        .then(res=>res.json())
+        .then(result=>{
+            setModalInfo(result)
+        })
+        .catch((e) => {
+            console.log("Error in Fetching /getPasswordById "+e);
+        })
+    }
+
+    const fetchDecryptPassword = () => {
+        if(eKey!=null && eKey!=""){
+            setDecryptRender(true)
+            fetch(`${API}/passwords/decryptPassword`,{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    "password": modalInfo.password,
+                    "key": eKey
+                })
+
+            })
+            .then(res=>res.json())
+            .then(result=>{
+                result.message==null ? setEPassword(result) : setEPassword("wrong_key")
+                setDecryptRender(false)
+                setEKey(null)
+            })
+            .catch((e) => {
+                console.log("Error in Fetching /decryptPassword "+e);
+            })
+        }
+    }
+
+    const filterPassword = (e) => {
+        setCategory(e)
+        if(passwords!=null&&passwords!="network_error"){
+            setPasswords(null)
+            if(e=="all"){
+                setPasswords(allPasswords)
+            } else if(e=="archive"){
+                setPasswords(archivePasswords)
+            } else {
+                let tempPasswords = [];
+                allPasswords.map(item => {
+                    if(item.category == e){
+                        tempPasswords.push(item);
+                    }
+                })
+                setPasswords(tempPasswords)
+            }
+        }
+    }
+
+    function getModalInfo(e){
+        fetchPasswordById(e)
+    }
+
+    function closeModal(){
+        setEKey(null)
+        setEPassword(null)
+        setModalInfo(null)
+        setDecryptRender(false)
+    }
+
+    useEffect(()=>{
         fetchPasswords()
-    }, []);
+        fetchArchivePasswords()
+    },[])
 
     function renderHeader(){
         return(
@@ -35,8 +122,8 @@ export default function Banking() {
     function renderCategories(){
         return(
             <div className={styles.category_container}>
-                <div className={styles.category}>All</div>
-                <div className={styles.category}>Archive</div>
+                <div onClick={() => filterPassword("all")} className={`${styles.category} ${category=="all" ? styles.category_selected : null}`}>All</div>
+                <div onClick={() => filterPassword("archive")} className={`${styles.category} ${category=="archive" ? styles.category_selected : null}`}>Archive</div>
             </div>
         )
     }
@@ -46,16 +133,63 @@ export default function Banking() {
             <div className={styles.password_container}>
                 {passwords.map(item=>{
                     return(
-                        <div key={item._id} className={` ${styles.password_card} ${styles.mItem}}`}>
-                            <div className={styles.password_logo}> 
-                                {item.name.substring(0,1).toUpperCase()}
-                            </div>
-                            <div className={styles.password_detail}>
-                                <div>{item.name}</div>
-                                <div>{item.email}</div>
-                            </div>
-                            <div className={styles.password_arrow}> 
-                                <Image alt='right_arrow' src={require('../public/icons/right_arrow.svg')} />
+                        <div key={item._id} className={styles.mItem}>
+                            <a onClick={() => getModalInfo(item._id)} href="#open-modal" className={styles.password_card}>
+                                <div className={styles.password_logo}> 
+                                    {item.name.substring(0,1).toUpperCase()}
+                                </div>
+                                <div className={styles.password_detail}>
+                                    <div>{item.name}</div>
+                                    <div>{item.email}</div>
+                                </div>
+                                <div className={styles.password_arrow}> 
+                                    <Image alt='right_arrow' src={require('../public/icons/right_arrow.svg')} />
+                                </div>
+                            </a>
+                            
+                            <div id="open-modal" className={styles.modal_window}>
+                                <div>
+                                    <div className={styles.close_container}>
+                                        <a onClick={() => closeModal()} href="#">
+                                            <Image src={require('../public/icons/close.svg')} alt="close" />
+                                        </a>
+                                    </div>
+                                    {modalInfo==null? renderLoading():
+                                    <div className={styles.modal_info}>
+                                        <div className={styles.modal_name}>
+                                            <div>
+                                                <div>{modalInfo.name}</div>
+                                                <div>{modalInfo.email}</div>
+                                            </div>
+                                        </div>
+                                        {decryptRender ? renderLoading() : 
+                                        <div>
+                                            <div className={styles.input_container}>
+                                                <div>
+                                                    <input type="password" placeholder='key' value={eKey} onChange={e => setEKey(e.target.value)} />
+                                                    <button onClick={() => fetchDecryptPassword()}>Submit</button>
+                                                </div>
+                                                <div>                                                        
+                                                    <div className={styles.modal_password}>
+                                                    {ePassword==null ? null : ePassword=="wrong_key" ? 
+                                                    <div className={styles.wrong_key}>
+                                                        <div>Wrong Key Entered</div>
+                                                    </div> : null}
+                                                    {ePassword!=null && ePassword!="wrong_key" ? 
+                                                    <div className={styles.decrypted_password}>
+                                                        <div>{ePassword}</div>
+                                                    </div> : null}
+                                                    {ePassword==null ? 
+                                                    <div className={styles.encrypted_password}>
+                                                        <div>{modalInfo.password.substring(0,25)}</div>
+                                                    </div> : null}
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>}
+                                    </div>
+                                    }      
+                                </div>
                             </div>
                         </div>
                     )
@@ -66,9 +200,7 @@ export default function Banking() {
 
     function renderLoading(){
         return(
-            <div>
-                Loading...
-            </div>
+            <div></div>
         )
     }
 

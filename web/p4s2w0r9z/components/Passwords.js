@@ -7,9 +7,10 @@ import styles from '../styles/Passwords.module.css'
 
 export default function Passwords() {
 
-    const[allPasswords, setAllPasswords] = useState(null) //fetched unarchived Passwords
-    const[archivePasswords, setArchivePasswords] = useState(null) //fetched archived Passwords
-    const[passwords, setPasswords] = useState(null) // rendering passwords
+    const[allPasswords, setAllPasswords] = useState(null)
+    const[archivePasswords, setArchivePasswords] = useState(null)
+    const[passwords, setPasswords] = useState(null)
+    const[category, setCategory] = useState("all")
 
     const[modalInfo, setModalInfo] = useState(null)
     const[eKey, setEKey] = useState(null)
@@ -75,6 +76,7 @@ export default function Passwords() {
     }
 
     const filterPassword = (e) => {
+        setCategory(e)
         if(passwords!=null&&passwords!="network_error"){
             setPasswords(null)
             if(e=="all"){
@@ -108,14 +110,6 @@ export default function Passwords() {
         fetchPasswords()
         fetchArchivePasswords()
     },[])
-    
-    function loading(){
-        return(
-            <div className={styles.loader_container}>
-                <span className={styles.loader}></span>
-            </div>
-        )
-    }
 
     function renderHeader(){
         return(
@@ -128,96 +122,88 @@ export default function Passwords() {
     function renderCategories(){
         return(
             <div className={styles.category_container}>
-                <div onClick={() => filterPassword("all")} className={styles.category}>All</div>
-                <div onClick={() => filterPassword("web-app")} className={styles.category}>Web-App</div>
-                <div onClick={() => filterPassword("email")} className={styles.category}>Email</div>
-                <div onClick={() => filterPassword("other")} className={styles.category}>Others</div>
-                <div onClick={() => filterPassword("archive")} className={styles.category}>Archive</div>
+                <div onClick={() => filterPassword("all")} className={`${styles.category} ${category=="all" ? styles.category_selected : null}`}>All</div>
+                <div onClick={() => filterPassword("web-app")} className={`${styles.category} ${category=="web-app" ? styles.category_selected : null}`}>Web-App</div>
+                <div onClick={() => filterPassword("email")} className={`${styles.category} ${category=="email" ? styles.category_selected : null}`}>Email</div>
+                <div onClick={() => filterPassword("other")} className={`${styles.category} ${category=="other" ? styles.category_selected : null}`}>Others</div>
+                <div onClick={() => filterPassword("archive")} className={`${styles.category} ${category=="archive" ? styles.category_selected : null}`}>Archive</div>
             </div>
         )
     }
 
     function renderPasswords(){
         return(
-            // <div className={styles.masonry}>
-                <div className={styles.password_container}>
-                    {passwords.map(item=>{
-                        return(
-                            <div key={item._id} className={styles.mItem}>
-                                <a onClick={() => getModalInfo(item._id)} href="#open-modal" className={styles.password_card}>
-                                    <div className={styles.password_logo}> 
-                                        {item.name.substring(0,1).toUpperCase()}
+            <div className={styles.password_container}>
+                {passwords.map(item=>{
+                    return(
+                        <div key={item._id} className={styles.mItem}>
+                            <a onClick={() => getModalInfo(item._id)} href="#open-modal" className={styles.password_card}>
+                                <div className={styles.password_logo}> 
+                                    {item.name.substring(0,1).toUpperCase()}
+                                </div>
+                                <div className={styles.password_detail}>
+                                    <div>{item.name}</div>
+                                    <div>{item.email}</div>
+                                </div>
+                                <div className={styles.password_arrow}> 
+                                    <Image alt='right_arrow' src={require('../public/icons/right_arrow.svg')} />
+                                </div>
+                            </a>
+                            
+                            <div id="open-modal" className={styles.modal_window}>
+                                <div>
+                                    <div className={styles.close_container}>
+                                        <a onClick={() => closeModal()} href="#">
+                                            <Image src={require('../public/icons/close.svg')} alt="close" />
+                                        </a>
                                     </div>
-                                    <div className={styles.password_detail}>
-                                        <div>{item.name}</div>
-                                        <div>{item.email}</div>
-                                    </div>
-                                    <div className={styles.password_arrow}> 
-                                        <Image alt='right_arrow' src={require('../public/icons/right_arrow.svg')} />
-                                    </div>
-                                </a>
-                                
-                                <div id="open-modal" className={styles.modal_window}>
-                                    <div>
-                                        <div className={styles.close_container}>
-                                            <a onClick={() => closeModal()} href="#">
-                                                <Image src={require('../public/icons/close.svg')} alt="close" />
-                                            </a>
+                                    {modalInfo==null? renderLoading():
+                                    <div className={styles.modal_info}>
+                                        <div className={styles.modal_name}>
+                                            <div>
+                                                <div>{modalInfo.name}</div>
+                                                <div>{modalInfo.email}</div>
+                                            </div>
                                         </div>
-                                        {modalInfo==null? renderLoading():
-                                        <div className={styles.modal_info}>
-                                            <div className={styles.modal_name}>
-                                                {/* <Image height={100} src={require('../public/icons/user_frame.png')} /> */}
+                                        {decryptRender ? renderLoading() : 
+                                        <div>
+                                            <div className={styles.input_container}>
                                                 <div>
-                                                    <div>{modalInfo.name}</div>
-                                                    <div>{modalInfo.email}</div>
+                                                    <input type="password" placeholder='key' value={eKey} onChange={e => setEKey(e.target.value)} />
+                                                    <button onClick={() => fetchDecryptPassword()}>Submit</button>
+                                                </div>
+                                                <div>                                                        
+                                                    <div className={styles.modal_password}>
+                                                    {ePassword==null ? null : ePassword=="wrong_key" ? 
+                                                    <div className={styles.wrong_key}>
+                                                        <div>Wrong Key Entered</div>
+                                                    </div> : null}
+                                                    {ePassword!=null && ePassword!="wrong_key" ? 
+                                                    <div className={styles.decrypted_password}>
+                                                        <div>{ePassword}</div>
+                                                    </div> : null}
+                                                    {ePassword==null ? 
+                                                    <div className={styles.encrypted_password}>
+                                                        <div>{modalInfo.password.substring(0,25)}</div>
+                                                    </div> : null}
+                                                </div>
                                                 </div>
                                             </div>
-                                            {decryptRender ? loading() : 
-                                            <div>
-                                                <div className={styles.input_container}>
-                                                    <div>
-                                                        <input type="password" placeholder='key' value={eKey} onChange={e => setEKey(e.target.value)} />
-                                                        <button onClick={() => fetchDecryptPassword()}>Submit</button>
-                                                    </div>
-                                                    <div>                                                        
-                                                        <div className={styles.modal_password}>
-                                                        {ePassword==null ? null : ePassword=="wrong_key" ? 
-                                                        <div className={styles.wrong_key}>
-                                                            {/* <Image width={20} src={require('../public/icons/cross.png')} /> */}
-                                                            <div>Wrong Key Entered</div>
-                                                        </div> : null}
-                                                        {ePassword!=null && ePassword!="wrong_key" ? 
-                                                        <div className={styles.decrypted_password}>
-                                                            {/* <Image width={30} src={require('../public/icons/done_green.png')} /> */}
-                                                            <div>{ePassword}</div>
-                                                        </div> : null}
-                                                        {ePassword==null ? 
-                                                        <div className={styles.encrypted_password}>
-                                                            {/* <Image width={30} src={require('../public/icons/box.png')} /> */}
-                                                            <div>{modalInfo.password.substring(0,25)}</div>
-                                                        </div> : null}
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                            </div>}
-                                        </div>
-                                        }      
+                                        </div>}
                                     </div>
+                                    }      
                                 </div>
                             </div>
-                        )
-                    })}
-                </div>
-            // </div>
+                        </div>
+                    )
+                })}
+            </div>
         )
     }
 
     function renderLoading(){
         return(
-            <div>
-                Loading...
-            </div>
+            <div/>
         )
     }
 
