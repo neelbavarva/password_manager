@@ -10,20 +10,21 @@ export default function Manage() {
     const[allPasswords, setAllPasswords] = useState(null)
     const[archivePasswords, setArchivePasswords] = useState(null)
     const[passwords, setPasswords] = useState(null)
-    const[dcategory, setDCategory] = useState("all")
+    const[dcategory, setDCategory] = useState("ALL")
 
     const[category, setCategory] = useState("addPassword")
     const[backup, setBackup] = useState(true)
     const[fieldError, setFieldError] = useState(false)
     const[submitProcess, setSubmitProcess] = useState(false)
+    const[removeProcess, setRemoveProcess] = useState(false)
 
     //password
     const[pName, setPName] = useState(null)
     const[pEmail, setPEmail] = useState(null)
-    const[pCategory, setPCategory] = useState("all")
+    const[pCategory, setPCategory] = useState("web-app")
     const[pPassword, setPPassword] = useState(null)
     const[pKey, setPKey] = useState(null)
-    const[pArchive, setPArchive] = useState("No")
+    const[pArchive, setPArchive] = useState(false)
 
     const[modalInfo, setModalInfo] = useState(null)
     const[eKey, setEKey] = useState(null)
@@ -36,7 +37,7 @@ export default function Manage() {
         } else {
             setFieldError(false)
             setSubmitProcess(true)
-            fetch("https://password-manager-xpkf.onrender.com/passwords/newPassword",{
+            fetch(`${API}/passwords/newPassword`,{
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
@@ -53,12 +54,31 @@ export default function Manage() {
             .then(result=>{
                 renderCancel()
                 setSubmitProcess(false)
+                window.location.reload(false)
             })
             .catch((e) => {
                 console.log("Error in POST password " + e);
             })
         }
     }
+
+    const removePassword = (_id) => {
+        setRemoveProcess(true)
+        fetch(`${API}/passwords/deletePassword/${_id}`,{
+            method: 'DELETE'
+        })
+        .then(res=>res.json())
+        .then(result=>{
+            closeModal()
+            setRemoveProcess(false)
+            window.location.reload(false)
+        })
+        .catch((e) => {
+            console.log("Error in DELETE password " + e);
+            setRemoveProcess(false)
+        })
+    }
+
 
     const fetchPasswords = () => {
         fetch(`${API}/passwords/getAllPasswords`)
@@ -127,21 +147,21 @@ export default function Manage() {
     },[])
 
     function selectCategory(){
-        pCategory=="all"?setPCategory("web-app")
-        : pCategory=="web-app"?setPCategory("email")
+        pCategory=="web-app"?setPCategory("email")
         : pCategory=="email"?setPCategory("banking")
         : pCategory=="banking"?setPCategory("other")
         : pCategory=="other"?setPCategory("archive")
-        : pCategory=="archive"?setPCategory("all"):null
+        : pCategory=="archive"?setPCategory("web-app"):null
     }
 
     function renderCancel(){
         setPName(null)
         setPEmail(null)
-        setPCategory("all")
+        setPCategory("web-app")
         setPPassword(null)
         setPKey(null)
-        setPArchive("No")
+        setPArchive(false)
+        
     }
    
     function renderHeader(){
@@ -159,15 +179,6 @@ export default function Manage() {
                 <div onClick={() => setCategory("deletePassword")} className={`${styles.category} ${category=="deletePassword" ? styles.category_selected : null}`}>Delete Password</div>
                 <div className={`${styles.category}`}>Add Card</div>
                 <div className={`${styles.category}`}>Delete Card</div>
-            </div>
-        )
-    }
-
-    function renderBackup(){
-        return(
-            <div className={styles.backup_container}>
-                <div onClick={() => setBackup(true)} className={`${styles.backup} ${backup ? styles.backup_selected : null}`}>With Backup</div>
-                <div onClick={() => setBackup(false)} className={`${styles.backup} ${!backup ? styles.backup_selected : null}`}>Without Backup</div>
             </div>
         )
     }
@@ -197,7 +208,7 @@ export default function Manage() {
                 </div>
                 <div className={styles.input_container}>
                     <div>archive</div>
-                    <div onClick={() => pArchive=="No" ? setPArchive("Yes") : setPArchive("No") } className={styles.touchable_field}>{pArchive}</div>
+                    <div onClick={() => pArchive ? setPArchive(false) : setPArchive(true) } className={styles.touchable_field}>{pArchive?"Yes":"No"}</div>
                 </div>
                 <button onClick={() => renderCancel()} className={styles.cancel_btn}>Cancel</button>
                 <button onClick={() => addNewPassword()} className={`${styles.submit_btn} ${fieldError?styles.btn_warning:null}`}>{submitProcess?"Processing...":"Submit"}</button>
@@ -239,7 +250,7 @@ export default function Manage() {
                                                 <div>{modalInfo.email}</div>
                                             </div>
                                         </div>
-                                        <button>Delete</button>
+                                        <button onClick={() => removePassword(modalInfo._id)}>{removeProcess?"Processing...":"Delete"}</button>
                                     </div>
                                     }      
                                 </div>
@@ -278,7 +289,6 @@ export default function Manage() {
                 <div className={styles.container}>
                     {renderHeader()}
                     {renderCategories()}
-                    {category=="addPassword" && renderBackup()}
                     {category=="addPassword" && renderAddPassword()}
                     {category=="deletePassword" && renderDeletePassword()}
                 </div>
