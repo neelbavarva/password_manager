@@ -218,6 +218,7 @@
     justify-content: flex-start;
     display: flex;
     flex: 1;
+    cursor: pointer;
 }
 
 .addPassword_container button{

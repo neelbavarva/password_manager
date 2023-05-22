@@ -46,7 +46,7 @@ export default function Home() {
                 </div>
                 <div className={styles.auth_container}>
                     <input type='password' value={password} onChange={e => setPassword(e.target.value)} placeholder='password' />
-                    <button onClick={() => fetchAuth()}>Click</button>
+                    <button onClick={() => fetchAuth()}>Check</button>
                 </div>
             </div>
         )

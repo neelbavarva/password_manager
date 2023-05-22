@@ -44,7 +44,7 @@ export default function Manage() {
                     "name": pName.trim(),
                     "email": pEmail.trim(),
                     "password": pPassword.trim(),
-                    "key": pPassword.trim(),
+                    "key": pKey.trim(),
                     "category": pCategory.trim(),
                     "archive": pArchive
                 })
