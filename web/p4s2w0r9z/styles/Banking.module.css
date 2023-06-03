@@ -386,3 +386,31 @@
         width: 75%;
     }
 }
+
+.total_password_detail{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    color: rgb(137,147,157);
+    font-family: 'SilkaRegular';
+    font-size: 12px;
+    justify-content: center;
+    align-items: center;
+    background-color: #0e1117;
+    border: 1px solid #30363c59;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border-radius: 10px;
+}
+
+.archive_password_detail{
+    margin-top: 1rem;
+    border-top: 1px solid #30363c59;
+    padding-top: 1rem;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}

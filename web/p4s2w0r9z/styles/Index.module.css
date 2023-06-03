@@ -31,7 +31,7 @@
 .auth_page{
     display: flex;
     flex: 1;
-    height: 100vh;
+    height: 90vh;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -49,6 +49,7 @@
 .auth_container{
     display: flex;
     margin-top: 2rem;
+    border-radius: 0px;
 }
 
 .auth_container input{
@@ -64,6 +65,7 @@
     outline: none;
     color: rgb(240, 242, 248);
     padding-left: 1rem;
+    border-radius: 0px;
 }
 
 .auth_container input::placeholder {
@@ -86,6 +88,7 @@
     color: rgb(240, 242, 248);
     background-color: transparent;
     border-bottom: 2px solid rgb(48, 54, 61);
+    border-radius: 0px;
 }
 
 .auth_container input ::placeholder{
