@@ -4,6 +4,10 @@ body {
     background-color: #090d11;
 }
 
+body::-webkit-scrollbar{
+    display: none;
+}
+
 ::-moz-selection {
     background: #A9BEF0;
     color: #FFF2EC;

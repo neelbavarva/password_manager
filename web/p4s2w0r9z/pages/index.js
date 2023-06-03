@@ -42,10 +42,10 @@ export default function Home() {
         return(
             <div className={styles.auth_page}>
                 <div className={styles.auth_detail}>
-                    Enter your password
+                    <Image width="200" src={require("../public/icons/logo.png")} />
                 </div>
                 <div className={styles.auth_container}>
-                    <input type='password' value={password} onChange={e => setPassword(e.target.value)} placeholder='password' />
+                    <input type='password' value={password} onChange={e => setPassword(e.target.value)} placeholder='enter your password' />
                     <button onClick={() => fetchAuth()}>Check</button>
                 </div>
             </div>

@@ -10,6 +10,7 @@ export default function Passwords() {
     const[allPasswords, setAllPasswords] = useState(null)
     const[archivePasswords, setArchivePasswords] = useState(null)
     const[passwords, setPasswords] = useState(null)
+    const[sPasswords, setSPasswords] = useState(null)
     const[category, setCategory] = useState("all")
 
     const[modalInfo, setModalInfo] = useState(null)
@@ -17,12 +18,17 @@ export default function Passwords() {
     const[ePassword, setEPassword] = useState(null)
     const[decryptRender, setDecryptRender] = useState(false)
 
+    const[sort, setSort] = useState(false)
+    const[search, setSearch] = useState(null)
+    const[passwordDetail, setPasswordDetail] = useState(false)
+
     const fetchPasswords = () => {
         fetch(`${API}/passwords/getNonBankingPasswords`)
         .then(res=>res.json())
         .then(result=>{
             setPasswords(result)
             setAllPasswords(result)
+            setSPasswords(result)
         })
         .catch((e) => {
             setPasswords("network_error")
@@ -79,10 +85,13 @@ export default function Passwords() {
         setCategory(e)
         if(passwords!=null&&passwords!="network_error"){
             setPasswords(null)
+            setSPasswords(null)
             if(e=="all"){
                 setPasswords(allPasswords)
+                setSPasswords(allPasswords)
             } else if(e=="archive"){
                 setPasswords(archivePasswords)
+                setSPasswords(archivePasswords)
             } else {
                 let tempPasswords = [];
                 allPasswords.map(item => {
@@ -91,8 +100,26 @@ export default function Passwords() {
                     }
                 })
                 setPasswords(tempPasswords)
+                setSPasswords(tempPasswords)
             }
         }
+    }
+
+    const searchPassword = (text) => {
+        let dummyPasswords = []
+        console.log(text)
+        for(let i=0;i<sPasswords.length;i++){
+            if(sPasswords[i].name.toUpperCase().includes(text.toUpperCase())){
+                dummyPasswords.push(sPasswords[i])
+            }
+        }
+        setPasswords(dummyPasswords)
+    } 
+
+    const sortPassword = () => {
+        console.log("sort")
+        sort ? passwords.sort((a, b) => b.name.localeCompare(a.name)) & setSort(false)
+        : passwords.sort((a, b) => a.name.localeCompare(b.name)) & setSort(true)
     }
 
     function getModalInfo(e){
@@ -114,7 +141,13 @@ export default function Passwords() {
     function renderHeader(){
         return(
             <div className={styles.header_container}>
-                Passwords
+                <button onClick={() => passwordDetail ? setPasswordDetail(false) : setPasswordDetail(true)}>Passwords</button>
+                {allPasswords!=null && archivePasswords!=null && passwordDetail ? 
+                <div>
+                    Total Passwords = {allPasswords.length} <br/><br/>
+                    Archived Passwords = {archivePasswords.length}
+                </div> 
+                : null}
             </div>
         )
     }
@@ -127,6 +160,22 @@ export default function Passwords() {
                 <div onClick={() => filterPassword("email")} className={`${styles.category} ${category=="email" ? styles.category_selected : null}`}>Email</div>
                 <div onClick={() => filterPassword("other")} className={`${styles.category} ${category=="other" ? styles.category_selected : null}`}>Others</div>
                 <div onClick={() => filterPassword("archive")} className={`${styles.category} ${category=="archive" ? styles.category_selected : null}`}>Archive</div>
+            </div>
+        )
+    }
+
+    function renderSearch(){
+        return(
+            <div className={styles.search_container}>
+                <div className={styles.search_input_container}>
+                    <input onChange={e => setSearch(e.target.value) & searchPassword(e.target.value)} value={search} placeholder="Search passwords" />
+                </div>
+                <div className={styles.filter_container}>
+                    <button onClick={() => search == null || search === "" ? sortPassword() : setSearch("") & setPasswords(allPasswords)}>
+                        {search == null || search === "" ? <Image src={require("../public/icons/filter.svg")} />
+                        : <Image src={require("../public/icons/close.svg")} />}
+                    </button>
+                </div>
             </div>
         )
     }
@@ -220,6 +269,7 @@ export default function Passwords() {
                 <div className={styles.container}>
                     {renderHeader()}
                     {renderCategories()}
+                    {passwords==null ? null : renderSearch()}
                     {passwords==null ? renderLoading() : renderPasswords()}
                 </div>
             </div>
