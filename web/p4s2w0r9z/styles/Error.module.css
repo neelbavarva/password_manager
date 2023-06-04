@@ -1,0 +1,45 @@
+.error_page {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (max-width: 1000px) {
+    .error_page {
+      width: 80%;
+    }
+}
+@media (min-width: 1000px) {
+    .error_page {
+      width: 850px;
+    }
+}
+
+.error_page{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.error_info {
+    margin-top: 2.5rem;
+    text-align: center;
+}
+
+.error_info > div:first-child{
+    font-size: 14px;
+    color: #BBC0C6;
+    font-family: 'SilkaMedium';
+}
+
+.error_info > div:last-child{
+    font-size: 10px;
+    color: rgb(137,147,157);
+    font-family: 'SilkaRegular';
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px solid rgb(48, 54, 61);
+    line-height: 18px;
+}
