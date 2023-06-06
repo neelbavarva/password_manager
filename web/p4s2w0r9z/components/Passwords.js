@@ -20,6 +20,7 @@ export default function Passwords() {
 
     const[sort, setSort] = useState(false)
     const[search, setSearch] = useState(null)
+    const[copy, setCopy] = useState(false)
 
     const fetchPasswords = () => {
         fetch(`${API}/passwords/getNonBankingPasswords`)
@@ -221,8 +222,9 @@ export default function Passwords() {
                                                         <div>Wrong Key Entered</div>
                                                     </div> : null}
                                                     {ePassword!=null && ePassword!="wrong_key" ? 
-                                                    <div className={styles.decrypted_password}>
+                                                    <div onClick={() => navigator.clipboard.writeText(ePassword) & setCopy(true) & setTimeout(() => setCopy(false), 1000) } className={styles.decrypted_password}>
                                                         <div>{ePassword}</div>
+                                                        <button>{copy ? "Copied" : "Copy"}</button>
                                                     </div> : null}
                                                     {ePassword==null ? 
                                                     <div className={styles.encrypted_password}>
