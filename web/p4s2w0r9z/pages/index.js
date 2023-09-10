@@ -42,11 +42,11 @@ export default function Home() {
         return(
             <div className={styles.auth_page}>
                 <div className={styles.auth_detail}>
-                    <Image width="200" src={require("../public/icons/logo.png")} />
+                    <Image width="300" src={require("../public/icons/logo.png")} />
                 </div>
                 <div className={styles.auth_container}>
                     <input type='password' value={password} onChange={e => setPassword(e.target.value)} placeholder='enter your password' />
-                    <button onClick={() => fetchAuth()}>Check</button>
+                    <button disabled={loading} onClick={() => fetchAuth()}>{loading?renderLoading():"Check"}</button>
                 </div>
             </div>
         )
@@ -77,7 +77,7 @@ export default function Home() {
 
     function renderLoading(){
         return(
-            <div />
+            <span className={styles.loader}></span>
         )
     }
 
@@ -90,7 +90,7 @@ export default function Home() {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            {loading ? renderLoading() : enableAuth ? renderPasswordApp() : renderAuthContainer()}
+            {enableAuth ? renderPasswordApp() : renderAuthContainer()}
         </>
     )
 }
