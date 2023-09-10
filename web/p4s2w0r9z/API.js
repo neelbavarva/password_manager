@@ -1,1 +1,1 @@
-export const API = 'https://password-manager-xpkf.onrender.com';
+export const API = 'https://red-plain-gosling.cyclic.app';
