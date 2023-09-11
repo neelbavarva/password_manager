@@ -221,7 +221,7 @@ export default function Passwords() {
                                                 </div> : null}
                                                 {ePassword!=null && ePassword!="wrong_key" ? 
                                                 <div onClick={() => navigator.clipboard.writeText(ePassword) & setCopy(true) & setTimeout(() => setCopy(false), 1000) } className={styles.decrypted_password}>
-                                                    <div>{ePassword}</div>
+                                                    <div>{ePassword.length>12?ePassword.substring(0,12)+"...":ePassword}</div>
                                                     <button className={styles.copy_btn}>{copy ? "Copied" : "Copy"}</button>
                                                 </div> : null}
                                                 {ePassword==null ? 
