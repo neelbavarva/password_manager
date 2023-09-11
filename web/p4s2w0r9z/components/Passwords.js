@@ -266,7 +266,7 @@ export default function Passwords() {
                     {renderHeader()}
                     {renderCategories()}
                     {passwords==null ? null : renderSearch()}
-                    {passwords==null ? renderLoading() : renderPasswords()}
+                    {passwords==null ? <div className={styles.main_loading_container}>{renderMainLoader()}</div> : renderPasswords()}
                 </div>
             </div>
 

@@ -262,16 +262,28 @@
 
 .decrypted_password{
     display: flex;
+    flex: 1;
+    flex-direction: row;
     padding: 0.75rem;
     padding-left: 1rem;
 }
 
 .decrypted_password > div{
     display: flex;
+    flex: 1;
     font-size: 14px;
     font-family: 'SilkaMedium';
     color: rgb(26, 193, 148);
     align-items: center;
+}
+
+.decrypted_password > button{
+    height: 35px;
+    width: 84px;
+    margin-right: 0.25rem;
+    font-size: 10px;
+    background-color: transparent;
+    border: 2px solid rgba(48, 54, 61, 0.413);
 }
 
 .encrypted_password{
@@ -322,6 +334,8 @@
     margin-top: 0rem;
     margin-left: 1rem;
     margin-right: 1rem;
+    border-radius: 10px;
+    border: 1.5px solid rgb(48, 54, 61);
 }
 
 .input_container input{
@@ -329,16 +343,15 @@
     flex: 1;
     background: transparent;
     border: none;
-    border-bottom: 2px solid #30363c59;
     font-family: 'SilkaMedium';
     font-size: 12px;
     padding: 1rem;
-    padding-left: 0rem;
+    padding-left: 1rem;
     outline: none;
     color: white;
 }
 
-.input_container button{
+.input_container > div > button{
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -346,13 +359,28 @@
     font-family: 'SilkaMedium';
     font-size: 12px;
     padding: 0.25rem;
+    margin: 0.25rem;
     width: 5rem;
-    border-radius: 0px;
     border: none;
     color: white;
-    border-radius: 100px;
-    background-color: transparent;
-    border: 1px solid #30363c59;
+    border-radius: 6px;
+    background-color: rgba(48, 54, 61, 0.413);
+}
+
+.copy_btn{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'SilkaMedium';
+    font-size: 12px;
+    padding: 0.25rem;
+    margin: 0.25rem;
+    width: 5rem;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    background-color: rgba(48, 54, 61, 0.413);
 }
 
 .input_container input ::placeholder{
@@ -413,4 +441,57 @@
     display: flex;
     width: 100%;
     justify-content: center;
+}
+
+.loader {
+    width: 16px;
+    height: 16px;
+    border: 2.5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 0.75s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 
+
+.loader_main {
+    width: 36px;
+    height: 36px;
+    border: 2.5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 0.5s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 
+
+.modal_loader_container{
+    display: flex;
+    justify-content: center;
+    margin-top: 5rem;
+}
+
+.main_loading_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
 }

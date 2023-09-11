@@ -177,8 +177,8 @@ export default function Manage() {
             <div className={styles.category_container}>
                 <div onClick={() => setCategory("addPassword")} className={`${styles.category} ${category=="addPassword" ? styles.category_selected : null}`}>Add Password</div>
                 <div onClick={() => setCategory("deletePassword")} className={`${styles.category} ${category=="deletePassword" ? styles.category_selected : null}`}>Delete Password</div>
-                <div className={`${styles.category}`}>Add Card</div>
-                <div className={`${styles.category}`}>Delete Card</div>
+                {/* <div className={`${styles.category}`}>Add Card</div>
+                <div className={`${styles.category}`}>Delete Card</div> */}
             </div>
         )
     }

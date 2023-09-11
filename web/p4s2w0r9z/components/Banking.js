@@ -16,6 +16,7 @@ export default function Banking() {
     const[eKey, setEKey] = useState(null)
     const[ePassword, setEPassword] = useState(null)
     const[decryptRender, setDecryptRender] = useState(false)
+    const[copy, setCopy] = useState(false)
 
     const fetchPasswords = () => {
         fetch(`${API}/passwords/getBankingPasswords`)
@@ -149,12 +150,13 @@ export default function Banking() {
                             
                             <div id="open-modal" className={styles.modal_window}>
                                 <div>
+                                    {modalInfo==null?null:
                                     <div className={styles.close_container}>
                                         <a onClick={() => closeModal()} href="#">
                                             <Image src={require('../public/icons/close.svg')} alt="close" />
                                         </a>
-                                    </div>
-                                    {modalInfo==null? renderLoading():
+                                    </div>}
+                                    {modalInfo==null? <div className={styles.modal_loader_container}>{renderMainLoader()}</div>:
                                     <div className={styles.modal_info}>
                                         <div className={styles.modal_name}>
                                             <div>
@@ -162,31 +164,29 @@ export default function Banking() {
                                                 <div>{modalInfo.email}</div>
                                             </div>
                                         </div>
-                                        {decryptRender ? renderLoading() : 
-                                        <div>
-                                            <div className={styles.input_container}>
-                                                <div>
-                                                    <input type="password" placeholder='key' value={eKey} onChange={e => setEKey(e.target.value)} />
-                                                    <button onClick={() => fetchDecryptPassword()}>Submit</button>
-                                                </div>
-                                                <div>                                                        
-                                                    <div className={styles.modal_password}>
-                                                    {ePassword==null ? null : ePassword=="wrong_key" ? 
-                                                    <div className={styles.wrong_key}>
-                                                        <div>Wrong Key Entered</div>
-                                                    </div> : null}
-                                                    {ePassword!=null && ePassword!="wrong_key" ? 
-                                                    <div className={styles.decrypted_password}>
-                                                        <div>{ePassword}</div>
-                                                    </div> : null}
-                                                    {ePassword==null ? 
-                                                    <div className={styles.encrypted_password}>
-                                                        <div>{modalInfo.password.substring(0,25)}</div>
-                                                    </div> : null}
-                                                </div>
-                                                </div>
+                                        <div className={styles.input_container}>
+                                            <div>
+                                                <input type="password" placeholder='key' value={eKey} onChange={e => setEKey(e.target.value)} />
+                                                <button onClick={() => fetchDecryptPassword()}>{decryptRender ? renderLoading() : "Submit"}</button>
                                             </div>
-                                        </div>}
+                                            <div>                                                        
+                                                <div className={styles.modal_password}>
+                                                {ePassword==null ? null : ePassword=="wrong_key" ? 
+                                                <div className={styles.wrong_key}>
+                                                    <div>Wrong Key Entered</div>
+                                                </div> : null}
+                                                {ePassword!=null && ePassword!="wrong_key" ? 
+                                                <div onClick={() => navigator.clipboard.writeText(ePassword) & setCopy(true) & setTimeout(() => setCopy(false), 1000) } className={styles.decrypted_password}>
+                                                    <div>{ePassword}</div>
+                                                    <button className={styles.copy_btn}>{copy ? "Copied" : "Copy"}</button>
+                                                </div> : null}
+                                                {ePassword==null ? 
+                                                <div className={styles.encrypted_password}>
+                                                    <div>{modalInfo.password.substring(0,25)}</div>
+                                                </div> : null}
+                                            </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     }      
                                 </div>
@@ -206,7 +206,13 @@ export default function Banking() {
 
     function renderLoading(){
         return(
-            <div></div>
+            <span className={styles.loader}></span>
+        )
+    }
+
+    function renderMainLoader(){
+        return(
+            <span className={styles.loader_main}></span> 
         )
     }
 
@@ -216,7 +222,7 @@ export default function Banking() {
                 <div className={styles.container}>
                     {renderHeader()}
                     {renderCategories()}
-                    {passwords==null ? renderLoading() : renderPasswords()}
+                    {passwords==null ? <div className={styles.main_loading_container}>{renderMainLoader()}</div> : renderPasswords()}
                 </div>
             </div>
         </>
