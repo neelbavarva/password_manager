@@ -172,8 +172,12 @@
 
 .addPassword_container{
     padding: 1.5rem;
-    margin-top: -2.5rem;
-    padding-bottom: 7.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border: 1px solid #30363c59;
+    border-radius: 16px;
 }
 
 .input_container{
@@ -181,6 +185,10 @@
     flex: 1;
     border-bottom: 1px solid #30363c59;
     margin-top: 1.5rem;
+}
+
+.input_container:first-child{
+    margin-top: 0rem;
 }
 
 .input_container > div:first-child{
