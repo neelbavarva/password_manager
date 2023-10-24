@@ -1,10 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link'
 import styles from '../styles/Index.module.css'
 import {API} from '../API'
-
 import Passwords from '@/components/Passwords'
 import Banking from '@/components/Banking'
 import Manage from '@/components/Manage'
@@ -45,7 +43,7 @@ export default function Home() {
                     <Image width="300" src={require("../public/icons/logo.png")} />
                 </div>
                 <div className={styles.auth_container}>
-                    <input type='password' value={password} onChange={e => setPassword(e.target.value)} placeholder='enter your password' />
+                    <input autoFocus type='password' value={password} onChange={e => setPassword(e.target.value)} placeholder='enter your password' />
                     <button disabled={loading} onClick={() => fetchAuth()}>{loading?renderLoading():"Check"}</button>
                 </div>
             </div>
@@ -67,9 +65,9 @@ export default function Home() {
         return(
             <div className={styles.container}>
                 <div className={`${styles.navbar}`}>
-                    <a onClick={()=>setCurrentPage("Passwords")}>Passwords</a>
-                    <a onClick={()=>setCurrentPage("Banking")}>Banking</a>
-                    <a onClick={()=>setCurrentPage("Manage")}>Manage</a>
+                    <a className={currentPage=="Passwords" ? styles.nav_selected : null} onClick={()=>setCurrentPage("Passwords")}>Passwords</a>
+                    <a className={currentPage=="Banking" ? styles.nav_selected : null} onClick={()=>setCurrentPage("Banking")}>Banking</a>
+                    <a className={currentPage=="Manage" ? styles.nav_selected : null} onClick={()=>setCurrentPage("Manage")}>Manage</a>
                 </div>
             </div>
         )
