@@ -65,7 +65,7 @@ export default function Manage() {
     const addNewPassword = () => {
 
         // Check if any required fields are missing
-        if (![pName, pEmail, pCategory, pPassword, pKey, pArchive].every(Boolean)) {
+        if (![pName, pEmail, pCategory, pPassword, pKey].every(Boolean)) {
             setFieldError(true);
         } else {
             setFieldError(false);
