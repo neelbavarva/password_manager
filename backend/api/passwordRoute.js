@@ -1,9 +1,6 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const app = express()
-const router = express.Router()
-const Password = require('./password')
-
+const express = require('express');
+const router = express.Router();
+const Password = require('./password');
 
 // encryption - decryption algos
 
@@ -28,136 +25,135 @@ function decrypt(encryptedText, password) {
     }
 }
 
-// GET
-
-router.get('/getAllPasswords', async(req, res)=> {
-    try{
-        const passowrds = await Password.find()
-        res.json(passowrds)
-    } catch(err){
-        res.status(500).json({message: err.message})
+// GET Routes
+router.get('/getAllPasswords', async (req, res) => {
+    try {
+        const passwords = await Password.find();
+        res.json(passwords);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-})
+});
 
-router.get('/getPasswords', async(req, res)=> {
-    try{
-        const passowrds = await Password.find({"archive": false})
-        res.json(passowrds)
-    } catch(err){
-        res.status(500).json({message: err.message})
+router.get('/getPasswords', async (req, res) => {
+    try {
+        const passwords = await Password.find({ "archive": false });
+        res.json(passwords);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-})
+});
 
-router.get('/getArchivePasswords', async(req, res)=> {
-    try{
-        const passowrds = await Password.find({"archive": true})
-        res.json(passowrds)
-    } catch(err){
-        res.status(500).json({message: err.message})
+router.get('/getArchivePasswords', async (req, res) => {
+    try {
+        const passwords = await Password.find({ "archive": true });
+        res.json(passwords);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-})
+});
 
-router.get('/getNonBankingPasswords', async(req, res)=> {
-    try{
-        const passowrds = await Password.find({"archive": false, "category" : {$in: ['web-app', 'email', 'other']}})
-        res.json(passowrds)
-    } catch(err){
-        res.status(500).json({message: err.message})
+router.get('/getNonBankingPasswords', async (req, res) => {
+    try {
+        const passwords = await Password.find({ "archive": false, "category": { $in: ['web-app', 'email', 'other'] } });
+        res.json(passwords);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-})
+});
 
-router.get('/getNonBankingArchivePasswords', async(req, res)=> {
-    try{
-        const passowrds = await Password.find({"archive": true, "category" : {$in: ['web-app', 'email', 'other']}})
-        res.json(passowrds)
-    } catch(err){
-        res.status(500).json({message: err.message})
+router.get('/getNonBankingArchivePasswords', async (req, res) => {
+    try {
+        const passwords = await Password.find({ "archive": true, "category": { $in: ['web-app', 'email', 'other'] } });
+        res.json(passwords);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-})
+});
 
-router.get('/getBankingPasswords', async(req, res)=> {
-    try{
-        const passowrds = await Password.find({"archive": false, "category" : "banking"})
-        res.json(passowrds)
-    } catch(err){
-        res.status(500).json({message: err.message})
+router.get('/getBankingPasswords', async (req, res) => {
+    try {
+        const passwords = await Password.find({ "archive": false, "category": "banking" });
+        res.json(passwords);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-})
+});
 
-router.get('/getBankingArchivePasswords', async(req, res)=> {
-    try{
-        const passowrds = await Password.find({"archive": true, "category" : "banking"})
-        res.json(passowrds)
-    } catch(err){
-        res.status(500).json({message: err.message})
+router.get('/getBankingArchivePasswords', async (req, res) => {
+    try {
+        const passwords = await Password.find({ "archive": true, "category": "banking" });
+        res.json(passwords);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-})
+});
 
-router.get('/:id', async(req, res)=> {
+router.get('/:id', async (req, res) => {
     const id = req.params.id;
-    try{
-        const passowrds = await Password.findById(id)
-        res.json(passowrds)
-    } catch(err){
-        res.status(500).json({message: err.message})
+    try {
+        const password = await Password.findById(id);
+        res.json(password);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-})
+});
 
 // POST
 
-router.post('/newPassword', async(req, res) => {
-    const encrypted_string = encrypt(req.body.password, req.body.key)
-    const passowrd = new Password({
+router.post('/newPassword', async (req, res) => {
+    const encrypted_string = encrypt(req.body.password, req.body.key);
+    const password = new Password({
         name: req.body.name,
         email: req.body.email,
         category: req.body.category,
         password: encrypted_string,
-        archive: req.body.archive
-    })
-    try{
-        const newPassword = await passowrd.save()
-        res.status(201).json(newPassword)
-    } catch(err){
-        res.status(400)
+        archive: req.body.archive,
+    });
+    try {
+        const newPassword = await password.save();
+        res.status(201).json(newPassword);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
-})
+});
 
-router.post('/decryptPassword', async(req, res)=> {
-    const decrypted_string = decrypt(req.body.password, req.body.key)
-    try{
-        res.status(201).json(decrypted_string)
-    } catch(err){
-        res.status(500).json({message: err.message})
+router.post('/decryptPassword', async (req, res) => {
+    const decrypted_string = decrypt(req.body.password, req.body.key);
+    try {
+        res.status(201).json(decrypted_string);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-})
+});
 
 // PUT
 
-router.put('/editPassword', async(req, res) => {
-    Password.findByIdAndUpdate(req.body.id , {
+router.put('/editPassword', async (req, res) => {
+    Password.findByIdAndUpdate(req.body.id, {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
         category: req.body.category,
-        archive: req.body.archive
-    }).then(data=>{
-        console.log("This is Data: "+data)
-        res.send(data)
-    }).catch(err=>{
-        console.log(err)
-    })
-})
+        archive: req.body.archive,
+    }).then(data => {
+        console.log("This is Data: " + data);
+        res.send(data);
+    }).catch(err => {
+        console.log(err);
+    });
+});
 
 // DELETE
 
-router.delete('/deletePassword/:id',  async (req, res) => {
+router.delete('/deletePassword/:id', async (req, res) => {
     const id = req.params.id;
     try {
-      const n = await Password.deleteOne({_id: id})
-      res.json({ message: 'Deleted Password' })
+        const n = await Password.deleteOne({ _id: id });
+        res.json({ message: 'Deleted Password' });
     } catch (err) {
-      res.status(500).json({ message: err.message })
+        res.status(500).json({ message: err.message });
     }
-})
+});
 
-module.exports = router
+module.exports = router;

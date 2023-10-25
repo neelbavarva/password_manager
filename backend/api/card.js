@@ -1,27 +1,37 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const cardSchema = new mongoose.Schema({
-    bankName:{
+    bankName: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
     },
     cardName: {
-        type: String
+        type: String,
+        trim: true,
     },
-    number:{
-        type: String
+    number: {
+        type: String,
+        trim: true,
     },
     validTill: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
     },
     cvv: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
     },
     visa: {
-        type: Boolean
+        type: Boolean,
+        default: false,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
     }
-})
+});
 
-module.exports = mongoose.model('Card', cardSchema)
+module.exports = mongoose.model('Card', cardSchema);

@@ -1,6 +1,4 @@
 const express = require('express')
-const mongoose = require('mongoose')
-const app = express()
 const router = express.Router()
 const Card = require('./card')
 
@@ -83,7 +81,5 @@ router.delete('/deleteCard/:id',  async (req, res) => {
       res.status(500).json({ message: err.message })
     }
 })
-  
-  
 
 module.exports = router
