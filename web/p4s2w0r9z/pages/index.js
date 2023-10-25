@@ -1,94 +1,109 @@
-import React, {useState} from 'react'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Index.module.css'
-import {API} from '../API'
-import Passwords from '@/components/Passwords'
-import Banking from '@/components/Banking'
-import Manage from '@/components/Manage'
+import React, { useState, useRef, useEffect } from 'react';
+import Head from 'next/head';
+import Image from 'next/image';
+import styles from '../styles/Index.module.css';
+import { API } from '../API';
+import Passwords from '@/components/Passwords';
+import Banking from '@/components/Banking';
+import Manage from '@/components/Manage';
 
 export default function Home() {
 
-    const[currentPage, setCurrentPage] = useState("Passwords")
+    // State
+    const [currentPage, setCurrentPage] = useState("Passwords");
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [passwordInput, setPasswordInput] = useState("");
 
-    const[enableAuth, setEnableAuth] = useState(false)
-    const[loading, setLoading] = useState(false)
-    const[password, setPassword] = useState("")
+    // Ref
+    const passwordInputRef = useRef(null);
 
-    const fetchAuth = () =>{
-        setLoading(true)
-        fetch(`${API}/getAuthentication`,{
+    // Effects
+    useEffect(() => {
+        passwordInputRef.current.focus();
+    }, []);
+
+    // Event Handlers
+    const handleEnterKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            document.getElementById('submitButton').click();
+        }
+    };
+
+    // Functions
+    const authenticateUser = () => {
+        setIsLoading(true);
+        fetch(`${API}/getAuthentication`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                "password" : password
-            })
-    
+            body: JSON.stringify({ password: passwordInput })
         })
-        .then(res=>res.json())
-        .then(result=>{
-            result?setEnableAuth(true):setPassword("")
-            setLoading(false)
+        .then(response => response.json())
+        .then(result => {
+            result ? setIsAuthenticated(true) : setPasswordInput("");
         })
-        .catch((e) => {
-            console.log("Error in Password Auth Occurred " + e)
-            setLoading(false)
+        .catch(error => {
+            console.error("Error in user authentication", error);
         })
-    }
+        .finally(() => {
+            setIsLoading(false);
+        });
+    };
 
-    function renderAuthContainer(){
-        return(
-            <div className={styles.auth_page}>
-                <div className={styles.auth_detail}>
-                    <Image width="300" src={require("../public/icons/logo.png")} />
-                </div>
-                <div className={styles.auth_container}>
-                    <input autoFocus type='password' value={password} onChange={e => setPassword(e.target.value)} placeholder='enter your password' />
-                    <button disabled={loading} onClick={() => fetchAuth()}>{loading?renderLoading():"Check"}</button>
-                </div>
+    const renderAuthenticationContainer = () => (
+        <div className={styles.authPage}>
+            <div className={styles.authDetail}>
+                <Image width="300" src={require("../public/icons/logo.png")} />
             </div>
-        )
-    }
-
-    function renderPasswordApp(){
-        return(
-            <div>
-                {currentPage=="Passwords" && <Passwords />}
-                {currentPage=="Banking" && <Banking />}
-                {currentPage=="Manage" && <Manage />}
-                {renderNavbar()}
+            <div className={styles.authContainer}>
+                <input
+                    ref={passwordInputRef}
+                    onKeyPress={handleEnterKeyPress}
+                    type='password'
+                    value={passwordInput}
+                    onChange={e => setPasswordInput(e.target.value)}
+                    placeholder='Enter your password'
+                />
+                <button id="submitButton" disabled={isLoading} onClick={authenticateUser}>
+                    {isLoading ? renderLoadingIndicator() : "Check"}
+                </button>
             </div>
-        )
-    }
+        </div>
+    );
 
-    function renderNavbar(){
-        return(
-            <div className={styles.container}>
-                <div className={`${styles.navbar}`}>
-                    <a className={currentPage=="Passwords" ? styles.nav_selected : null} onClick={()=>setCurrentPage("Passwords")}>Passwords</a>
-                    <a className={currentPage=="Banking" ? styles.nav_selected : null} onClick={()=>setCurrentPage("Banking")}>Banking</a>
-                    <a className={currentPage=="Manage" ? styles.nav_selected : null} onClick={()=>setCurrentPage("Manage")}>Manage</a>
-                </div>
+    const renderPasswordApplication = () => (
+        <div>
+            {currentPage === "Passwords" && <Passwords />}
+            {currentPage === "Banking" && <Banking />}
+            {currentPage === "Manage" && <Manage />}
+            {renderNavigationBar()}
+        </div>
+    );
+
+    const renderNavigationBar = () => (
+        <div className={styles.container}>
+            <div className={`${styles.navbar}`}>
+                <a className={currentPage === "Passwords" ? styles.navSelected : null} onClick={() => setCurrentPage("Passwords")}>Passwords</a>
+                <a className={currentPage === "Banking" ? styles.navSelected : null} onClick={() => setCurrentPage("Banking")}>Banking</a>
+                <a className={currentPage === "Manage" ? styles.navSelected : null} onClick={() => setCurrentPage("Manage")}>Manage</a>
             </div>
-        )
-    }
+        </div>
+    );
 
-    function renderLoading(){
-        return(
-            <span className={styles.loader}></span>
-        )
-    }
+    const renderLoadingIndicator = () => (
+        <span className={styles.loader}></span>
+    );
 
+    // Render
     return (
         <>
-            <Head>
-                <title>Passwords</title>
-                <meta name="description" content="Generated by create next app" />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            {enableAuth ? renderPasswordApp() : renderAuthContainer()}
+        <Head>
+            <title>Passwords</title>
+            <meta name="description" content="Generated by create next app" />
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+            <link rel="icon" href="/favicon.ico" />
+        </Head>
+        {isAuthenticated ? renderPasswordApplication() : renderAuthenticationContainer()}
         </>
-    )
+    );
 }

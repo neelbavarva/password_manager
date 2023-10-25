@@ -31,66 +31,142 @@ export default function Manage() {
     const[ePassword, setEPassword] = useState(null)
     const[decryptRender, setDecryptRender] = useState(false)
 
+    // const addNewPassword = () => {
+    //     if (pName==null||pEmail==null||pCategory==null||pPassword==null||pKey==null||pArchive==null){
+    //         setFieldError(true)
+    //     } else {
+    //         setFieldError(false)
+    //         setSubmitProcess(true)
+    //         fetch(`${API}/passwords/newPassword`,{
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify({ 
+    //                 "name": pName.trim(),
+    //                 "email": pEmail.trim(),
+    //                 "password": pPassword.trim(),
+    //                 "key": pKey.trim(),
+    //                 "category": pCategory.trim(),
+    //                 "archive": pArchive
+    //             })
+
+    //         })
+    //         .then(res=>res.json())
+    //         .then(result=>{
+    //             renderCancel()
+    //             setSubmitProcess(false)
+    //             window.location.reload(false)
+    //         })
+    //         .catch((e) => {
+    //             console.log("Error in POST password " + e);
+    //         })
+    //     }
+    // }
+
     const addNewPassword = () => {
-        if (pName==null||pEmail==null||pCategory==null||pPassword==null||pKey==null||pArchive==null){
-            setFieldError(true)
+
+        // Check if any required fields are missing
+        if (![pName, pEmail, pCategory, pPassword, pKey, pArchive].every(Boolean)) {
+            setFieldError(true);
         } else {
-            setFieldError(false)
-            setSubmitProcess(true)
-            fetch(`${API}/passwords/newPassword`,{
+            setFieldError(false);
+            setSubmitProcess(true);
+        
+            // Prepare the data for the API request
+            const requestData = {
+                name: pName.trim(),
+                email: pEmail.trim(),
+                password: pPassword.trim(),
+                key: pKey.trim(),
+                category: pCategory.trim(),
+                archive: pArchive,
+            };
+        
+            // Make the API request
+            fetch(`${API}/passwords/newPassword`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    "name": pName.trim(),
-                    "email": pEmail.trim(),
-                    "password": pPassword.trim(),
-                    "key": pKey.trim(),
-                    "category": pCategory.trim(),
-                    "archive": pArchive
-                })
-
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
             })
-            .then(res=>res.json())
-            .then(result=>{
-                renderCancel()
-                setSubmitProcess(false)
-                window.location.reload(false)
+            .then((res) => res.json())
+            .then((result) => {
+                renderCancel();
+                setSubmitProcess(false);
+                window.location.reload(false);
             })
-            .catch((e) => {
-                console.log("Error in POST password " + e);
-            })
+            .catch((error) => {
+                console.log("Error in POST password:", error);
+            });
         }
-    }
+    };
 
-    const removePassword = (_id) => {
-        setRemoveProcess(true)
-        fetch(`${API}/passwords/deletePassword/${_id}`,{
-            method: 'DELETE'
-        })
-        .then(res=>res.json())
-        .then(result=>{
-            closeModal()
-            setRemoveProcess(false)
-            window.location.reload(false)
-        })
-        .catch((e) => {
-            console.log("Error in DELETE password " + e);
-            setRemoveProcess(false)
-        })
-    }
+    // const removePassword = (_id) => {
+    //     setRemoveProcess(true)
+    //     fetch(`${API}/passwords/deletePassword/${_id}`,{
+    //         method: 'DELETE'
+    //     })
+    //     .then(res=>res.json())
+    //     .then(result=>{
+    //         closeModal()
+    //         setRemoveProcess(false)
+    //         window.location.reload(false)
+    //     })
+    //     .catch((e) => {
+    //         console.log("Error in DELETE password " + e);
+    //         setRemoveProcess(false)
+    //     })
+    // }
+
+    const removePassword = async (_id) => {
+        setRemoveProcess(true);
+        try {
+            const response = await fetch(`${API}/passwords/deletePassword/${_id}`, {
+                method: 'DELETE',
+            });
+        
+            if (response.ok) {
+                await response.json();
+                closeModal();
+                setRemoveProcess(false);
+                window.location.reload(false);
+            } else {
+                throw new Error(`Failed to delete password (HTTP ${response.status})`);
+            }
+        } catch (error) {
+            console.error("Error in DELETE password:", error);
+            setRemoveProcess(false);
+        }
+    };
 
 
-    const fetchPasswords = () => {
-        fetch(`${API}/passwords/getAllPasswords`)
-        .then(res=>res.json())
-        .then(result=>{
-            setPasswords(result)
-            setAllPasswords(result)
-        })
-        .catch((e) => {
-            setPasswords("network_error")
-        })
-    }
+    // const fetchPasswords = () => {
+    //     fetch(`${API}/passwords/getAllPasswords`)
+    //     .then(res=>res.json())
+    //     .then(result=>{
+    //         setPasswords(result)
+    //         setAllPasswords(result)
+    //     })
+    //     .catch((e) => {
+    //         setPasswords("network_error")
+    //     })
+    // }
+
+    const fetchPasswords = async () => {
+        try {
+            const response = await fetch(`${API}/passwords/getAllPasswords`);
+            if (response.ok) {
+                const result = await response.json();
+                setPasswords(result);
+                setAllPasswords(result);
+            } else {
+                throw new Error(`Failed to fetch passwords (HTTP ${response.status})`);
+            }
+        } catch (error) {
+            console.error("Error in fetchPasswords:", error);
+            setPasswords("network_error");
+        }
+    };
 
     const fetchPasswordById = (e) => {
         fetch(`${API}/passwords/${e}`)
@@ -125,6 +201,35 @@ export default function Manage() {
                 console.log("Error in Fetching /decryptPassword "+e);
             })
         }
+    }
+
+    function generateStrongPassword(length) {
+
+        const charsets = {
+          lowercase: "abcdefghijklmnopqrstuvwxyz",
+          uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+          digits: "0123456789",
+          special: "!@#$%^&*",
+        };
+      
+        const getRandomChar = (charset) => charset[Math.floor(Math.random() * charset.length)];
+        const getRandomCharset = () => charsets[Object.keys(charsets)[Math.floor(Math.random() * 4)]];
+      
+        let password = '';
+      
+        password += getRandomChar(charsets.lowercase);
+        password += getRandomChar(charsets.uppercase);
+        password += getRandomChar(charsets.digits);
+        password += getRandomChar(charsets.special);
+      
+        for (let i = 0; i < length - 4; i++) {
+          const selectedCharset = getRandomCharset();
+          password += getRandomChar(selectedCharset);
+        }
+
+        password = password.split('').sort(() => Math.random() - 0.5).join('');
+      
+        return password;
     }
 
     function getModalInfo(e){
