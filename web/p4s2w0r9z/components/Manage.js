@@ -287,6 +287,17 @@ export default function Manage() {
             </div>
         )
     }
+
+    const handleDropdownCategoryChange = (event) => {
+        setPCategory(event.target.value);
+    };
+
+    const handleDropdownArchiveChange = (event) => {
+        setPArchive(event.target.value);
+    };
+
+    const categories = ["web-app","email","banking","other"];
+    const archives = [true, false];
     
     function renderAddPassword(){
         return(
@@ -301,7 +312,14 @@ export default function Manage() {
                 </div>
                 <div className={styles.input_container}>
                     <div>category</div>
-                    <div onClick={() => selectCategory()} className={styles.touchable_field}>{pCategory}</div>
+                    <select value={pCategory} onChange={handleDropdownCategoryChange}>
+                        {categories.map((option, index) => (
+                        <option key={index} value={option}>
+                            {option}
+                        </option>
+                        ))}
+                    </select>
+                    {/* <div onClick={() => selectCategory()} className={styles.touchable_field}>{pCategory}</div> */}
                 </div>
                 <div className={styles.input_container}>
                     <div>password</div>
@@ -313,7 +331,14 @@ export default function Manage() {
                 </div>
                 <div className={styles.input_container}>
                     <div>archive</div>
-                    <div onClick={() => pArchive ? setPArchive(false) : setPArchive(true) } className={styles.touchable_field}>{pArchive?"Yes":"No"}</div>
+                    <select value={pArchive} onChange={handleDropdownArchiveChange}>
+                        {archives.map((option, index) => (
+                        <option key={index} value={option}>
+                            {option?"Yes":"No"}
+                        </option>
+                        ))}
+                    </select>
+                    {/* <div onClick={() => pArchive ? setPArchive(false) : setPArchive(true) } className={styles.touchable_field}>{pArchive?"Yes":"No"}</div> */}
                 </div>
                 <button onClick={() => renderCancel()} className={styles.cancel_btn}>Cancel</button>
                 <button onClick={() => addNewPassword()} className={`${styles.submit_btn} ${fieldError?styles.btn_warning:null}`}>{submitProcess?"Processing...":"Submit"}</button>
