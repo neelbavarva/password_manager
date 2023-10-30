@@ -303,15 +303,15 @@ export default function Manage() {
         return(
             <div className={styles.addPassword_container}>
                 <div className={styles.input_container}>
-                    <div>name</div>
+                    <div>Name</div>
                     <input onChange={e => setPName(e.target.value)} value={pName} />
                 </div>
                 <div className={styles.input_container}>
-                    <div>email</div>
+                    <div>Email</div>
                     <input onChange={e => setPEmail(e.target.value)} value={pEmail} />
                 </div>
                 <div className={styles.input_container}>
-                    <div>category</div>
+                    <div>Category</div>
                     <select value={pCategory} onChange={handleDropdownCategoryChange}>
                         {categories.map((option, index) => (
                         <option key={index} value={option}>
@@ -322,15 +322,15 @@ export default function Manage() {
                     {/* <div onClick={() => selectCategory()} className={styles.touchable_field}>{pCategory}</div> */}
                 </div>
                 <div className={styles.input_container}>
-                    <div>password</div>
+                    <div>Password</div>
                     <input onChange={e => setPPassword(e.target.value)} value={pPassword} />
                 </div>
                 <div className={styles.input_container}>
-                    <div>key</div>
+                    <div>Key</div>
                     <input onChange={e => setPKey(e.target.value)} value={pKey} />
                 </div>
                 <div className={styles.input_container}>
-                    <div>archive</div>
+                    <div>Archive</div>
                     <select value={pArchive} onChange={handleDropdownArchiveChange}>
                         {archives.map((option, index) => (
                         <option key={index} value={option}>
