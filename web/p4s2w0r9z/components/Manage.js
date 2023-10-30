@@ -31,37 +31,6 @@ export default function Manage() {
     const[ePassword, setEPassword] = useState(null)
     const[decryptRender, setDecryptRender] = useState(false)
 
-    // const addNewPassword = () => {
-    //     if (pName==null||pEmail==null||pCategory==null||pPassword==null||pKey==null||pArchive==null){
-    //         setFieldError(true)
-    //     } else {
-    //         setFieldError(false)
-    //         setSubmitProcess(true)
-    //         fetch(`${API}/passwords/newPassword`,{
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify({ 
-    //                 "name": pName.trim(),
-    //                 "email": pEmail.trim(),
-    //                 "password": pPassword.trim(),
-    //                 "key": pKey.trim(),
-    //                 "category": pCategory.trim(),
-    //                 "archive": pArchive
-    //             })
-
-    //         })
-    //         .then(res=>res.json())
-    //         .then(result=>{
-    //             renderCancel()
-    //             setSubmitProcess(false)
-    //             window.location.reload(false)
-    //         })
-    //         .catch((e) => {
-    //             console.log("Error in POST password " + e);
-    //         })
-    //     }
-    // }
-
     const addNewPassword = () => {
 
         // Check if any required fields are missing
@@ -101,23 +70,6 @@ export default function Manage() {
         }
     };
 
-    // const removePassword = (_id) => {
-    //     setRemoveProcess(true)
-    //     fetch(`${API}/passwords/deletePassword/${_id}`,{
-    //         method: 'DELETE'
-    //     })
-    //     .then(res=>res.json())
-    //     .then(result=>{
-    //         closeModal()
-    //         setRemoveProcess(false)
-    //         window.location.reload(false)
-    //     })
-    //     .catch((e) => {
-    //         console.log("Error in DELETE password " + e);
-    //         setRemoveProcess(false)
-    //     })
-    // }
-
     const removePassword = async (_id) => {
         setRemoveProcess(true);
         try {
@@ -138,19 +90,6 @@ export default function Manage() {
             setRemoveProcess(false);
         }
     };
-
-
-    // const fetchPasswords = () => {
-    //     fetch(`${API}/passwords/getAllPasswords`)
-    //     .then(res=>res.json())
-    //     .then(result=>{
-    //         setPasswords(result)
-    //         setAllPasswords(result)
-    //     })
-    //     .catch((e) => {
-    //         setPasswords("network_error")
-    //     })
-    // }
 
     const fetchPasswords = async () => {
         try {
@@ -203,7 +142,8 @@ export default function Manage() {
         }
     }
 
-    function generateStrongPassword(length) {
+    function generateStrongPassword() {
+        const length = 24;
 
         const charsets = {
           lowercase: "abcdefghijklmnopqrstuvwxyz",
@@ -228,8 +168,8 @@ export default function Manage() {
         }
 
         password = password.split('').sort(() => Math.random() - 0.5).join('');
-      
-        return password;
+        
+        setPPassword(password)
     }
 
     function getModalInfo(e){
@@ -323,7 +263,13 @@ export default function Manage() {
                 </div>
                 <div className={styles.input_container}>
                     <div>Password</div>
-                    <input onChange={e => setPPassword(e.target.value)} value={pPassword} />
+                    <div className={styles.password_field}>
+                        <input onChange={e => setPPassword(e.target.value)} value={pPassword} />
+                        <button onClick={() => generateStrongPassword()}>
+                            <Image width="10" src={require('../public/icons/key.svg')} />
+                            <div>Generate Password</div>
+                        </button>
+                    </div>
                 </div>
                 <div className={styles.input_container}>
                     <div>Key</div>
