@@ -120,6 +120,91 @@ export default function Banking() {
         )
     }
 
+    function renderCards(){
+        return(
+            <div className={styles.card_container}>
+                <div className={styles.card}>
+                    <div className={styles.card_header}>
+                        <div>Name</div>
+                        <div>Bank</div>
+                    </div>
+                    <div className={styles.card_number}>
+                        <div>223344556677</div>
+                    </div>
+                    <div className={styles.card_info}>
+                        <div>CVV: 324</div>
+                        <div>Expires on: 08/29</div>
+                    </div>
+                </div>
+                <div className={styles.card}>
+                    <div className={styles.card_header}>
+                        <div>Name</div>
+                        <div>Bank</div>
+                    </div>
+                    <div className={styles.card_number}>
+                        <div>223344556677</div>
+                    </div>
+                    <div className={styles.card_info}>
+                        <div>CVV: 324</div>
+                        <div>Expires on: 08/29</div>
+                    </div>
+                </div>
+                <div className={styles.card}>
+                    <div className={styles.card_header}>
+                        <div>Name</div>
+                        <div>Bank</div>
+                    </div>
+                    <div className={styles.card_number}>
+                        <div>223344556677</div>
+                    </div>
+                    <div className={styles.card_info}>
+                        <div>CVV: 324</div>
+                        <div>Expires on: 08/29</div>
+                    </div>
+                </div>
+                <div className={styles.card}>
+                    <div className={styles.card_header}>
+                        <div>Name</div>
+                        <div>Bank</div>
+                    </div>
+                    <div className={styles.card_number}>
+                        <div>223344556677</div>
+                    </div>
+                    <div className={styles.card_info}>
+                        <div>CVV: 324</div>
+                        <div>Expires on: 08/29</div>
+                    </div>
+                </div>
+                <div className={styles.card}>
+                    <div className={styles.card_header}>
+                        <div>Name</div>
+                        <div>Bank</div>
+                    </div>
+                    <div className={styles.card_number}>
+                        <div>223344556677</div>
+                    </div>
+                    <div className={styles.card_info}>
+                        <div>CVV: 324</div>
+                        <div>Expires on: 08/29</div>
+                    </div>
+                </div>
+                <div className={styles.card}>
+                    <div className={styles.card_header}>
+                        <div>Name</div>
+                        <div>Bank</div>
+                    </div>
+                    <div className={styles.card_number}>
+                        <div>223344556677</div>
+                    </div>
+                    <div className={styles.card_info}>
+                        <div>CVV: 324</div>
+                        <div>Expires on: 08/29</div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     function renderCategories(){
         return(
             <div className={styles.category_container}>
@@ -221,6 +306,7 @@ export default function Banking() {
             <div className={styles.password_page}>
                 <div className={styles.container}>
                     {renderHeader()}
+                    {renderCards()}
                     {renderCategories()}
                     {passwords==null ? <div className={styles.main_loading_container}>{renderMainLoader()}</div> : renderPasswords()}
                 </div>

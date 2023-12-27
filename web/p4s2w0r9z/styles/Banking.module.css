@@ -496,3 +496,19 @@
     align-items: center;
     margin-top: 5rem;
 }
+
+.card_container{
+    display: flex;
+    padding: 1rem;
+    padding-bottom: 0rem;
+}
+
+.card{
+    background-color: #0e1117;
+    border: 1px solid #30363c59;
+    border-radius: 10px;
+}
+
+.card_header{
+    color: rgb(137,147,157);
+}
