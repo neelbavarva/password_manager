@@ -6,6 +6,7 @@ import { API } from '../API';
 import Passwords from '@/components/Passwords';
 import Banking from '@/components/Banking';
 import Manage from '@/components/Manage';
+import { authenticator } from 'otplib';
 
 export default function Home() {
 
@@ -14,6 +15,10 @@ export default function Home() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [passwordInput, setPasswordInput] = useState("");
+
+    const [secretKey, setSecretKey] = useState('LRLAGLSKEZXVAGYZ');
+    const [otpValue, setOtpValue] = useState('');
+    const [generatedCode, setGeneratedCode] = useState('');
 
     // Ref
     const passwordInputRef = useRef(null);
@@ -27,6 +32,31 @@ export default function Home() {
     const handleEnterKeyPress = (event) => {
         if (event.key === 'Enter') {
             document.getElementById('submitButton').click();
+        }
+    };
+
+    // Function to generate TOTP code
+    const generateTOTP = () => {
+        if (secretKey) {
+            const generatedOTP = authenticator.generate(secretKey);
+            setGeneratedCode(generatedOTP);
+            verifyTOTP();
+        } else {
+            console.error('Secret key is missing. Please generate a secret key.');
+        }
+    };
+
+    const verifyTOTP = () => {
+        if (otpValue && generatedCode) {
+            const isValidOTP = authenticator.verify({ token: otpValue, secret: secretKey });
+    
+            if (isValidOTP) {
+                setIsAuthenticated(true)
+            } else {
+                setOtpValue("")
+            }
+        } else {
+            console.log('Please generate OTP and enter a valid OTP to verify.');
         }
     };
 
@@ -52,21 +82,33 @@ export default function Home() {
 
     const renderAuthenticationContainer = () => (
         <div className={styles.authPage}>
-            <div className={styles.authDetail}>
-                <Image width="300" src={require("../public/icons/logo.png")} />
-            </div>
-            <div className={styles.authContainer}>
-                <input
-                    ref={passwordInputRef}
-                    onKeyPress={handleEnterKeyPress}
-                    type='password'
-                    value={passwordInput}
-                    onChange={e => setPasswordInput(e.target.value)}
-                    placeholder='Enter your password'
-                />
-                <button id="submitButton" disabled={isLoading} onClick={authenticateUser}>
-                    {isLoading ? renderLoadingIndicator() : "Check"}
-                </button>
+            <div className={styles.authPageContainer}>
+                <div className={styles.authDetail}>
+                    <Image width="300" src={require("../public/icons/logo.png")} />
+                </div>
+                <div className={styles.authContainer}>
+                    <input
+                        ref={passwordInputRef}
+                        onKeyPress={handleEnterKeyPress}
+                        value={otpValue}
+                        onChange={(e) => setOtpValue(e.target.value)}
+                        placeholder='Enter your password'
+                    />
+                    <button id="submitButton" disabled={isLoading} onClick={generateTOTP}>
+                        {isLoading ? renderLoadingIndicator() : "Submit"}
+                    </button>
+                </div>
+                <div className={styles.authPageInfo}>
+                    <div>
+                        <Image width="15" src={require("../public/icons/google.svg")} />
+                    </div>
+                    <div>
+                        Use Google Authenticator to access
+                    </div>
+                </div>
+                <div className={styles.contact}>
+                    Contact @neelbavarva for more
+                </div>
             </div>
         </div>
     );

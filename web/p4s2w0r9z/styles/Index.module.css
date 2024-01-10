@@ -2,16 +2,6 @@
     margin: 0 auto;
 }
 
-@media (max-width: 1000px) {
-    .container {
-        width: 100%;
-    }
-    .navbar {
-        width: calc(100% - 2rem);
-        margin: 1rem 1rem 0;
-    }
-}
-
 @media (min-width: 1000px) {
     .container {
         width: 850px;
@@ -19,6 +9,16 @@
     .navbar {
         width: calc(850px - 2rem - 2px);
         margin-left: 1rem;
+    }
+}
+
+@media (max-width: 1000px) {
+    .container {
+        width: 100%;
+    }
+    .navbar {
+        width: calc(100% - 2rem);
+        margin: 1rem 1rem 0;
     }
 }
 
@@ -33,6 +33,36 @@
     font-family: 'Moranga';
 }
 
+.authPageContainer{
+    background: rgba(48, 54, 61, 0.133);
+    padding: 2.5rem;
+    padding-bottom: 3.5rem;
+    padding-top: 0rem;
+    border-radius: 10px;
+    box-shadow: 1px 1px 4px rgba(51, 54, 57, 0.144);
+}
+
+.authPageInfo{
+    display: flex;
+    margin-top: 2.5rem;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.413) ;
+}
+
+.authPageInfo div{
+    font-family: 'SilkaRegular';
+    font-size: 10px;
+    color: rgb(137, 147, 157);
+}
+
+.authPageInfo > div:last-child{
+    margin-left: 0.5rem;
+}
+
 .authDetail {
     display: flex;
     flex-direction: column;
@@ -40,9 +70,19 @@
     align-items: center;
 }
 
+.contact{
+    display: flex;
+    margin-top: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    font-family: 'SilkaRegular';
+    font-size: 10px;
+    color: rgb(137, 147, 157);
+}
+
 .authContainer {
     display: flex;
-    margin-top: 0;
+    margin-top: -1rem;
     border-radius: 10px;
     border: 1.5px solid rgba(48, 54, 61, 0.588);
 }
@@ -103,6 +143,18 @@
     background-color: rgba(33, 38, 44, 0.376);
     margin: 0.25rem;
     border-radius: 100px;
+}
+
+@media (max-width: 600px) {
+    .authPageContainer{
+        padding: 1rem;
+        padding-bottom: 3.5rem;
+        padding-top: 0rem;
+    }
+    .authContainer {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
 }
 
 .navbar a {
