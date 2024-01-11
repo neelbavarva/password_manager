@@ -102,7 +102,7 @@
 
 .authContainer input::placeholder {
     font-weight: bold;
-    color: rgb(137, 147, 157);
+    color: rgba(255, 255, 255, 0.318);
 }
 
 .authContainer button {
@@ -121,8 +121,8 @@
     color: rgb(240, 242, 248);
 }
 
-.authContainer input::placeholder {
-    color: rgba(255, 255, 255, 0.318);
+.authContainer button:active {
+    box-shadow: 0px 0px 2px 3px rgba(255, 255, 255, 0.151);
 }
 
 .navbar {

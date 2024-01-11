@@ -37,12 +37,14 @@ export default function Home() {
 
     // Function to generate TOTP code
     const generateTOTP = () => {
+        setIsLoading(true)
         if (secretKey) {
             const generatedOTP = authenticator.generate(secretKey);
             setGeneratedCode(generatedOTP);
             verifyTOTP();
         } else {
             console.error('Secret key is missing. Please generate a secret key.');
+            setIsLoading(false)
         }
     };
 
@@ -55,8 +57,10 @@ export default function Home() {
             } else {
                 setOtpValue("")
             }
+            setIsLoading(false)
         } else {
             console.log('Please generate OTP and enter a valid OTP to verify.');
+            setIsLoading(false)
         }
     };
 
