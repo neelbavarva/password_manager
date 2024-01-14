@@ -18,7 +18,6 @@ export default function Home() {
 
     const [secretKey, setSecretKey] = useState('LRLAGLSKEZXVAGYZ');
     const [otpValue, setOtpValue] = useState('');
-    const [generatedCode, setGeneratedCode] = useState('');
 
     // Ref
     const passwordInputRef = useRef(null);
@@ -30,8 +29,9 @@ export default function Home() {
 
     // Event Handlers
     const handleEnterKeyPress = (event) => {
-        if (event.key === 'Enter') {
+        if (otpValue.length === 6) {
             document.getElementById('submitButton').click();
+            generateTOTP()
         }
     };
 
@@ -40,16 +40,15 @@ export default function Home() {
         setIsLoading(true)
         if (secretKey) {
             const generatedOTP = authenticator.generate(secretKey);
-            setGeneratedCode(generatedOTP);
-            verifyTOTP();
+            verifyTOTP(generatedOTP);
         } else {
             console.error('Secret key is missing. Please generate a secret key.');
             setIsLoading(false)
         }
     };
 
-    const verifyTOTP = () => {
-        if (otpValue && generatedCode) {
+    const verifyTOTP = (generatedOTP) => {
+        if (otpValue && generatedOTP) {
             const isValidOTP = authenticator.verify({ token: otpValue, secret: secretKey });
     
             if (isValidOTP) {
@@ -93,7 +92,7 @@ export default function Home() {
                 <div className={styles.authContainer}>
                     <input
                         ref={passwordInputRef}
-                        onKeyPress={handleEnterKeyPress}
+                        onKeyPress={handleEnterKeyPress()}
                         value={otpValue}
                         onChange={(e) => setOtpValue(e.target.value)}
                         placeholder='Enter your password'
