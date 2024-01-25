@@ -125,8 +125,8 @@ export default function Banking() {
             <div className={styles.card_container}>
                 <div className={styles.card}>
                     <div className={styles.card_header}>
-                        <div>Name</div>
-                        <div>Bank</div>
+                        <div>Neel Bavarva</div>
+                        <div>HDFC</div>
                     </div>
                     <div className={styles.card_number}>
                         <div>223344556677</div>

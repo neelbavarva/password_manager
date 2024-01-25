@@ -499,16 +499,57 @@
 
 .card_container{
     display: flex;
-    padding: 1rem;
-    padding-bottom: 0rem;
+    padding-right: 1rem;
+    overflow-x: scroll;
+    margin-right: 1rem;
+    margin-left: 1rem;
 }
 
 .card{
     background-color: #0e1117;
     border: 1px solid #30363c59;
     border-radius: 10px;
+    min-width: 250px;
+    min-height: 125px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    margin-right: 1rem;
+}
+
+.card_container > .card:last-child{
+    margin-right: -1rem;
 }
 
 .card_header{
-    color: rgb(137,147,157);
+    display: flex; 
+    flex: 1;
+    font-family: 'SilkaRegular';
+    color: white;
+    font-size: 12px;
+}
+
+.card_header > div:first-child{
+    display: flex;
+    flex: 1;
+}
+
+.card_number{
+    font-family: 'SilkaRegular';
+    color: white;
+    font-size: 12px;
+}
+
+.card_info{
+    display: flex; 
+    flex: 1;
+    align-items: flex-end;
+    font-family: 'SilkaRegular';
+    color: white;
+    font-size: 12px;
+}
+
+.card_info > div:first-child{
+    display: flex;
+    flex: 1;
 }
