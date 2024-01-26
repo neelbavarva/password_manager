@@ -18,13 +18,16 @@ export default function Home() {
 
     const [secretKey, setSecretKey] = useState('LRLAGLSKEZXVAGYZ');
     const [otpValue, setOtpValue] = useState('');
+    const [isLocal, setIsLocal] = useState(false);
 
     // Ref
     const passwordInputRef = useRef(null);
 
     // Effects
     useEffect(() => {
-        passwordInputRef.current.focus();
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        setIsLocal(isLocalhost);
+        !isLocalhost ? passwordInputRef.current.focus() : null;
     }, []);
 
     // Event Handlers
@@ -148,7 +151,7 @@ export default function Home() {
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
             <link rel="icon" href="/favicon.ico" />
         </Head>
-        {isAuthenticated ? renderPasswordApplication() : renderAuthenticationContainer()}
+        {(isLocal ? true : isAuthenticated) ? renderPasswordApplication() : renderAuthenticationContainer()}
         </>
     );
 }

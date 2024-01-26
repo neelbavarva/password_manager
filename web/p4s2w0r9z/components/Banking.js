@@ -11,6 +11,7 @@ export default function Banking() {
     const[archivePasswords, setArchivePasswords] = useState(null)
     const[passwords, setPasswords] = useState(null)
     const[category, setCategory] = useState("all")
+    const[cards, setCards] = useState(null)
 
     const[modalInfo, setModalInfo] = useState(null)
     const[eKey, setEKey] = useState(null)
@@ -76,6 +77,17 @@ export default function Banking() {
         }
     }
 
+    const fetchCards = () => {
+        fetch(`${API}/cards/getCards`)
+        .then(res=>res.json())
+        .then(result=>{
+            setCards(result)
+        })
+        .catch((e) => {
+            setCards("network_error")
+        })
+    }
+
     const filterPassword = (e) => {
         setCategory(e)
         if(passwords!=null&&passwords!="network_error"){
@@ -110,6 +122,7 @@ export default function Banking() {
     useEffect(()=>{
         fetchPasswords()
         fetchArchivePasswords()
+        fetchCards()
     },[])
 
     function renderHeader(){
@@ -123,84 +136,23 @@ export default function Banking() {
     function renderCards(){
         return(
             <div className={styles.card_container}>
-                <div className={styles.card}>
-                    <div className={styles.card_header}>
-                        <div>Neel Bavarva</div>
-                        <div>HDFC</div>
-                    </div>
-                    <div className={styles.card_number}>
-                        <div>223344556677</div>
-                    </div>
-                    <div className={styles.card_info}>
-                        <div>CVV: 324</div>
-                        <div>Expires on: 08/29</div>
-                    </div>
-                </div>
-                <div className={styles.card}>
-                    <div className={styles.card_header}>
-                        <div>Name</div>
-                        <div>Bank</div>
-                    </div>
-                    <div className={styles.card_number}>
-                        <div>223344556677</div>
-                    </div>
-                    <div className={styles.card_info}>
-                        <div>CVV: 324</div>
-                        <div>Expires on: 08/29</div>
-                    </div>
-                </div>
-                <div className={styles.card}>
-                    <div className={styles.card_header}>
-                        <div>Name</div>
-                        <div>Bank</div>
-                    </div>
-                    <div className={styles.card_number}>
-                        <div>223344556677</div>
-                    </div>
-                    <div className={styles.card_info}>
-                        <div>CVV: 324</div>
-                        <div>Expires on: 08/29</div>
-                    </div>
-                </div>
-                <div className={styles.card}>
-                    <div className={styles.card_header}>
-                        <div>Name</div>
-                        <div>Bank</div>
-                    </div>
-                    <div className={styles.card_number}>
-                        <div>223344556677</div>
-                    </div>
-                    <div className={styles.card_info}>
-                        <div>CVV: 324</div>
-                        <div>Expires on: 08/29</div>
-                    </div>
-                </div>
-                <div className={styles.card}>
-                    <div className={styles.card_header}>
-                        <div>Name</div>
-                        <div>Bank</div>
-                    </div>
-                    <div className={styles.card_number}>
-                        <div>223344556677</div>
-                    </div>
-                    <div className={styles.card_info}>
-                        <div>CVV: 324</div>
-                        <div>Expires on: 08/29</div>
-                    </div>
-                </div>
-                <div className={styles.card}>
-                    <div className={styles.card_header}>
-                        <div>Name</div>
-                        <div>Bank</div>
-                    </div>
-                    <div className={styles.card_number}>
-                        <div>223344556677</div>
-                    </div>
-                    <div className={styles.card_info}>
-                        <div>CVV: 324</div>
-                        <div>Expires on: 08/29</div>
-                    </div>
-                </div>
+                {cards.map(item=> {
+                    return(
+                        <div key={item._id} className={styles.card}>
+                            <div className={styles.card_header}>
+                                <div>{item.cardName}</div>
+                                <div>{item.bankName}</div>
+                            </div>
+                            <div className={styles.card_number}>
+                                <div>xxxxxxxx{item.number.substring(8,12)}</div>
+                            </div>
+                            <div className={styles.card_info}>
+                                <div>CVV: xxx</div>
+                                <div>Expires on: xx/xx</div>
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
         )
     }
@@ -306,9 +258,16 @@ export default function Banking() {
             <div className={styles.password_page}>
                 <div className={styles.container}>
                     {renderHeader()}
-                    {renderCards()}
-                    {renderCategories()}
-                    {passwords==null ? <div className={styles.main_loading_container}>{renderMainLoader()}</div> : renderPasswords()}
+                    {passwords==null||cards==null ? 
+                        <div className={styles.main_loading_container}>
+                            {renderMainLoader()}
+                        </div> : 
+                        <div>
+                            {renderCards()}
+                            {renderCategories()}
+                            {renderPasswords()}
+                        </div>
+                    }
                 </div>
             </div>
         </>
