@@ -5,7 +5,7 @@ import {API} from '../API'
 
 import styles from '../styles/Manage.module.css'
 
-export default function Manage() {
+export default function Manage({counter}) {
 
     const[allPasswords, setAllPasswords] = useState(null)
     const[archivePasswords, setArchivePasswords] = useState(null)
@@ -32,7 +32,6 @@ export default function Manage() {
     const[decryptRender, setDecryptRender] = useState(false)
 
     const addNewPassword = () => {
-
         // Check if any required fields are missing
         if (![pName, pEmail, pCategory, pPassword, pKey].every(Boolean)) {
             setFieldError(true);
@@ -118,30 +117,6 @@ export default function Manage() {
         })
     }
 
-    const fetchDecryptPassword = () => {
-        if(eKey!=null && eKey!=""){
-            setDecryptRender(true)
-            fetch(`${API}/passwords/decryptPassword`,{
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    "password": modalInfo.password,
-                    "key": eKey
-                })
-
-            })
-            .then(res=>res.json())
-            .then(result=>{
-                result.message==null ? setEPassword(result) : setEPassword("wrong_key")
-                setDecryptRender(false)
-                setEKey(null)
-            })
-            .catch((e) => {
-                console.log("Error in Fetching /decryptPassword "+e);
-            })
-        }
-    }
-
     function generateStrongPassword() {
         const length = 24;
 
@@ -212,7 +187,8 @@ export default function Manage() {
     function renderHeader(){
         return(
             <div className={styles.header_container}>
-                Manage
+                <button>Manage</button>
+                <div>Time Remaining {counter}</div>
             </div>
         )
     }
@@ -222,8 +198,8 @@ export default function Manage() {
             <div className={styles.category_container}>
                 <div onClick={() => setCategory("addPassword")} className={`${styles.category} ${category=="addPassword" ? styles.category_selected : null}`}>Add Password</div>
                 <div onClick={() => setCategory("deletePassword")} className={`${styles.category} ${category=="deletePassword" ? styles.category_selected : null}`}>Delete Password</div>
-                {/* <div className={`${styles.category}`}>Add Card</div>
-                <div className={`${styles.category}`}>Delete Card</div> */}
+                <div className={`${styles.category}`}>Add Card</div>
+                <div className={`${styles.category}`}>Delete Card</div>
             </div>
         )
     }
@@ -259,7 +235,6 @@ export default function Manage() {
                         </option>
                         ))}
                     </select>
-                    {/* <div onClick={() => selectCategory()} className={styles.touchable_field}>{pCategory}</div> */}
                 </div>
                 <div className={styles.input_container}>
                     <div>Password</div>
@@ -298,7 +273,7 @@ export default function Manage() {
                 {passwords.map(item=>{
                     return(
                         <div key={item._id} className={styles.mItem}>
-                            <a onClick={() => getModalInfo(item._id)} href="#open-modal" className={styles.password_card}>
+                            <a onClick={() => getModalInfo(item._id)} href="#password-modal" className={styles.password_card}>
                                 <div className={styles.password_logo}> 
                                     {item.name.substring(0,1).toUpperCase()}
                                 </div>
@@ -311,7 +286,7 @@ export default function Manage() {
                                 </div>
                             </a>
                             
-                            <div id="open-modal" className={styles.modal_window}>
+                            <div id="password-modal" className={styles.modal_window}>
                                 <div>
                                     <div className={styles.close_container}>
                                         <a onClick={() => closeModal()} href="#">

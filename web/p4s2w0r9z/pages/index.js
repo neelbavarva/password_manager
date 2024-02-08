@@ -15,6 +15,7 @@ export default function Home() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [passwordInput, setPasswordInput] = useState("");
+    const [counter, setCounter] = useState(300);
 
     const [secretKey, setSecretKey] = useState('LRLAGLSKEZXVAGYZ');
     const [otpValue, setOtpValue] = useState('');
@@ -28,7 +29,18 @@ export default function Home() {
         const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         setIsLocal(isLocalhost);
         !isLocalhost ? passwordInputRef.current.focus() : null;
+
+        const timer = setInterval(() => {
+            setCounter((prevCounter) => prevCounter - 1);
+        }, 1000);
+        return () => clearInterval(timer);
     }, []);
+
+    useEffect(() => {
+        if (counter === 0) {
+          window.location.reload();
+        }
+    }, [counter]);
 
     // Event Handlers
     const handleEnterKeyPress = (event) => {
@@ -64,6 +76,12 @@ export default function Home() {
             console.log('Please generate OTP and enter a valid OTP to verify.');
             setIsLoading(false)
         }
+    };
+
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     };
 
     // Functions
@@ -121,9 +139,9 @@ export default function Home() {
 
     const renderPasswordApplication = () => (
         <div>
-            {currentPage === "Passwords" && <Passwords />}
-            {currentPage === "Banking" && <Banking />}
-            {currentPage === "Manage" && <Manage />}
+            {currentPage === "Passwords" && <Passwords counter={formatTime(counter)} />}
+            {currentPage === "Banking" && <Banking counter={formatTime(counter)} />}
+            {currentPage === "Manage" && <Manage counter={formatTime(counter)} />}
             {renderNavigationBar()}
         </div>
     );

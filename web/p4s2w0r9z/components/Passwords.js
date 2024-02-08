@@ -2,10 +2,9 @@ import React, {useState, useEffect} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import {API} from '../API'
-
 import styles from '../styles/Passwords.module.css'
 
-export default function Passwords() {
+export default function Passwords({counter}) {
 
     const[allPasswords, setAllPasswords] = useState(null)
     const[archivePasswords, setArchivePasswords] = useState(null)
@@ -142,6 +141,7 @@ export default function Passwords() {
         return(
             <div className={styles.header_container}>
                 <button>Passwords</button>
+                <div>Time Remaining {counter}</div>
             </div>
         )
     }
@@ -180,7 +180,7 @@ export default function Passwords() {
                 {passwords.map(item=>{
                     return(
                         <div key={item._id} className={styles.mItem}>
-                            <a onClick={() => getModalInfo(item._id)} href="#open-modal" className={styles.password_card}>
+                            <a onClick={() => getModalInfo(item._id)} href="#password-modal" className={styles.password_card}>
                                 <div className={styles.password_logo}> 
                                     {item.name.substring(0,1).toUpperCase()}
                                 </div>
@@ -193,7 +193,7 @@ export default function Passwords() {
                                 </div>
                             </a>
                             
-                            <div id="open-modal" className={styles.modal_window}>
+                            <div id="password-modal" className={styles.modal_window}>
                                 <div>
                                     {modalInfo==null?null:
                                     <div className={styles.close_container}>
