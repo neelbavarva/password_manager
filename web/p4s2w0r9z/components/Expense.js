@@ -7,6 +7,7 @@ import styles from '../styles/Expense.module.css'
 export default function Expense() {
 
     const [networth, setNetworth] = useState(null);
+    const [expenses, setExpenses] = useState(null);
 
     const fetchNetWorth = () => {
         fetch(`${API}/getNetWorth`)
@@ -19,8 +20,23 @@ export default function Expense() {
             });
     };
 
+    const fetchExpenses = async () => {
+        try {
+            const response = await fetch(`${API}/expenses/getAllExpenses`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const result = await response.json();
+            setExpenses(result);
+        } catch (error) {
+            console.error('Error fetching expenses:', error);
+            setExpenses("network_error");
+        }
+    };
+
     useEffect(() => {
         fetchNetWorth();
+        fetchExpenses();
     }, []);
 
 
@@ -94,12 +110,43 @@ export default function Expense() {
         );
     }
 
+    function renderExpenseHeader() {
+        return (
+            <div className={styles.expenseHeader}>
+                <div>Expenses</div>
+                {/* {renderModal()} */}
+                <div>
+                    {/* <div onClick={() => reCalculate()} className={styles.header_btn}><a href="#open-modal-recalculate">Recalculate</a></div> */}
+                    <div className={styles.header_btn}><a>Add New Calculation</a></div>
+                </div>
+            </div>
+        );
+    }
+
+    const renderExpenses = () => {
+        return(
+            <div>
+                {expenses.map(item=>(
+                    <div key={item._id} className={styles.expense_container}>
+                        <div>
+                            <div>{item.month}</div>
+                            <div>{item.year}</div>
+                        </div>
+                        <div>₹{addCommasToNumber(item.expense)}</div>
+                    </div>
+                ))}
+            </div>
+        )
+    };
+
     return (
         <>
             <div className={styles.Expense_page}>
-                {networth==null?renderLoader():
+                {networth==null||expenses==null?renderLoader():
                 <div className={styles.container}>
                     {renderHeader()}
+                    {renderExpenseHeader()}
+                    {renderExpenses()}
                 </div>}
             </div>
         </>
