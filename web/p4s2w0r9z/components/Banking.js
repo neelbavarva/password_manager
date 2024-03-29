@@ -124,15 +124,6 @@ export default function Banking({counter}) {
         fetchCards()
     },[])
 
-    function renderHeader(){
-        return(
-            <div className={styles.header_container}>
-                <button>Banking</button>
-                <div>Time Remaining {counter}</div>
-            </div>
-        )
-    }
-
     function renderCards(){
         return(
             <div className={styles.card_container}>
@@ -257,7 +248,6 @@ export default function Banking({counter}) {
         <>
             <div className={styles.password_page}>
                 <div className={styles.container}>
-                    {renderHeader()}
                     {passwords==null||cards==null ? 
                         <div className={styles.main_loading_container}>
                             {renderMainLoader()}

@@ -22,6 +22,63 @@
     }
 }
 
+.header_container{
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+}
+
+.header_container > div:first-child{
+    color: white;
+    font-size: 20px;
+    font-family: 'Moranga';
+    display: flex;
+    flex: 1;
+}
+
+.header_container > div > div{
+    display: flex;
+    background-color: #0e1117;
+    border: 1px solid #30363c59;
+    border-radius: 10px;
+    padding-left: 1.5rem;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 185px;
+}
+
+.header_container > div button{
+    display: flex;
+    background-color: #0e1117;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-left: 1rem;
+    border: 1px solid #30363c59;
+    padding: 0.75rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.35s;
+}
+
+.header_container > div button:hover{
+    border: 1px solid #48515988;
+    transition: 0.35s;
+}
+
+.header_container > div:last-child{
+    font-size: 10px;
+    font-family: 'SilkaRegular';
+    padding: 0.75rem;
+    border-radius: 10px;
+    color: rgb(137,147,157);
+}
+
 .authPage {
     display: flex;
     flex: 1;
@@ -154,6 +211,44 @@
     .authContainer {
         margin-left: 1rem;
         margin-right: 1rem;
+    }
+
+    .header_container{
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        margin: 2rem;
+    }
+    
+    .header_container > div:first-child{
+        font-size: 14px;
+    }
+    
+    .header_container > div > div{
+        padding-left: 0.5rem;
+        min-width: 150px;
+    }
+    
+    .header_container > div button{
+        margin-left: 1rem;
+        padding: 0.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .header_container > div button:hover{
+        border: 1px solid #48515988;
+        transition: 0.35s;
+    }
+    
+    .header_container > div:last-child{
+        font-size: 8px;
+        font-family: 'SilkaRegular';
+        padding: 0.75rem;
+        border-radius: 10px;
+        color: rgb(137,147,157);
     }
 }
 

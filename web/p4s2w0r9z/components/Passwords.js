@@ -137,15 +137,6 @@ export default function Passwords({counter}) {
         fetchArchivePasswords()
     },[])
 
-    function renderHeader(){
-        return(
-            <div className={styles.header_container}>
-                <button>Passwords</button>
-                <div>Time Remaining {counter}</div>
-            </div>
-        )
-    }
-
     function renderCategories(){
         return(
             <div className={styles.category_container}>
@@ -263,7 +254,6 @@ export default function Passwords({counter}) {
         <>
             <div className={styles.password_page}>
                 <div className={styles.container}>
-                    {renderHeader()}
                     {renderCategories()}
                     {passwords==null ? null : renderSearch()}
                     {passwords==null ? <div className={styles.main_loading_container}>{renderMainLoader()}</div> : renderPasswords()}

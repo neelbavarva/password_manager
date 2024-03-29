@@ -183,15 +183,6 @@ export default function Manage({counter}) {
         setPArchive(false)
         
     }
-   
-    function renderHeader(){
-        return(
-            <div className={styles.header_container}>
-                <button>Manage</button>
-                <div>Time Remaining {counter}</div>
-            </div>
-        )
-    }
 
     function renderCategories(){
         return(
@@ -331,7 +322,6 @@ export default function Manage({counter}) {
         <>
             <div className={styles.password_page}>
                 <div className={styles.container}>
-                    {renderHeader()}
                     {renderCategories()}
                     {category=="addPassword" && renderAddPassword()}
                     {category=="deletePassword" && renderDeletePassword()}

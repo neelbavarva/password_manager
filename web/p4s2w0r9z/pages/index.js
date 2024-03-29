@@ -7,10 +7,14 @@ import Passwords from '@/components/Passwords';
 import Banking from '@/components/Banking';
 import Manage from '@/components/Manage';
 import { authenticator } from 'otplib';
+import { HiSwitchHorizontal } from "react-icons/hi";
+import { AiOutlineReload } from "react-icons/ai";
+import Expense from '@/components/Expense';
 
 export default function Home() {
 
     // State
+    const [app, setApp] = useState("p4s2w0r9z")
     const [currentPage, setCurrentPage] = useState("Passwords");
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -62,6 +66,12 @@ export default function Home() {
         }
     };
 
+    const formatTime = (timeInSeconds) => {
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      };
+
     const verifyTOTP = (generatedOTP) => {
         if (otpValue && generatedOTP) {
             const isValidOTP = authenticator.verify({ token: otpValue, secret: secretKey });
@@ -76,12 +86,6 @@ export default function Home() {
             console.log('Please generate OTP and enter a valid OTP to verify.');
             setIsLoading(false)
         }
-    };
-
-    const formatTime = (seconds) => {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     };
 
     // Functions
@@ -137,12 +141,39 @@ export default function Home() {
         </div>
     );
 
+    function renderHeader(){
+        return(
+            <div className={`${styles.header_container}`}>
+                <div>
+                    <div>
+                        <div>{app=="p4s2w0r9z"?"Passwords":"Expenses"}</div> 
+                        <button onClick={() => app=="p4s2w0r9z" ? setApp("e7p3n8ez") : setApp("p4s2w0r9z")}><HiSwitchHorizontal /></button>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div>Time Remaining {formatTime(counter)}</div> 
+                        <button onClick={() => setCounter(300)}><AiOutlineReload /></button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     const renderPasswordApplication = () => (
-        <div>
-            {currentPage === "Passwords" && <Passwords counter={formatTime(counter)} />}
-            {currentPage === "Banking" && <Banking counter={formatTime(counter)} />}
-            {currentPage === "Manage" && <Manage counter={formatTime(counter)} />}
+        <div className={styles.container}>
+            {renderHeader()}
+            {currentPage === "Passwords" && <Passwords />}
+            {currentPage === "Banking" && <Banking />}
+            {currentPage === "Manage" && <Manage />}
             {renderNavigationBar()}
+        </div>
+    );
+
+    const renderExpenseApplication = () => (
+        <div className={styles.container}>
+            {renderHeader()}
+            {<Expense />}
         </div>
     );
 
@@ -169,7 +200,7 @@ export default function Home() {
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
             <link rel="icon" href="/favicon.ico" />
         </Head>
-        {(isLocal ? true : isAuthenticated) ? renderPasswordApplication() : renderAuthenticationContainer()}
+        {(isLocal ? true : isAuthenticated) ? app=="p4s2w0r9z" ? renderPasswordApplication() : renderExpenseApplication() : renderAuthenticationContainer()}
         </>
     );
 }
