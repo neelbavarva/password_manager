@@ -24,15 +24,29 @@ export default function Home() {
     const [otpValue, setOtpValue] = useState('');
     const [isLocal, setIsLocal] = useState(false);
 
+    const [API, setAPI] = useState(process.env.NEXT_PUBLIC_PROD_LINK);
+    const [DB, setDB] = useState(null);
+
     // Ref
     const passwordInputRef = useRef(null);
+
+    const fetchDB = () => {
+        fetch(`${API}/getDBDetail`)
+            .then(res => res.json())
+            .then(result => {
+                setDB(result[0]);
+            })
+            .catch((e) => {
+                setDB("network_error");
+            });
+    };
 
     // Effects
     useEffect(() => {
         const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         setIsLocal(isLocalhost);
         !isLocalhost ? passwordInputRef.current.focus() : null;
-
+        fetchDB()
         const timer = setInterval(() => {
             setCounter((prevCounter) => prevCounter - 1);
         }, 1000);
@@ -144,7 +158,7 @@ export default function Home() {
         return(
             <div className={`${styles.header_container}`}>
                 <div>
-                    <div>
+                    <div className={DB==null ? null : DB.dbType=="PROD" ? styles.prod_green : DB.dbType=="DEV_TEST" ? styles.prod_blue : styles.prod_red}>
                         <div>{app=="p4s2w0r9z"?"Passwords":"Expenses"}</div> 
                         <button onClick={() => app=="p4s2w0r9z" ? setApp("e7p3n8ez") : setApp("p4s2w0r9z")}><HiSwitchHorizontal /></button>
                     </div>

@@ -22,7 +22,7 @@ export default function Expense() {
         fetch(`${API}/getNetWorth`)
             .then(res => res.json())
             .then(result => {
-                setNetworth(result[0]);
+                setNetworth("s");
             })
             .catch((e) => {
                 setNetworth("network_error");

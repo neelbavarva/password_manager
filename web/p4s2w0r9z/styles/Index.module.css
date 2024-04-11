@@ -79,6 +79,21 @@
     color: rgb(137,147,157);
 }
 
+.prod_green{
+    background-color: rgba(26, 193, 149, 0.062) !important;
+    border: 1px solid rgba(26, 193, 149, 0.211) !important;
+}
+
+.prod_blue{
+    background-color: rgba(26, 162, 193, 0.099) !important;
+    border: 1px solid rgba(26, 162, 193, 0.211) !important;
+}
+
+.prod_red{
+    background-color: rgba(193, 26, 79, 0.084) !important;
+    border: 1px solid rgba(193, 26, 79, 0.283) !important;
+}
+
 .authPage {
     display: flex;
     flex: 1;
