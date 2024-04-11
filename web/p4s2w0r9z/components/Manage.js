@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
-import {API} from '../API'
 
 import styles from '../styles/Manage.module.css'
 
@@ -30,6 +29,8 @@ export default function Manage({counter}) {
     const[eKey, setEKey] = useState(null)
     const[ePassword, setEPassword] = useState(null)
     const[decryptRender, setDecryptRender] = useState(false)
+
+    const[API, setAPI] = useState(process.env.NEXT_PUBLIC_PROD_LINK)
 
     const addNewPassword = () => {
         // Check if any required fields are missing

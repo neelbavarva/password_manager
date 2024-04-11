@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
-import {API} from '../API'
 import styles from '../styles/Banking.module.css'
 
 export default function Banking({counter}) {
@@ -17,6 +16,8 @@ export default function Banking({counter}) {
     const[ePassword, setEPassword] = useState(null)
     const[decryptRender, setDecryptRender] = useState(false)
     const[copy, setCopy] = useState(false)
+
+    const[API, setAPI] = useState(process.env.NEXT_PUBLIC_PROD_LINK)
 
     const fetchPasswords = () => {
         fetch(`${API}/passwords/getBankingPasswords`)

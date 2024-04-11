@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
-import {API} from '../API'
 import styles from '../styles/Passwords.module.css'
 
 export default function Passwords({counter}) {
@@ -20,14 +19,19 @@ export default function Passwords({counter}) {
     const[sort, setSort] = useState(false)
     const[search, setSearch] = useState(null)
     const[copy, setCopy] = useState(false)
+    
+    const[API, setAPI] = useState(process.env.NEXT_PUBLIC_PROD_LINK)
 
     const fetchPasswords = () => {
+        console.log(API)
+        console.log(process.env)
         fetch(`${API}/passwords/getNonBankingPasswords`)
         .then(res=>res.json())
         .then(result=>{
             setPasswords(result)
             setAllPasswords(result)
             setSPasswords(result)
+            console.log(result)
         })
         .catch((e) => {
             setPasswords("network_error")
@@ -259,8 +263,6 @@ export default function Passwords({counter}) {
                     {passwords==null ? <div className={styles.main_loading_container}>{renderMainLoader()}</div> : renderPasswords()}
                 </div>
             </div>
-
-
         </>
     )
 }

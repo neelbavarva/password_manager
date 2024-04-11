@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Index.module.css';
-import { API } from '../API';
 import Passwords from '@/components/Passwords';
 import Banking from '@/components/Banking';
 import Manage from '@/components/Manage';
