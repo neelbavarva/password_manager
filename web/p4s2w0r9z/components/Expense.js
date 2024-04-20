@@ -10,7 +10,6 @@ export default function Expense() {
 
     const [modalBalance, setModalBalance] = useState(null);
     const [modalIncome, setModalIncome] = useState(null);
-    const [modalCost, setModalCost] = useState(null);
     const [modalMonth, setModalMonth] = useState(null);
     const [modalYear, setModalYear] = useState(null);
     const [modalInvestedValue, setModalInvestedValue] = useState(null);
@@ -22,7 +21,7 @@ export default function Expense() {
         fetch(`${API}/getNetWorth`)
             .then(res => res.json())
             .then(result => {
-                setNetworth("s");
+                setNetworth(result[0]);
             })
             .catch((e) => {
                 setNetworth("network_error");
@@ -48,33 +47,28 @@ export default function Expense() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                "expense": ((networth.netWorth) + (networth.currentValue - networth.totalInvested) - (modalBalance - modalIncome)),
+                "expense": ((networth.netWorth) - (modalBalance - modalIncome)),
                 "month": modalMonth,
                 "year": modalYear
             })
         })
-            .then(res => res.json())
-            .then(result => {
-                fetchUpdateNetworth();
-                clearModalForm();
-            })
-            .catch((e) => {
-                console.log("Error in Fetching /newExpense " + e);
-            });
+        .then(res => res.json())
+        .then(result => {
+            fetchUpdateNetworth();
+        })
+        .catch((e) => {
+            console.log("Error in Fetching /newExpense " + e);
+        });
     };
 
     const fetchUpdateNetworth = async () => {
         try {
-            const { totalInvested, currentValue, netWorth } = networth;
-            let updatedTotalInvested = Number(totalInvested);
-            let updatedCurrentValue = Number(currentValue);
-            let updatedNetWorth = Number(modalBalance - (currentValue - totalInvested));
-
             const requestBody = {
                 id: "659444e6b795aff6fa6b38ce",
-                totalInvested: updatedTotalInvested,
-                currentValue: updatedCurrentValue,
-                netWorth: updatedNetWorth,
+                totalInvested: Number(networth.totalInvested),
+                currentValue: Number(networth.currentValue),
+                totalExpense: Number(networth.totalExpense),
+                netWorth: Number(modalBalance),
             };
 
             const response = await fetch(`${API}/updateNetWorth`, {
@@ -87,10 +81,9 @@ export default function Expense() {
                 throw new Error('Network response was not ok');
             }
 
-            const result = await response.json();
-            history.replaceState({}, document.title, window.location.href.replace('#open-modal', ''));
             fetchExpenses();
             fetchNetWorth();
+            clearModalForm();
         } catch (error) {
             console.error("Error in Fetching /updateNetWorth", error);
         }
@@ -116,9 +109,9 @@ export default function Expense() {
                 throw new Error('Network response was not ok');
             }
 
-            const result = await response.json();
-            console.log(result);
-            window.location.reload();
+            fetchExpenses();
+            fetchNetWorth();
+            clearModalForm();
         } catch (error) {
             console.error("Error in Fetching /updateNetWorth", error);
         }
